@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *,
+  ::before,
+  ::after {
+    @apply dark:border-gray-800;
+  }
+
+  a,
+  button {
+    @apply outline-none focus-visible:bg-white focus-visible:text-gray-950;
+  }
+}

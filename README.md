@@ -1,36 +1,53 @@
-# Welcome to Remix + Vite!
+# Cookbase
 
-📖 See the [Remix docs](https://remix.run/docs) and the [Remix Vite docs](https://remix.run/docs/en/main/future/vite) for details on supported features.
+Recipe organizer for families
+
+## How it works
+
+Add your favorite recipes and organize them by meal type and cuisine. Invite family members to collaborate on recipes.
+
+## About
+
+A side project by me, [Simon Wallström](https://simonwallstrom.com/). I have searched high and low for a decent recipe manager with support for multiple users but found nothing of note. This is my attempt to make a simple version with collaboration in mind from day one.
 
 ## Development
 
-Run the Vite dev server:
+From your terminal:
 
-```shellscript
+```sh
 npm run dev
 ```
 
+This starts your app in development mode, rebuilding assets on file changes.
+
+If making changes to the database schema, run:
+
+```sh
+npx prisma db push
+```
+
+_This will update the local Postgres db to reflect the prisma schema file._
+
 ## Deployment
 
-First, build your app for production:
+If you've made any changes to the Prisma schema, remember to create a migration file by running:
 
 ```sh
-npm run build
+npx prisma migrate dev
 ```
 
-Then run the app in production mode:
+Then to deploy run:
 
 ```sh
-npm start
+npm run deploy
 ```
 
-Now you'll need to pick a host to deploy it to.
+You can run `flyctl info` to get the url and ip address of your server.
 
-### DIY
+## Access remote database via proxy
 
-If you're familiar with deploying Node applications, the built-in Remix app server is production-ready.
+Open a separate terminal tab and run:
 
-Make sure to deploy the output of `npm run build`
-
-- `build/server`
-- `build/client`
+```sh
+flyctl proxy 15432:5432 -a <fly-db-name>
+```
