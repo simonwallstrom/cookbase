@@ -12,7 +12,7 @@ export const meta: MetaFunction = () => {
 export default function App() {
   return (
     <html
-      className="h-full text-gray-950 selection:bg-yellow-100 dark:bg-gray-950 dark:text-gray-300 dark:selection:text-gray-950"
+      className="h-full text-gray-950 selection:bg-yellow-200 dark:bg-gray-950 dark:text-gray-300 dark:selection:text-gray-950"
       lang="en"
     >
       <head>

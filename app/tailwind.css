@@ -11,6 +11,6 @@
 
   a,
   button {
-    @apply outline-none focus-visible:bg-white focus-visible:text-gray-950;
+    @apply outline-none focus-visible:outline-yellow-400;
   }
 }
