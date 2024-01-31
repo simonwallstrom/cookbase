@@ -3,8 +3,12 @@ import { Link } from '@remix-run/react'
 export default function Index() {
   return (
     <div className="flex flex-1 flex-col items-center justify-center">
-      <h1 className="-mt-10 text-[10vw] font-medium leading-none tracking-tight">Cookbase</h1>
-      <p className="text-[3vw] text-gray-500 lg:ml-1">Recipe organizer for families</p>
+      <h1 className="-mt-10 text-[clamp(60px,10vw,150px)] font-medium leading-none tracking-tight">
+        Cookbase
+      </h1>
+      <p className="text-[clamp(16px,3vw,50px)] text-gray-500 lg:ml-1">
+        Recipe organizer for families
+      </p>
       <div className="absolute bottom-4 lg:bottom-8">
         <Link
           to="/recipes"
