@@ -10,7 +10,7 @@ export default function Recipes() {
             Recipes
           </Link>
           <span>/</span>
-          <span className="truncate">Lax med potatis och romsås</span>
+          <span className="truncate text-gray-500">Lax med potatis och romsås</span>
         </div>
         <button className="underline-offset-4 hover:underline">Edit</button>
       </header>
@@ -18,24 +18,24 @@ export default function Recipes() {
       <div className="mt-6 border-t pt-12 sm:mt-12 sm:pt-20">
         <div className="text-gray-500">Created 3 weeks ago</div>
 
-        <h1 className="mt-3 text-balance text-3xl font-bold sm:mt-6 sm:text-4xl md:text-5xl">
+        <h1 className="mt-3 text-balance text-3xl font-bold sm:mt-5 sm:text-4xl md:text-5xl">
           {recipe.title}
         </h1>
 
         <div className="mt-4 flex flex-col gap-x-8 gap-y-2 sm:mt-7 sm:flex-row">
-          <div className="flex gap-4">
+          <div className="flex gap-2">
             <div className="text-gray-500 max-sm:w-24">Meal type</div>
             <Link to="/recipes" className="font-medium underline-offset-4 hover:underline">
               {recipe.mealType}
             </Link>
           </div>
-          <div className="flex gap-4">
+          <div className="flex gap-2">
             <div className="text-gray-500 max-sm:w-24">Cuisine</div>
             <Link to="/recipes" className="font-medium underline-offset-4 hover:underline">
               {recipe.cuisine}
             </Link>
           </div>
-          <div className="flex gap-4">
+          <div className="flex gap-2">
             <div className="text-gray-500 max-sm:w-24">Member</div>
             <Link to="/recipes" className="font-medium underline-offset-4 hover:underline">
               {recipe.member}
@@ -44,7 +44,7 @@ export default function Recipes() {
         </div>
       </div>
 
-      <div className="mt-12 grid gap-12 sm:mt-20 lg:grid-cols-3 xl:gap-24">
+      <div className="mt-12 grid items-start gap-12 sm:mt-20 lg:grid-cols-3 xl:gap-24">
         <div className="sticky top-12">
           <DividerHeading as="h2">Ingredients</DividerHeading>
           <ul className="list-inside list-disc">

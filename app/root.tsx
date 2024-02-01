@@ -3,7 +3,10 @@ import type { LinksFunction, MetaFunction } from '@remix-run/node'
 
 import './tailwind.css'
 
-export const links: LinksFunction = () => [{ rel: 'icon', href: '/favicon.svg' }]
+export const links: LinksFunction = () => [
+  { rel: 'icon', href: '/favicon.svg' },
+  { rel: 'preload', href: '/GeistVariableVF.woff2', crossOrigin: 'anonymous', as: 'font' },
+]
 
 export const meta: MetaFunction = () => {
   return [{ title: 'Cookbase' }, { name: 'description', content: 'Recipe organizer for families' }]
