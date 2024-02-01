@@ -1,6 +1,15 @@
-import { Link } from '@remix-run/react'
+import { Link, json, useLoaderData } from '@remix-run/react'
+import { prisma } from '~/lib/prisma.server'
+
+export async function loader() {
+  const recipes = await prisma.recipe.findMany()
+  return json(recipes)
+}
 
 export default function Index() {
+  const data = useLoaderData<typeof loader>()
+  console.log(data)
+
   return (
     <div className="flex flex-1 flex-col items-center justify-center">
       <h1 className="-mt-10 text-[clamp(60px,10vw,150px)] font-bold tracking-tighter">Cookbase</h1>
