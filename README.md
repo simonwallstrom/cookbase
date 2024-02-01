@@ -39,7 +39,7 @@ npx prisma migrate dev
 Then to deploy run:
 
 ```sh
-npm run deploy
+fly deploy
 ```
 
 You can run `flyctl info` to get the url and ip address of your server.
