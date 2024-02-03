@@ -7,7 +7,7 @@ const linkVariants = cva({
   base: [
     'inline-flex touch-none select-none underline-offset-4 outline-none',
     'hover:underline',
-    'active:scale-[.98]',
+    'active:bg-gray-500/20 active:no-underline',
     'focus-visible:bg-yellow-300 dark:focus-visible:text-gray-950',
   ],
 })

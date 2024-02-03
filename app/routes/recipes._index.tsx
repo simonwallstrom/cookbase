@@ -20,45 +20,45 @@ export default function Recipes() {
           <span>/</span>
           <span className="text-gray-500">Recipes</span>
         </div>
-        <Link to="/recipes">New recipe</Link>
+        <Link to="/recipes">+ New</Link>
       </header>
 
       {/* Search and filter */}
       <div className="mt-6 flex w-full flex-wrap items-center justify-between gap-x-12 gap-y-4 sm:mt-12">
         <Input placeholder="Search recipes..." className="flex-grow" />
         <div className="flex flex-grow flex-wrap justify-between gap-4">
-          <Select className="flex-1">
+          <Select className="flex-grow">
             <option value="1">Filter by meal type</option>
           </Select>
-          <Select className="flex-1">
+          <Select className="flex-grow">
             <option value="1">Filter by cuisine</option>
           </Select>
-          <Select className="flex-1">
+          <Select className="flex-grow">
             <option value="1">Filter by member</option>
           </Select>
         </div>
       </div>
 
       {/* Recipe list */}
-      <div className="mt-2 overflow-x-scroll sm:mt-8">
+      <div className="mt-6 overflow-x-scroll sm:mt-8">
         <table className="min-w-full divide-y border-b">
-          <thead>
+          <thead className="max-lg:hidden">
             <tr>
               <th className="whitespace-nowrap py-4 pr-3 text-left font-medium text-gray-500">
                 <div className="flex items-center gap-2">
                   <span>Title</span>
                 </div>
               </th>
-              <th className="whitespace-nowrap px-3 py-4 text-left font-medium text-gray-500 max-md:hidden">
+              <th className="whitespace-nowrap px-3 py-4 text-left font-medium text-gray-500">
                 Meal type
               </th>
-              <th className="whitespace-nowrap px-3 py-4 text-left font-medium text-gray-500 max-md:hidden">
+              <th className="whitespace-nowrap px-3 py-4 text-left font-medium text-gray-500">
                 Cuisine
               </th>
-              <th className="whitespace-nowrap px-3 py-4 text-left font-medium text-gray-500 max-md:hidden">
+              <th className="whitespace-nowrap px-3 py-4 text-left font-medium text-gray-500">
                 Created by
               </th>
-              <th className="whitespace-nowrap py-4 pl-3 text-right font-medium text-gray-500 max-md:hidden">
+              <th className="whitespace-nowrap py-4 pl-3 text-right font-medium text-gray-500">
                 Last updated
               </th>
             </tr>
@@ -66,17 +66,32 @@ export default function Recipes() {
           <tbody className="divide-y">
             {recipes.map((recipe) => (
               <tr className="group" key={recipe.id}>
-                <td className="py-4 pr-3">
-                  <div className="line-clamp-1 md:min-w-80">
+                <td className="py-3 lg:py-4 lg:pr-3">
+                  <div className="lg:min-w-80">
                     <Link
+                      prefetch="intent"
+                      title={recipe.title}
                       to={`/recipes/id`}
-                      className="font-medium underline-offset-4 hover:underline"
+                      className="min-w-0 font-medium underline-offset-4 hover:underline max-lg:block"
                     >
-                      {recipe.title}
+                      <span className="lg:line-clamp-1">{recipe.title}</span>
                     </Link>
                   </div>
+                  {/* <div className="mt-1 flex gap-x-2 text-sm text-gray-500 lg:hidden">
+                    <div className="flex gap-2">
+                      <Link to="/recipes">{recipe.mealType}</Link>
+                    </div>
+                    <div>·</div>
+                    <div className="flex gap-2">
+                      <Link to="/recipes">{recipe.cuisine}</Link>
+                    </div>
+                    <div>·</div>
+                    <div className="flex gap-2">
+                      <Link to="/recipes">{recipe.member}</Link>
+                    </div>
+                  </div> */}
                 </td>
-                <td className="whitespace-nowrap px-3 py-4 max-md:hidden">
+                <td className="whitespace-nowrap px-3 py-4 max-lg:hidden">
                   <Link
                     className="underline-offset-4 hover:underline"
                     to={`?mealType=${recipe.mealType}`}
@@ -84,7 +99,7 @@ export default function Recipes() {
                     {recipe.mealType}
                   </Link>
                 </td>
-                <td className="whitespace-nowrap px-3 py-4 max-md:hidden">
+                <td className="whitespace-nowrap px-3 py-4 max-lg:hidden">
                   <Link
                     className="underline-offset-4 hover:underline"
                     to={`?cuisine=${recipe.cuisine}`}
@@ -92,12 +107,12 @@ export default function Recipes() {
                     {recipe.cuisine}
                   </Link>
                 </td>
-                <td className="whitespace-nowrap px-3 py-4 max-md:hidden">
+                <td className="whitespace-nowrap px-3 py-4 max-lg:hidden">
                   <Link className="underline-offset-4 hover:underline" to={`?member=`}>
                     {recipe.member}
                   </Link>
                 </td>
-                <td className="whitespace-nowrap py-4 pl-3 text-right max-md:hidden">
+                <td className="whitespace-nowrap py-4 pl-3 text-right max-lg:hidden">
                   2 weeks ago
                 </td>
               </tr>
@@ -119,7 +134,7 @@ const recipes = [
   },
   {
     id: 2,
-    title: 'Lasagne med soltorkade tomater',
+    title: 'Lasagne med soltorkade tomater och egentillverkad getost med franska inslag',
     member: 'Lisa',
     mealType: 'Weeknight dinner',
     cuisine: 'Italian',
