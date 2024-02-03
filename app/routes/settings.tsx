@@ -12,33 +12,30 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export default function Settings() {
   return (
     <div className="mx-auto w-full max-w-7xl p-6 sm:p-12">
-      <header className="flex w-full items-center justify-between font-medium">
-        <div className="text-gray-500">Familjen Wallström</div>
-        <Form action="/api/logout" method="post">
-          <button
-            type="submit"
-            className="font-medium decoration-wavy underline-offset-4 hover:underline"
-          >
-            Logout
-          </button>
-        </Form>
+      <header>
+        <div className="font-medium text-gray-500">Familjen Wallström</div>
       </header>
 
-      <div className="mt-6 flex items-center justify-between border-t py-12 sm:mt-12">
-        <h1 className="text-balance text-3xl font-bold sm:text-4xl md:text-5xl">88 recipes</h1>
-        <div>
-          <Link to="/recipes" className="font-medium">
-            View recipes
-          </Link>
+      <div className="mt-6 grid divide-y border-t sm:mt-12">
+        <div className="py-6 sm:py-12">
+          <h2 className="text-3xl font-bold sm:text-4xl md:text-5xl">Family account</h2>
+          <div className="mt-4">
+            <span className="text-gray-500">You belong to the family account</span> Familjen
+            Wallström.{' '}
+            <span className="text-gray-500">Your family shares 88 recipes together.</span>{' '}
+            <Link to="/recipes">View recipes →</Link>
+          </div>
         </div>
-      </div>
-
-      <div className="flex items-center justify-between border-y py-12">
-        <h1 className="text-balance text-3xl font-bold sm:text-4xl md:text-5xl">2 members</h1>
-        <div>
-          <Link to="/recipes" className="font-medium">
-            View members
-          </Link>
+        <div className="py-6 sm:py-12">
+          <h2 className="text-3xl font-bold sm:text-4xl md:text-5xl">User details</h2>
+          <Form className="mt-4" action="/api/logout" method="post">
+            <span>
+              <span className="text-gray-500">Logged in as</span> Simon Wallström.{' '}
+            </span>
+            <button type="submit" className="underline-offset-4 hover:underline">
+              Logout
+            </button>
+          </Form>
         </div>
       </div>
     </div>
