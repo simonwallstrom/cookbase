@@ -16,9 +16,4 @@
   ::after {
     @apply dark:border-gray-800;
   }
-
-  a,
-  button {
-    @apply outline-none focus-visible:outline-yellow-400;
-  }
 }

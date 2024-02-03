@@ -1,4 +1,6 @@
 import { Link } from '@remix-run/react'
+import { Input } from '~/components/input'
+import { Select } from '~/components/select'
 
 export default function Recipes() {
   return (
@@ -16,33 +18,17 @@ export default function Recipes() {
 
       {/* Search and filter */}
       <div className="mt-6 flex w-full flex-wrap items-center justify-between gap-x-12 gap-y-4 sm:mt-12">
-        <input
-          placeholder="Search recipes..."
-          type="text"
-          className="flex-grow border border-gray-950 px-3 py-1.5 outline-none outline-offset-0 focus-visible:border-yellow-500 focus-visible:outline-1 focus-visible:outline-yellow-500 dark:border-gray-700 dark:bg-gray-950"
-        />
+        <Input placeholder="Search recipes..." className="flex-grow" />
         <div className="flex flex-grow flex-wrap justify-between gap-4">
-          <select
-            name="mealType"
-            id="mealType"
-            className="flex-1 appearance-none border border-gray-950 py-1.5 pl-3 pr-10 outline-none outline-offset-0 focus-visible:border-yellow-500 focus-visible:outline-1 focus-visible:outline-yellow-500 dark:border-gray-700 dark:bg-gray-950"
-          >
+          <Select className="flex-1">
             <option value="1">Filter by meal type</option>
-          </select>
-          <select
-            name="mealType"
-            id="mealType"
-            className="flex-1 appearance-none border border-gray-950 py-1.5 pl-3 pr-10 outline-none outline-offset-0 focus-visible:border-yellow-500 focus-visible:outline-1 focus-visible:outline-yellow-500 dark:border-gray-700 dark:bg-gray-950"
-          >
+          </Select>
+          <Select className="flex-1">
             <option value="1">Filter by cuisine</option>
-          </select>
-          <select
-            name="mealType"
-            id="mealType"
-            className="flex-1 appearance-none border border-gray-950 py-1.5 pl-3 pr-10 outline-none outline-offset-0 focus-visible:border-yellow-500 focus-visible:outline-1 focus-visible:outline-yellow-500 dark:border-gray-700 dark:bg-gray-950"
-          >
+          </Select>
+          <Select className="flex-1">
             <option value="1">Filter by member</option>
-          </select>
+          </Select>
         </div>
       </div>
 
