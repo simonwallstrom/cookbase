@@ -4,7 +4,6 @@ import { z } from 'zod'
 import { Button } from '~/components/button'
 import { Input } from '~/components/input'
 import { Label } from '~/components/label'
-import { Link } from '~/components/link'
 import { createUserSession, getUserId } from '~/lib/auth.server'
 import { verifyLogin } from '~/models/user.server'
 
@@ -57,30 +56,35 @@ export default function Login() {
         <h1 className="text-5xl font-bold tracking-tighter">Login</h1>
         <p className="mt-2 font-medium text-gray-500">Login to continue cooking</p>
 
-        <Form method="post" className="mt-8 flex flex-col gap-3">
-          <div className="grid gap-1">
-            <Label htmlFor="email">Email address</Label>
-            <Input type="email" required name="email" id="email" />
+        <Form method="post" className="mt-8 flex flex-col gap-5">
+          <div className="grid">
+            <Label className="sr-only" htmlFor="email">
+              Email address
+            </Label>
+            <Input type="email" placeholder="Email address..." required name="email" id="email" />
             {actionData?.errors?.fieldErrors.email ? (
               <div className="text-red text-sm">{actionData?.errors?.fieldErrors.email}</div>
             ) : null}
           </div>
-          <div className="grid gap-1">
-            <Label htmlFor="password">Password</Label>
-            <Input name="password" required id="password" type="password" />
+          <div className="grid">
+            <Label className="sr-only" htmlFor="password">
+              Password
+            </Label>
+            <Input
+              name="password"
+              placeholder="Password..."
+              required
+              id="password"
+              type="password"
+            />
             {actionData?.errors?.fieldErrors.password ? (
               <div className="text-red text-sm">{actionData?.errors?.fieldErrors.password}</div>
             ) : null}
           </div>
-          <div className="mt-3">
+          <div>
             <Button className="w-full">Login →</Button>
           </div>
         </Form>
-        <div className="mt-8">
-          <Link className="underline-offset-4 hover:underline" to="/">
-            ← Back to startpage
-          </Link>
-        </div>
       </div>
     </div>
   )

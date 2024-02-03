@@ -4,7 +4,12 @@ import { type ComponentProps } from 'react'
 import { cva, cx } from '~/lib/cva.config'
 
 const linkVariants = cva({
-  base: ['inline-flex touch-none select-none outline-none focus-visible:bg-yellow-300'],
+  base: [
+    'inline-flex touch-none select-none underline-offset-4 outline-none',
+    'hover:underline',
+    'active:scale-[.98]',
+    'focus-visible:bg-yellow-300 dark:focus-visible:text-gray-950',
+  ],
 })
 
 type linkProps = VariantProps<typeof linkVariants> & ComponentProps<typeof RemixLink>

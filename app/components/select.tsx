@@ -6,7 +6,7 @@ const selectVariants = cva({
   base: [
     'w-full appearance-none border border-gray-300 bg-no-repeat [background-position:right_0.4rem_center] [background-size:16px_16px] focus:outline-none dark:border-gray-700 dark:bg-gray-950',
     'placeholder:text-gray-500',
-    'focus-visible:border-gray-950 dark:focus-visible:border-gray-500',
+    'focus-visible:border-gray-950 dark:focus-visible:border-gray-100',
   ],
   variants: {
     size: {

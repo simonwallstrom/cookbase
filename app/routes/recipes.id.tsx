@@ -1,4 +1,4 @@
-import { Link } from '@remix-run/react'
+import { Link } from '~/components/link'
 import { DividerHeading } from '~/components/divider-heading'
 
 export default function Recipes() {
@@ -6,9 +6,7 @@ export default function Recipes() {
     <div className="mx-auto mb-64 w-full max-w-7xl p-6 sm:p-12">
       <header className="flex w-full items-center justify-between gap-6 font-medium">
         <div className="flex min-w-0 items-center gap-2">
-          <Link to="/recipes" className="underline-offset-4 hover:underline">
-            Recipes
-          </Link>
+          <Link to="/recipes">Recipes</Link>
           <span>/</span>
           <span className="truncate text-gray-500">Lax med potatis och romsås</span>
         </div>
@@ -25,21 +23,15 @@ export default function Recipes() {
         <div className="mt-4 flex flex-col gap-x-8 gap-y-2 sm:mt-7 sm:flex-row">
           <div className="flex gap-2">
             <div className="text-gray-500 max-sm:w-24">Meal type</div>
-            <Link to="/recipes" className="font-medium underline-offset-4 hover:underline">
-              {recipe.mealType}
-            </Link>
+            <Link to="/recipes">{recipe.mealType}</Link>
           </div>
           <div className="flex gap-2">
             <div className="text-gray-500 max-sm:w-24">Cuisine</div>
-            <Link to="/recipes" className="font-medium underline-offset-4 hover:underline">
-              {recipe.cuisine}
-            </Link>
+            <Link to="/recipes">{recipe.cuisine}</Link>
           </div>
           <div className="flex gap-2">
             <div className="text-gray-500 max-sm:w-24">Member</div>
-            <Link to="/recipes" className="font-medium underline-offset-4 hover:underline">
-              {recipe.member}
-            </Link>
+            <Link to="/recipes">{recipe.member}</Link>
           </div>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import type { LoaderFunctionArgs } from '@remix-run/node'
-import { Link, redirect } from '@remix-run/react'
+import { redirect } from '@remix-run/react'
+import { Link } from '~/components/link'
 import { Input } from '~/components/input'
 import { Select } from '~/components/select'
 import { requireAuth } from '~/lib/auth.server'
@@ -15,13 +16,11 @@ export default function Recipes() {
     <div className="mx-auto w-full max-w-7xl p-6 sm:p-12">
       <header className="flex w-full items-center justify-between font-medium">
         <div className="flex items-center gap-2">
-          <Link to="/settings" className="underline-offset-4 hover:underline">
-            Familjen Wallström
-          </Link>
+          <Link to="/settings">Familjen Wallström</Link>
           <span>/</span>
           <span className="text-gray-500">Recipes</span>
         </div>
-        <button className="underline-offset-4 hover:underline">+ New recipe</button>
+        <Link to="/recipes">New recipe</Link>
       </header>
 
       {/* Search and filter */}
