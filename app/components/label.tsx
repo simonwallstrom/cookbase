@@ -2,7 +2,7 @@ import type { VariantProps } from 'cva'
 import { cva, cx } from '~/lib/cva.config'
 
 const labelVariants = cva({
-  base: ['inline-flex select-none pb-2 font-medium'],
+  base: ['inline-flex select-none font-[450]'],
 })
 
 type labelProps = React.LabelHTMLAttributes<HTMLLabelElement> &

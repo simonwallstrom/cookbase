@@ -15,7 +15,7 @@ export default function Index() {
       <h1 className="text-5xl font-bold tracking-tighter">Cookbase</h1>
       <p className="mt-2 font-medium text-gray-500">Recipe organizer for families</p>
       <div className="absolute bottom-4 lg:bottom-8">
-        <Link to="/recipes" className="px-8 py-2 font-medium underline-offset-4 hover:underline">
+        <Link to="/login" className="px-8 py-2 font-medium underline-offset-4 hover:underline">
           Login →
         </Link>
       </div>

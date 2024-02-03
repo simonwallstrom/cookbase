@@ -1,13 +1,21 @@
-import { Link } from '@remix-run/react'
+import type { LoaderFunctionArgs } from '@remix-run/node'
+import { Link, redirect } from '@remix-run/react'
 import { Input } from '~/components/input'
 import { Select } from '~/components/select'
+import { requireAuth } from '~/lib/auth.server'
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  const userId = await requireAuth(request)
+  if (!userId) return redirect('/login')
+  return null
+}
 
 export default function Recipes() {
   return (
     <div className="mx-auto w-full max-w-7xl p-6 sm:p-12">
       <header className="flex w-full items-center justify-between font-medium">
         <div className="flex items-center gap-2">
-          <Link to="/recipes" className="underline-offset-4 hover:underline">
+          <Link to="/settings" className="underline-offset-4 hover:underline">
             Familjen Wallström
           </Link>
           <span>/</span>
