@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Geist', ...fontFamily.sans],
+        sans: [['Geist', ...fontFamily.sans], { fontFeatureSettings: '"tnum"' }],
       },
       colors: {
         gray: {

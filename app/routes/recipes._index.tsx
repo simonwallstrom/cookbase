@@ -160,7 +160,7 @@ export default function Recipes() {
                       <Link
                         prefetch="intent"
                         title={recipe.title}
-                        to={`/recipes/id`}
+                        to={`/recipes/${recipe.id}`}
                         className="min-w-0 font-medium max-lg:block"
                       >
                         <span className="lg:line-clamp-1">{recipe.title}</span>
