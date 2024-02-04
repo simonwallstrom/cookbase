@@ -4,7 +4,7 @@ import { cva, cx } from '../lib/cva.config'
 
 const selectVariants = cva({
   base: [
-    'appearance-none border border-gray-300 bg-no-repeat [background-position:right_0.4rem_center] [background-size:16px_16px] focus:outline-none dark:border-gray-700 dark:bg-gray-950',
+    'appearance-none border border-gray-300 bg-white bg-no-repeat [background-position:right_0.4rem_center] [background-size:16px_16px] focus:outline-none dark:border-gray-700 dark:bg-gray-950',
     'placeholder:text-gray-500',
     'focus-visible:border-gray-950 dark:focus-visible:border-gray-100',
   ],

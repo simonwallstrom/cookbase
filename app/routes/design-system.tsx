@@ -10,13 +10,13 @@ export default function Index() {
   return (
     <div className="relative mx-auto mt-20 w-full max-w-3xl p-6 lg:mt-32">
       <Link
-        className="absolute -left-10 top-[60px] origin-center -rotate-90 text-sm font-medium uppercase tracking-wide underline-offset-4 hover:underline"
+        className="absolute -left-8 top-[55px] origin-center -rotate-90 text-xs font-medium uppercase tracking-wide underline-offset-4 hover:underline"
         to="/"
       >
         Cookbase
       </Link>
       <h1 className="text-5xl font-bold tracking-tighter">Design system</h1>
-      <p className="mt-4 text-pretty text-lg text-gray-500">
+      <p className="mt-1 text-pretty text-lg text-gray-500">
         The source of truth for colors, typography and UI components.
       </p>
       <div className="my-24 grid gap-24">
@@ -202,29 +202,23 @@ export default function Index() {
         <div>
           <DividerHeading as={'h2'}>Text fields</DividerHeading>
           <div className="mt-12 space-y-12">
-            <div className="grid gap-8">
-              <div>
-                <Label htmlFor="title">Title</Label>
-                <Input id="title" placeholder="Smash burger..." />
-              </div>
+            <div className="grid gap-1">
+              <Label htmlFor="title">Title</Label>
+              <Input id="title" placeholder="Smash burger..." />
             </div>
 
-            <div className="grid gap-8">
-              <div>
-                <Label htmlFor="description">Description</Label>
-                <Textarea id="description" rows={4} placeholder="Smash burger..." />
-              </div>
+            <div className="grid gap-1">
+              <Label htmlFor="description">Description</Label>
+              <Textarea id="description" rows={4} placeholder="Smash burger..." />
             </div>
 
-            <div className="grid gap-8">
-              <div>
-                <Label htmlFor="mealType">Meal type</Label>
-                <Select id="mealType">
-                  <option value="1">Option 1</option>
-                  <option value="2">Option 2</option>
-                  <option value="3">Option 3</option>
-                </Select>
-              </div>
+            <div className="grid gap-1">
+              <Label htmlFor="mealType">Meal type</Label>
+              <Select id="mealType">
+                <option value="1">Option 1</option>
+                <option value="2">Option 2</option>
+                <option value="3">Option 3</option>
+              </Select>
             </div>
           </div>
         </div>
