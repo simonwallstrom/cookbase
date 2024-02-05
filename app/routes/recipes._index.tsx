@@ -62,7 +62,7 @@ export default function Recipes() {
           <span>/</span>
           <span className="text-gray-500">Recipes</span>
         </div>
-        <Link to="/recipes">+ New</Link>
+        <Link to="/recipes/new">+ New</Link>
       </header>
 
       {/* Search and filter */}

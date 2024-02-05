@@ -34,4 +34,4 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, inputProps>(
   },
 )
 
-Textarea.displayName = 'Input'
+Textarea.displayName = 'Textarea'
