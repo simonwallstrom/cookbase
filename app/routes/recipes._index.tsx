@@ -11,6 +11,7 @@ import { getCuisines } from '~/models/cuisine.server'
 import { getMealTypes } from '~/models/meal-type.server'
 import { getMembersById } from '~/models/organization.server'
 import { getRecipeCount, getRecipes } from '~/models/recipe.server'
+import { getUserById } from '~/models/user.server'
 
 const schema = z.object({
   mealType: z.string().optional(),
@@ -25,7 +26,8 @@ const schema = z.object({
 export type filterSchema = z.infer<typeof schema>
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const { orgId } = await requireAuth(request)
+  const { orgId, userId } = await requireAuth(request)
+  const user = await getUserById(userId)
 
   const url = new URL(request.url)
   const searchParams = Object.fromEntries(url.searchParams)
@@ -37,7 +39,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const cuisines = await getCuisines(orgId)
   const members = await getMembersById(orgId)
 
-  return json({ recipes, totalCount, filteredCount, mealTypes, cuisines, members })
+  return json({ user, recipes, totalCount, filteredCount, mealTypes, cuisines, members })
 }
 
 export default function Recipes() {
@@ -58,7 +60,7 @@ export default function Recipes() {
       {/* Page header */}
       <header className="flex w-full items-center justify-between font-medium">
         <div className="flex items-center gap-2">
-          <Link to="/settings">Familjen Wallström</Link>
+          <Link to="/settings">{data.user?.organization.name}</Link>
           <span>/</span>
           <span className="text-gray-500">Recipes</span>
         </div>
