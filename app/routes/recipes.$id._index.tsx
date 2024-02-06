@@ -37,7 +37,9 @@ export default function RecipeId() {
           <span>/</span>
           <span className="truncate text-gray-500">Lax med potatis och romsås</span>
         </div>
-        <button className="underline-offset-4 hover:underline">Edit</button>
+        <Link to="edit" className="underline-offset-4 hover:underline">
+          Edit
+        </Link>
       </header>
 
       <div className="mt-6 border-t pt-12 sm:mt-12 sm:pt-20">

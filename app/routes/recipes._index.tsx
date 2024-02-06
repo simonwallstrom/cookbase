@@ -107,7 +107,11 @@ export default function Recipes() {
           >
             <option value="all">All members</option>
             {data.members.map((member) => (
-              <option disabled={member._count.recipes === 0} key={member.email} value={member.id}>
+              <option
+                disabled={member._count.recipes === 0}
+                key={member.id}
+                value={member.firstName}
+              >
                 {member.firstName} ({member._count.recipes})
               </option>
             ))}
@@ -185,7 +189,7 @@ export default function Recipes() {
                     <Link
                       prefetch="intent"
                       className="underline-offset-4 hover:underline"
-                      to={`?member=${recipe.userId}`}
+                      to={`?member=${recipe.user.firstName}`}
                     >
                       {recipe.user.firstName}
                     </Link>
@@ -202,7 +206,7 @@ export default function Recipes() {
         <div className="mt-8 flex flex-col items-center border border-dashed px-6 py-24 text-center">
           <div className="flex items-center justify-center text-3xl">📖</div>
           <h2 className="mt-4 text-lg">No recipes to show</h2>
-          <p className="mt-2">Add a new recipe and it will show up here</p>
+          <p className="mt-2 text-gray-500">Add a new recipe and it will show up here</p>
         </div>
       )}
       {data.recipes.length ? (

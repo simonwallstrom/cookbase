@@ -27,7 +27,7 @@ export async function getRecipeCount(organizationId: Organization['id'], filters
         name: parseFilters(filters.cuisine),
       },
       user: {
-        id: parseFilters(filters.member),
+        firstName: parseFilters(filters.member),
       },
     },
   })
@@ -49,7 +49,7 @@ export async function getRecipes(organizationId: Organization['id'], filters: fi
         name: parseFilters(filters.cuisine),
       },
       user: {
-        id: parseFilters(filters.member),
+        firstName: parseFilters(filters.member),
       },
     },
     include: {
