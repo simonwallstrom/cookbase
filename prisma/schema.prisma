@@ -47,13 +47,13 @@ model Recipe {
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
   title          String
-  servings       Int?
-  ingredients    String?
-  instructions   String?
-  mealType       MealType?    @relation(fields: [mealTypeId], references: [id])
-  mealTypeId     String?
-  cuisine        Cuisine?     @relation(fields: [cuisineId], references: [id])
-  cuisineId      String?
+  servings       Int
+  ingredients    String
+  instructions   String
+  mealType       MealType     @relation(fields: [mealTypeId], references: [id])
+  mealTypeId     String
+  cuisine        Cuisine      @relation(fields: [cuisineId], references: [id])
+  cuisineId      String
   user           User         @relation(fields: [userId], references: [id])
   userId         String
   organization   Organization @relation(fields: [organizationId], references: [id])

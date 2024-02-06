@@ -20,57 +20,25 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 const schema = z.object({
   title: z.string().min(1, 'Title is required'),
-  mealType: z
-    .string()
-    .cuid()
-    .or(z.literal('').transform(() => undefined)),
-  cuisine: z
-    .string()
-    .cuid()
-    .or(z.literal('').transform(() => undefined)),
-  servings: z.coerce
-    .number()
-    .positive()
-    .or(z.literal('').transform(() => undefined)),
-  ingredients: z.string(),
-  instructions: z.string(),
+  mealTypeId: z.string().cuid(),
+  cuisineId: z.string().cuid(),
+  servings: z.coerce.number().positive(),
+  ingredients: z.string().min(1, 'Ingredients are required'),
+  instructions: z.string().min(1, 'Instructions are required'),
 })
 
 export async function action({ request }: ActionFunctionArgs) {
   const { orgId, userId } = await requireAuth(request)
   const formData = await request.formData()
 
-  const title = formData.get('title')
-  const mealType = formData.get('mealType')
-  const cuisine = formData.get('cuisine')
-  const servings = formData.get('servings')
-  const ingredients = formData.get('ingredients')
-  const instructions = formData.get('instructions')
-
-  const result = schema.safeParse({
-    title,
-    mealType,
-    cuisine,
-    servings,
-    ingredients,
-    instructions,
-  })
+  const result = schema.safeParse(Object.fromEntries(formData))
 
   if (!result.success) {
     return json({ errors: result.error.flatten() }, { status: 400 })
   }
 
   const recipe = await prisma.recipe.create({
-    data: {
-      title: result.data.title,
-      mealTypeId: result.data.mealType,
-      cuisineId: result.data.cuisine,
-      servings: result.data.servings,
-      ingredients: result.data.ingredients,
-      instructions: result.data.instructions,
-      userId: userId,
-      organizationId: orgId,
-    },
+    data: { ...result.data, userId, organizationId: orgId },
   })
 
   return redirect(`/recipes/${recipe.id}`)
@@ -102,8 +70,8 @@ export default function Home() {
         </svg>
       </Link>
       <div className="mx-auto w-full max-w-xl">
-        <div className="grid gap-1.5">
-          <h1 className="text-2xl font-medium">New recipe</h1>
+        <div className="grid gap-2">
+          <h1 className="text-2xl font-semibold">New recipe</h1>
           <p className="text-gray-600">Fill in the form below to create a new recipe.</p>
         </div>
 
@@ -111,9 +79,12 @@ export default function Home() {
         <Form method="post" className="mt-4 md:mt-8">
           <div className="grid gap-1.5">
             <label className="font-medium" htmlFor="title">
-              Title <span className="ml-auto text-sm text-gray-500">(required)</span>
+              Title
             </label>
             <Input type="text" required name="title" id="title" />
+            {actionData?.errors?.fieldErrors.title ? (
+              <div className="text-sm text-red-600">{actionData?.errors?.fieldErrors.title}</div>
+            ) : null}
           </div>
 
           <div className="flex flex-wrap gap-x-6">
@@ -121,7 +92,7 @@ export default function Home() {
               <label className="font-medium" htmlFor="mealType">
                 Meal type
               </label>
-              <Select id="mealType" name="mealType">
+              <Select id="mealType" name="mealTypeId">
                 <option value="">Select meal type...</option>
                 {data.mealTypes.map((mealType) => (
                   <option key={mealType.id} value={mealType.id}>
@@ -129,13 +100,18 @@ export default function Home() {
                   </option>
                 ))}
               </Select>
+              {actionData?.errors?.fieldErrors.mealTypeId ? (
+                <div className="text-sm text-red-600">
+                  {actionData?.errors?.fieldErrors.mealTypeId}
+                </div>
+              ) : null}
             </div>
 
             <div className="mt-4 grid flex-grow gap-1.5 md:mt-8">
               <label className="font-medium" htmlFor="cuisine">
                 Cuisine
               </label>
-              <Select id="cuisine" name="cuisine">
+              <Select id="cuisine" name="cuisineId">
                 <option value="">Select cuisine...</option>
                 {data.cuisines.map((cuisine) => (
                   <option key={cuisine.id} value={cuisine.id}>
@@ -143,6 +119,11 @@ export default function Home() {
                   </option>
                 ))}
               </Select>
+              {actionData?.errors?.fieldErrors.cuisineId ? (
+                <div className="text-sm text-red-600">
+                  {actionData?.errors?.fieldErrors.cuisineId}
+                </div>
+              ) : null}
             </div>
           </div>
 
@@ -172,6 +153,11 @@ export default function Home() {
                 Tomato sauce:
               </span>
             </div>
+            {actionData?.errors?.fieldErrors.ingredients ? (
+              <div className="text-sm text-red-600">
+                {actionData?.errors?.fieldErrors.ingredients}
+              </div>
+            ) : null}
           </div>
 
           <div className="mt-4 grid gap-1.5 md:mt-8">
@@ -190,8 +176,13 @@ export default function Home() {
                 Tomato sauce:
               </span>
             </div>
+            {actionData?.errors?.fieldErrors.instructions ? (
+              <div className="text-sm text-red-600">
+                {actionData?.errors?.fieldErrors.instructions}
+              </div>
+            ) : null}
           </div>
-          <div className="mt-6 flex items-center gap-6 md:mt-10 md:gap-10">
+          <div className="mt-6 flex items-center gap-6 md:mt-10">
             <Button>Create recipe</Button>
             <Link to="/recipes">Cancel</Link>
           </div>

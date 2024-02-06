@@ -16,7 +16,7 @@ export default function Settings() {
         <div className="font-medium text-gray-500">Familjen Wallström</div>
       </header>
 
-      <div className="mt-6 grid divide-y border-t sm:mt-12">
+      <div className="mt-6 grid divide-y border-y sm:mt-12">
         <div className="py-6 sm:py-12">
           <h2 className="text-3xl font-bold sm:text-4xl md:text-5xl">Family account</h2>
           <div className="mt-4">
