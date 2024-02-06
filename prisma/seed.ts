@@ -59,14 +59,35 @@ async function seed() {
     },
   })
 
-  console.log('✅ Created a user with an organization')
+  console.log('✅ Created a user as OWNER with an organization')
+
+  const user2 = await prisma.user.create({
+    data: {
+      email: 'lisalinneawallstrom@gmail.com',
+      firstName: 'Lisa',
+      lastName: 'Wallström',
+      role: 'MEMBER',
+      password: {
+        create: {
+          hash: hashedPassword,
+        },
+      },
+      organization: {
+        connect: {
+          id: user.organizationId,
+        },
+      },
+    },
+  })
+
+  console.log('✅ Created another user as MEMBER')
 
   // 5. Create some recipes and assign it to the organization
   await Promise.all(
-    getRecipes().map((recipe) => {
+    getRecipes().map((recipe, index) => {
       const data = {
         organizationId: user.organizationId,
-        userId: user.id,
+        userId: index % 2 ? user.id : user2.id,
         mealTypeId: mealTypes[2]?.id, // Weeknight Dinner
         cuisineId: cuisines[10]?.id, // Italian
         ...recipe,
