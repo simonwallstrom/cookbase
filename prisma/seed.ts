@@ -3,7 +3,9 @@ import bcrypt from 'bcryptjs'
 const prisma = new PrismaClient()
 
 async function seed() {
-  // 1. Delete all existing data
+  // ----------------------------------------------------------------------------------------------
+  // Delete all existing data
+  // ----------------------------------------------------------------------------------------------
   await prisma.recipe.deleteMany()
   console.log('❌ Deleted records in recipe table')
 
@@ -19,7 +21,9 @@ async function seed() {
   await prisma.cuisine.deleteMany()
   console.log('❌ Deleted records in cuisine table')
 
-  // 2. Create all global meal types
+  // ----------------------------------------------------------------------------------------------
+  // Create all global meal types
+  // ----------------------------------------------------------------------------------------------
   const mealTypes = await Promise.all(
     getMealTypes().map((mealType) => {
       return prisma.mealType.create({ data: { name: mealType.name, order: mealType.order } })
@@ -28,7 +32,9 @@ async function seed() {
 
   console.log('✅ Created all global meal types')
 
-  // 3. Create all global cuisines
+  // ----------------------------------------------------------------------------------------------
+  // Create all global cuisines
+  // ----------------------------------------------------------------------------------------------
   const cuisines = await Promise.all(
     getCuisines().map((cuisine) => {
       return prisma.cuisine.create({ data: { name: cuisine } })
@@ -37,12 +43,39 @@ async function seed() {
 
   console.log('✅ Created all global cuisines')
 
-  // 4. Create a user with a password and an organization
+  // ----------------------------------------------------------------------------------------------
+  // Create org 1
+  // ----------------------------------------------------------------------------------------------
+  const org1 = await prisma.organization.create({
+    data: {
+      name: 'Familjen Wallström',
+    },
+  })
+
+  console.log('✅ Created org 1')
+
+  // ----------------------------------------------------------------------------------------------
+  // Create org 2
+  // ----------------------------------------------------------------------------------------------
+  const org2 = await prisma.organization.create({
+    data: {
+      name: 'The Doe Family',
+    },
+  })
+
+  console.log('✅ Created org 2')
+
+  // ----------------------------------------------------------------------------------------------
+  // Prepare hashed password
+  // ----------------------------------------------------------------------------------------------
   const hashedPassword = await bcrypt.hash('qwerty', 10)
 
-  const user = await prisma.user.create({
+  // ----------------------------------------------------------------------------------------------
+  // Create OWNER for org 1
+  // ----------------------------------------------------------------------------------------------
+  await prisma.user.create({
     data: {
-      email: 'simon.wallstrom@gmail.com',
+      email: 'simon@wallstrom.com',
       firstName: 'Simon',
       lastName: 'Wallström',
       role: 'OWNER',
@@ -52,18 +85,29 @@ async function seed() {
         },
       },
       organization: {
+        connect: {
+          id: org1.id,
+        },
+      },
+      recipes: {
         create: {
-          name: 'Familjen Wallström',
+          ...recipes[0], // Lasagna
+          organizationId: org1.id,
+          mealTypeId: mealTypes[2]?.id, // Weeknight Dinner
+          cuisineId: cuisines[10]?.id, // Italian
         },
       },
     },
   })
 
-  console.log('✅ Created a user as OWNER with an organization')
+  console.log('✅ Created OWNER for org 1')
 
-  const user2 = await prisma.user.create({
+  // ----------------------------------------------------------------------------------------------
+  // Create MEMBER for org 1
+  // ----------------------------------------------------------------------------------------------
+  await prisma.user.create({
     data: {
-      email: 'lisalinneawallstrom@gmail.com',
+      email: 'lisa@wallstrom.com',
       firstName: 'Lisa',
       lastName: 'Wallström',
       role: 'MEMBER',
@@ -74,29 +118,53 @@ async function seed() {
       },
       organization: {
         connect: {
-          id: user.organizationId,
+          id: org1.id,
+        },
+      },
+      recipes: {
+        create: {
+          ...recipes[1], // Smash burger
+          organizationId: org1.id,
+          mealTypeId: mealTypes[4]?.id, // Main course
+          cuisineId: cuisines[1]?.id, // American
         },
       },
     },
   })
 
-  console.log('✅ Created another user as MEMBER')
+  console.log('✅ Created MEMBER for org 1')
 
-  // 5. Create some recipes and assign it to the organization
-  await Promise.all(
-    getRecipes().map((recipe, index) => {
-      const data = {
-        organizationId: user.organizationId,
-        userId: index % 2 ? user.id : user2.id,
-        mealTypeId: mealTypes[2]?.id, // Weeknight Dinner
-        cuisineId: cuisines[10]?.id, // Italian
-        ...recipe,
-      }
-      return prisma.recipe.create({ data })
-    }),
-  )
+  // ----------------------------------------------------------------------------------------------
+  // Create OWNER for org 2
+  // ----------------------------------------------------------------------------------------------
+  await prisma.user.create({
+    data: {
+      email: 'john@doe.com',
+      firstName: 'John',
+      lastName: 'Doe',
+      role: 'OWNER',
+      password: {
+        create: {
+          hash: hashedPassword,
+        },
+      },
+      organization: {
+        connect: {
+          id: org2.id,
+        },
+      },
+      recipes: {
+        create: {
+          ...recipes[2], // Tuna
+          organizationId: org2.id,
+          mealTypeId: mealTypes[2]?.id, // Weeknight dinner
+          cuisineId: cuisines[15]?.id, // Nordic
+        },
+      },
+    },
+  })
 
-  console.log('✅ Created recipes')
+  console.log('✅ Created OWNER for org 2')
 }
 
 seed()
@@ -142,23 +210,29 @@ function getCuisines() {
   ]
 }
 
-function getRecipes() {
-  return [
-    {
-      title: 'Lasagne med soltorkade tomater',
-      servings: 4,
-      ingredients:
-        'Bechamelsås:\nSalt\nPeppar\n3 dl crème fraîche\n2 dl grädde\n2 klyftor vitlök\n100 g grottlagrad 24 månader parmesanost\n\nKöttfärssåsen:\n600 g nötfärs\n1 gul lök (stor)\n0,5 purjolök\n1 zucchini\n1 dl rött vin\n500 g krossade tomater\n2 tsk dragon\n\nGarnering:\nPersilja',
-      instructions:
-        'Bechamelsås:\nSmält smöret i en kastrull. Vispa ner mjölet.\nTillsätt mjölken lite i taget, koka upp och låt koka under fortsatt vispning 3-5 min. Smaka av med salt och peppar.\n\nKöttfärssåsen:\nBryn färsen i en kastrull. Skala och skär lök och purjolök.\nSkär zucchinin i små bitar och stek den tillsammans med löken och solroskärnor.\nBlanda färsen med lökblandningen, rött vin, krossade tomater och alla kryddor till en smakrik köttfärssås. Låt sjuda i ca 10 minuter.\nVarva köttfärssås, gräddblandningen och lasagneplattor i en form. Avsluta med ett fint lager riven Grana Padano på toppen.\nTillaga lasagnen i ugnen på 225 grader i cirka 20-30 minuter, tills den har fått fin färg.',
-    },
-    {
-      title: 'Smash burger med karamelliserad lök',
-      servings: 4,
-      ingredients:
-        'Bechamelsås:\nSalt\nPeppar\n3 dl crème fraîche\n2 dl grädde\n2 klyftor vitlök\n100 g grottlagrad 24 månader parmesanost\n\nKöttfärssåsen:\n600 g nötfärs\n1 gul lök (stor)\n0,5 purjolök\n1 zucchini\n1 dl rött vin\n500 g krossade tomater\n2 tsk dragon\n\nGarnering:\nPersilja',
-      instructions:
-        'Bechamelsås:\nSmält smöret i en kastrull. Vispa ner mjölet.\nTillsätt mjölken lite i taget, koka upp och låt koka under fortsatt vispning 3-5 min. Smaka av med salt och peppar.\n\nKöttfärssåsen:\nBryn färsen i en kastrull. Skala och skär lök och purjolök.\nSkär zucchinin i små bitar och stek den tillsammans med löken och solroskärnor.\nBlanda färsen med lökblandningen, rött vin, krossade tomater och alla kryddor till en smakrik köttfärssås. Låt sjuda i ca 10 minuter.\nVarva köttfärssås, gräddblandningen och lasagneplattor i en form. Avsluta med ett fint lager riven Grana Padano på toppen.\nTillaga lasagnen i ugnen på 225 grader i cirka 20-30 minuter, tills den har fått fin färg.',
-    },
-  ]
-}
+const recipes = [
+  {
+    title: 'Lasagne med soltorkade tomater',
+    servings: 4,
+    ingredients:
+      'Bechamelsås:\nSalt\nPeppar\n3 dl crème fraîche\n2 dl grädde\n2 klyftor vitlök\n100 g grottlagrad 24 månader parmesanost\n\nKöttfärssåsen:\n600 g nötfärs\n1 gul lök (stor)\n0,5 purjolök\n1 zucchini\n1 dl rött vin\n500 g krossade tomater\n2 tsk dragon\n\nGarnering:\nPersilja',
+    instructions:
+      'Bechamelsås:\nSmält smöret i en kastrull. Vispa ner mjölet.\nTillsätt mjölken lite i taget, koka upp och låt koka under fortsatt vispning 3-5 min. Smaka av med salt och peppar.\n\nKöttfärssåsen:\nBryn färsen i en kastrull. Skala och skär lök och purjolök.\nSkär zucchinin i små bitar och stek den tillsammans med löken och solroskärnor.\nBlanda färsen med lökblandningen, rött vin, krossade tomater och alla kryddor till en smakrik köttfärssås. Låt sjuda i ca 10 minuter.\nVarva köttfärssås, gräddblandningen och lasagneplattor i en form. Avsluta med ett fint lager riven Grana Padano på toppen.\nTillaga lasagnen i ugnen på 225 grader i cirka 20-30 minuter, tills den har fått fin färg.',
+  },
+  {
+    title: 'Smash burger med karamelliserad lök',
+    servings: 4,
+    ingredients:
+      'Bechamelsås:\nSalt\nPeppar\n3 dl crème fraîche\n2 dl grädde\n2 klyftor vitlök\n100 g grottlagrad 24 månader parmesanost\n\nKöttfärssåsen:\n600 g nötfärs\n1 gul lök (stor)\n0,5 purjolök\n1 zucchini\n1 dl rött vin\n500 g krossade tomater\n2 tsk dragon\n\nGarnering:\nPersilja',
+    instructions:
+      'Bechamelsås:\nSmält smöret i en kastrull. Vispa ner mjölet.\nTillsätt mjölken lite i taget, koka upp och låt koka under fortsatt vispning 3-5 min. Smaka av med salt och peppar.\n\nKöttfärssåsen:\nBryn färsen i en kastrull. Skala och skär lök och purjolök.\nSkär zucchinin i små bitar och stek den tillsammans med löken och solroskärnor.\nBlanda färsen med lökblandningen, rött vin, krossade tomater och alla kryddor till en smakrik köttfärssås. Låt sjuda i ca 10 minuter.\nVarva köttfärssås, gräddblandningen och lasagneplattor i en form. Avsluta med ett fint lager riven Grana Padano på toppen.\nTillaga lasagnen i ugnen på 225 grader i cirka 20-30 minuter, tills den har fått fin färg.',
+  },
+  {
+    title: 'Tonfisk i currysås med ris',
+    servings: 4,
+    ingredients:
+      '2 burkar tonfisk i vatten\n1 gullök\n2 vitlöksklyftor\n1 röd paprika\n2 tsk curry\n1 tsk gurkmeja\n1 msk kycklingfond\n5 dl crème fraiche',
+    instructions:
+      'Låt tonfisken rinna av.\nHacka lök och vitlök och fräs dem tills löken mjuknar.\nHacka paprikan och blanda i stekpannan tillsammans med löken.\nTillsätt curry och gurkmeja och fräs allting i 2-3 min.\nHäll i grädde, crème fraîche, kycklingfond och koka upp allting. Låt sjuda långsamt i ca 10-15 min. Smaka av och krydda eventuellt mer.\nVänd i tonfisken försiktigt utan att smula till den för mycket.\nStäng av värmen och servera med ris.',
+  },
+]
