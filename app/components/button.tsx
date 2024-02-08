@@ -1,43 +1,26 @@
-import { Link as RemixLink } from '@remix-run/react'
 import type { VariantProps } from 'cva'
-import React, { type ComponentProps } from 'react'
+import React from 'react'
 import { cva, cx } from '~/lib/cva.config'
 
 const buttonVariants = cva({
   base: [
-    'inline-flex touch-none select-none items-center justify-center gap-2 border border-gray-950 font-[450] outline-none dark:border-white',
-    'active:scale-[.98]',
-    'disabled:cursor-not-allowed disabled:opacity-50',
+    'inline-flex touch-none select-none underline decoration-gray-300 underline-offset-4 outline-none dark:decoration-gray-600',
+    'hover:text-gray-950 hover:decoration-gray-950 dark:hover:text-gray-300 dark:hover:decoration-gray-300',
+    'active:bg-gray-500/20 active:text-gray-950 active:decoration-gray-950 dark:active:text-gray-300 dark:active:decoration-gray-300',
+    'focus-visible:bg-yellow-300 focus-visible:no-underline dark:focus-visible:text-gray-950',
   ],
-  variants: {
-    intent: {
-      default: [
-        'bg-gray-700 text-white dark:bg-gray-300 dark:text-gray-950',
-        'dark:hover:bg-gray-100',
-        'outline-1 focus-visible:outline-gray-100',
-      ],
-      destructive: ['bg-red-600 text-white'],
-    },
-    size: {
-      default: 'px-4 py-1.5',
-    },
-  },
-  defaultVariants: {
-    intent: 'default',
-    size: 'default',
-  },
 })
 
 type buttonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
   VariantProps<typeof buttonVariants>
 
 export const Button = React.forwardRef<HTMLButtonElement, buttonProps>(
-  ({ className, intent, size, ...props }, ref) => {
+  ({ className, ...props }, ref) => {
     return (
       <button
         ref={ref}
         draggable="false"
-        className={cx(buttonVariants({ intent, size, className }))}
+        className={cx(buttonVariants({ className }))}
         {...props}
       />
     )
@@ -45,15 +28,3 @@ export const Button = React.forwardRef<HTMLButtonElement, buttonProps>(
 )
 
 Button.displayName = 'Button'
-
-type buttonLinkProps = VariantProps<typeof buttonVariants> & ComponentProps<typeof RemixLink>
-
-export function ButtonLink({ className, intent, size, ...props }: buttonLinkProps) {
-  return (
-    <RemixLink
-      draggable="false"
-      className={cx(buttonVariants({ intent, size, className }))}
-      {...props}
-    />
-  )
-}

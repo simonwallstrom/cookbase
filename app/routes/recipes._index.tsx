@@ -60,11 +60,11 @@ export default function Recipes() {
       {/* Page header */}
       <header className="flex w-full items-center justify-between font-medium">
         <div className="flex items-center gap-2">
-          <Link to="/settings">{data.user?.organization.name}</Link>
+          <Link to="/account">{data.user?.organization.name}</Link>
           <span>/</span>
           <span className="text-gray-500">Recipes</span>
         </div>
-        <Link to="/recipes/new">+ New</Link>
+        <Link to="/recipes/new">New</Link>
       </header>
 
       {/* Search and filter */}

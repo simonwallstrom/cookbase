@@ -1,4 +1,4 @@
-import type { Organization, User } from '@prisma/client'
+import type { Organization } from '@prisma/client'
 import { prisma } from '~/lib/prisma.server'
 
 export async function getOrganizationById(id: Organization['id']) {
@@ -7,7 +7,7 @@ export async function getOrganizationById(id: Organization['id']) {
   })
 }
 
-export async function getMembersById(id: User['organizationId']) {
+export async function getMembersById(id: Organization['id']) {
   return await prisma.user.findMany({
     where: { organizationId: id },
     select: {
@@ -19,7 +19,7 @@ export async function getMembersById(id: User['organizationId']) {
     },
     orderBy: [
       {
-        firstName: 'asc',
+        role: 'asc',
       },
     ],
   })

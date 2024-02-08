@@ -52,9 +52,9 @@ export default function Login() {
 
   return (
     <div className="flex flex-1 flex-col items-center justify-center">
-      <div className="mx-auto w-full max-w-xs text-center">
+      <div className="mx-auto w-full max-w-xs">
         <h1 className="text-5xl font-bold tracking-tighter">Login</h1>
-        <p className="mt-2 font-medium text-gray-500">Login to continue cooking</p>
+        <p className="mt-2 font-medium text-gray-500">Welcome back to Cookbase</p>
 
         <Form method="post" className="mt-8 flex flex-col gap-5">
           <div className="grid">
@@ -81,8 +81,8 @@ export default function Login() {
               <div className="text-red text-sm">{actionData?.errors?.fieldErrors.password}</div>
             ) : null}
           </div>
-          <div>
-            <Button className="w-full">Login →</Button>
+          <div className="mt-2">
+            <Button>Login to continue</Button>
           </div>
         </Form>
       </div>

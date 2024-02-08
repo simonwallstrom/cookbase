@@ -1,16 +1,14 @@
-import { json, useLoaderData } from '@remix-run/react'
+import { redirect, type LoaderFunctionArgs } from '@remix-run/node'
 import { Link } from '~/components/link'
-import { prisma } from '~/lib/prisma.server'
+import { getUserId } from '~/lib/auth.server'
 
-export async function loader() {
-  const recipes = await prisma.recipe.findMany()
-  return json(recipes)
+export async function loader({ request }: LoaderFunctionArgs) {
+  const userId = await getUserId(request)
+  if (userId) return redirect('/recipes')
+  return null
 }
 
 export default function Index() {
-  const data = useLoaderData<typeof loader>()
-  console.log(data)
-
   return (
     <div className="flex flex-1 flex-col items-center justify-center">
       <h1 className="text-5xl font-bold tracking-tighter">Cookbase</h1>

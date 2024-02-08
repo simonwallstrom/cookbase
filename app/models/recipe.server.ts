@@ -10,7 +10,8 @@ function parseFilters(input: string | undefined) {
   return input
 }
 
-export async function getRecipeCount(organizationId: Organization['id'], filters: filterSchema) {
+export async function getRecipeCount(organizationId: Organization['id'], filters?: filterSchema) {
+  console.log(organizationId)
   const totalCount = await prisma.recipe.count({
     where: {
       organizationId,
@@ -21,13 +22,13 @@ export async function getRecipeCount(organizationId: Organization['id'], filters
     where: {
       organizationId,
       mealType: {
-        name: parseFilters(filters.mealType),
+        name: parseFilters(filters?.mealType),
       },
       cuisine: {
-        name: parseFilters(filters.cuisine),
+        name: parseFilters(filters?.cuisine),
       },
       user: {
-        firstName: parseFilters(filters.member),
+        firstName: parseFilters(filters?.member),
       },
     },
   })
