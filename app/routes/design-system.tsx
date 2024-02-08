@@ -1,4 +1,4 @@
-import { Button, ButtonLink } from '~/components/button'
+import { Button } from '~/components/button'
 import { DividerHeading } from '~/components/divider-heading'
 import { Input } from '~/components/input'
 import { Label } from '~/components/label'
@@ -165,22 +165,11 @@ export default function Index() {
 
             <div className="flex flex-col flex-wrap justify-between gap-4 sm:flex-row sm:items-center">
               <div>
-                <Button intent="destructive">Destructive</Button>
+                <Button className="text-red-500">Destructive</Button>
               </div>
               <div className="space-x-2 md:col-span-2 md:text-right">
                 <code className="rounded bg-gray-200 px-1 py-0.5 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">
-                  {'<Button intent="destructive">Destructive</Button>'}
-                </code>
-              </div>
-            </div>
-
-            <div className="flex flex-col flex-wrap justify-between gap-4 sm:flex-row sm:items-center">
-              <div>
-                <ButtonLink to="/">Button link</ButtonLink>
-              </div>
-              <div className="space-x-2 md:col-span-2 md:text-right">
-                <code className="rounded bg-gray-200 px-1 py-0.5 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">
-                  {'<ButtonLink to="/">Button link</ButtonLink>'}
+                  {'<Button className="text-red-500">Destructive</Button>'}
                 </code>
               </div>
             </div>
