@@ -14,7 +14,7 @@ export default function Index() {
       <h1 className="text-5xl font-bold tracking-tighter">Cookbase</h1>
       <p className="mt-2 font-medium text-gray-500">Recipe organizer for families</p>
       <div className="absolute bottom-4 lg:bottom-8">
-        <Link to="/login" className="p-2 font-medium">
+        <Link prefetch="viewport" to="/login" className="p-2 font-medium">
           Login →
         </Link>
       </div>

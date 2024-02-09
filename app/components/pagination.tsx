@@ -26,11 +26,7 @@ export function Pagination({
       <div className="flex gap-4">
         <div>
           {currentPage > 1 ? (
-            <Link
-              className="underline-offset-4 hover:underline"
-              prefetch="intent"
-              to={`${baseUrl}${currentPage - 1}`}
-            >
+            <Link prefetch="intent" to={`${baseUrl}${currentPage - 1}`}>
               ← Prev
             </Link>
           ) : (
@@ -41,11 +37,7 @@ export function Pagination({
         </div>
         <div>
           {currentPage < totalPages ? (
-            <Link
-              className="underline-offset-4 hover:underline"
-              prefetch="intent"
-              to={`${baseUrl}${currentPage + 1}`}
-            >
+            <Link prefetch="intent" to={`${baseUrl}${currentPage + 1}`}>
               Next →
             </Link>
           ) : (

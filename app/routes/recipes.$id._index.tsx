@@ -33,13 +33,13 @@ export default function RecipeId() {
       {/* Page header */}
       <header className="flex w-full items-center justify-between gap-6 font-medium">
         <div className="flex min-w-0 items-center gap-2">
-          <Link to="/recipes">Recipes</Link>
+          <Link prefetch="intent" to="/recipes">
+            Recipes
+          </Link>
           <span>/</span>
           <span className="truncate text-gray-500">Lax med potatis och romsås</span>
         </div>
-        <Link to="edit" className="underline-offset-4 hover:underline">
-          Edit
-        </Link>
+        <Link to="edit">Edit</Link>
       </header>
 
       <div className="mt-6 border-t pt-12 sm:mt-12 sm:pt-20">
@@ -54,7 +54,7 @@ export default function RecipeId() {
           {recipe.mealType?.name.length ? (
             <div className="flex gap-3">
               <span className="text-gray-500 max-md:w-24">Meal type</span>{' '}
-              <Link to={`/recipes/?mealType=${recipe.mealType?.name}`}>
+              <Link prefetch="intent" to={`/recipes/?mealType=${recipe.mealType?.name}`}>
                 {recipe.mealType?.name}
               </Link>
             </div>
@@ -62,12 +62,16 @@ export default function RecipeId() {
           {recipe.mealType?.name.length ? (
             <div className="flex gap-3">
               <span className="text-gray-500 max-md:w-24">Cuisine</span>{' '}
-              <Link to={`/recipes/?cuisine=${recipe.cuisine?.name}`}>{recipe.cuisine?.name}</Link>
+              <Link prefetch="intent" to={`/recipes/?cuisine=${recipe.cuisine?.name}`}>
+                {recipe.cuisine?.name}
+              </Link>
             </div>
           ) : null}
           <div className="flex gap-3">
             <span className="text-gray-500 max-md:w-24">Member</span>{' '}
-            <Link to={`/recipes/?member=${recipe.user.firstName}`}>{recipe.user.firstName}</Link>
+            <Link prefetch="intent" to={`/recipes/?member=${recipe.user.firstName}`}>
+              {recipe.user.firstName}
+            </Link>
           </div>
         </div>
       </div>
@@ -92,7 +96,9 @@ export default function RecipeId() {
             </ul>
           ) : (
             <div className="mt-4 border border-dashed px-4 py-12 text-center dark:border-gray-800">
-              <Link to="edit">Add ingredients →</Link>
+              <Link prefetch="intent" to="edit">
+                Add ingredients →
+              </Link>
             </div>
           )}
         </div>
@@ -106,7 +112,9 @@ export default function RecipeId() {
             </ol>
           ) : (
             <div className="mt-4 border border-dashed px-4 py-12 text-center dark:border-gray-800">
-              <Link to="edit">Add instructions →</Link>
+              <Link prefetch="intent" to="edit">
+                Add instructions →
+              </Link>
             </div>
           )}
         </div>

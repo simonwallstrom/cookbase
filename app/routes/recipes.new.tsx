@@ -53,7 +53,10 @@ export default function Home() {
       <div className="mx-auto w-full max-w-xl">
         <div className="grid gap-2">
           <h1 className="text-2xl font-semibold">New recipe</h1>
-          <p className="text-gray-600">Fill in the form below to create a new recipe.</p>
+          <p className="text-gray-600">
+            Fill in the form below to create a new recipe or{' '}
+            <Link to="/recipes">click here to cancel</Link>.
+          </p>
         </div>
 
         {/* Recipe form */}
@@ -163,7 +166,7 @@ export default function Home() {
               </div>
             ) : null}
           </div>
-          <div className="mt-6 flex items-center gap-6 md:mt-10">
+          <div className="mt-6 flex items-center gap-6 font-medium md:mt-10">
             <Button>Create recipe</Button>
             <Link to="/recipes" className="text-gray-500">
               Cancel

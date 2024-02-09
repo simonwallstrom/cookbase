@@ -8,15 +8,9 @@ import { Textarea } from '~/components/textarea'
 
 export default function Index() {
   return (
-    <div className="relative mx-auto mt-20 w-full max-w-3xl p-6 lg:mt-32">
-      <Link
-        className="absolute -left-8 top-[55px] origin-center -rotate-90 text-xs font-medium uppercase tracking-wide underline-offset-4 hover:underline"
-        to="/"
-      >
-        Cookbase
-      </Link>
+    <div className="mx-auto mt-20 w-full max-w-3xl p-6 lg:mt-32">
       <h1 className="text-5xl font-bold tracking-tighter">Design system</h1>
-      <p className="mt-1 text-pretty text-lg text-gray-500">
+      <p className="mt-3 text-pretty text-lg text-gray-500">
         The source of truth for colors, typography and UI components.
       </p>
       <div className="my-24 grid gap-24">

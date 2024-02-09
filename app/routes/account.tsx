@@ -23,7 +23,7 @@ export default function Settings() {
     <div className="mx-auto w-full max-w-7xl p-6 sm:p-12">
       <header className="flex items-center justify-between">
         <div className="font-medium text-gray-500">{data.user?.organization.name}</div>
-        <Link className="font-medium" to="/recipes">
+        <Link prefetch="intent" className="font-medium" to="/recipes">
           View recipes
         </Link>
       </header>
