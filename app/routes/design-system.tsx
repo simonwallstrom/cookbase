@@ -9,7 +9,8 @@ import { Textarea } from '~/components/textarea'
 export default function Index() {
   return (
     <div className="mx-auto mt-20 w-full max-w-3xl p-6 lg:mt-32">
-      <h1 className="text-5xl font-bold tracking-tighter">Design system</h1>
+      <Link to="/">Cookbase</Link>
+      <h1 className="mt-4 text-5xl font-bold">Design system</h1>
       <p className="mt-3 text-pretty text-lg text-gray-500">
         The source of truth for colors, typography and UI components.
       </p>
@@ -159,22 +160,35 @@ export default function Index() {
 
             <div className="flex flex-col flex-wrap justify-between gap-4 sm:flex-row sm:items-center">
               <div>
-                <Button className="text-red-500">Destructive</Button>
+                <Button variant="link">Button as link</Button>
               </div>
               <div className="space-x-2 md:col-span-2 md:text-right">
                 <code className="rounded bg-gray-200 px-1 py-0.5 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">
-                  {'<Button className="text-red-500">Destructive</Button>'}
+                  {'<Button variant="link">Button as link</Button>'}
                 </code>
               </div>
             </div>
 
             <div className="flex flex-col flex-wrap justify-between gap-4 sm:flex-row sm:items-center">
               <div>
-                <Link to="/">Link</Link>
+                <Link to="/design-system">Link</Link>
               </div>
               <div className="space-x-2 md:col-span-2 md:text-right">
                 <code className="rounded bg-gray-200 px-1 py-0.5 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">
                   {'<Link to="/">Link</Link>'}
+                </code>
+              </div>
+            </div>
+
+            <div className="flex flex-col flex-wrap justify-between gap-4 sm:flex-row sm:items-center">
+              <div>
+                <Link variant="button" to="/design-system">
+                  Link as button
+                </Link>
+              </div>
+              <div className="space-x-2 md:col-span-2 md:text-right">
+                <code className="rounded bg-gray-200 px-1 py-0.5 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+                  {'<Link variant="button" to="/">Link as button</Link>'}
                 </code>
               </div>
             </div>
