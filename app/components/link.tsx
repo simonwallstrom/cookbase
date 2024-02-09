@@ -5,7 +5,7 @@ import { cva, cx } from '~/lib/cva.config'
 
 const linkVariants = cva({
   base: [
-    'inline-flex touch-none select-none underline decoration-1 underline-offset-2 outline-none dark:decoration-gray-600',
+    'inline-flex touch-none select-none underline decoration-1 underline-offset-2 outline-none',
     'hover:decoration-2',
     'active:bg-gray-500/20 active:no-underline',
     'focus-visible:bg-yellow-300 focus-visible:no-underline dark:focus-visible:text-gray-950',
