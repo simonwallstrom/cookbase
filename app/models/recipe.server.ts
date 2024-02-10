@@ -1,7 +1,7 @@
 import type { Organization, Recipe } from '@prisma/client'
 import { PAGINATE_BY } from '~/lib/constants'
 import { prisma } from '~/lib/prisma.server'
-import type { filterSchema } from '~/routes/recipes._index'
+import type { filterSchema } from '~/routes/_app.recipes._index'
 
 function parseFilters(input: string | undefined) {
   if (input === 'all' || undefined) {

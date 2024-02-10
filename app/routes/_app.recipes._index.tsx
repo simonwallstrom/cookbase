@@ -56,17 +56,11 @@ export default function Recipes() {
   const currentPage = pageParams ? parseInt(pageParams) : 1
 
   return (
-    <div className="mx-auto w-full max-w-7xl p-6 sm:p-12">
+    <div>
       {/* Page header */}
-      <header className="flex w-full items-center justify-between font-medium">
-        <div className="flex items-center gap-2">
-          <Link prefetch="intent" to="/account">
-            {data.user?.organization.name}
-          </Link>
-          <span>/</span>
-          <span className="text-gray-500">Recipes</span>
-        </div>
-        <Link prefetch="intent" to="/recipes/new">
+      <header className="flex items-center justify-between">
+        <h1 className="text-3xl font-semibold">Recipes</h1>
+        <Link variant="button" prefetch="intent" to="/recipes/new">
           New
         </Link>
       </header>

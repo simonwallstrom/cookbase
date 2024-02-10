@@ -29,7 +29,7 @@ export default function RecipeId() {
   const instructions = recipe.instructions?.split(/\r?\n/).filter((item) => item.length)
 
   return (
-    <div className="mx-auto mb-64 w-full max-w-7xl p-6 sm:p-12">
+    <div>
       {/* Page header */}
       <header className="flex w-full items-center justify-between gap-6 font-medium">
         <div className="flex min-w-0 items-center gap-2">
@@ -39,10 +39,13 @@ export default function RecipeId() {
           <span>/</span>
           <span className="truncate text-gray-500">Lax med potatis och romsås</span>
         </div>
-        <Link to="edit">Edit</Link>
+        <Link variant="button" to="edit">
+          Edit
+        </Link>
       </header>
 
-      <div className="mt-6 border-t pt-12 sm:mt-12 sm:pt-20">
+      {/* Title and meta */}
+      <div className="mt-6 border-y py-12 sm:mt-12 sm:py-16 xl:py-24">
         <div className="text-gray-500">
           <span>Created</span>{' '}
           <span>{formatDistanceToNowStrict(new Date(recipe.createdAt))} ago</span>
@@ -76,7 +79,8 @@ export default function RecipeId() {
         </div>
       </div>
 
-      <div className="mt-12 flex flex-col items-start gap-12 border-t pt-12 sm:mt-20 md:flex-row xl:gap-24">
+      {/* Ingredients and instructions */}
+      <div className="mt-12 flex flex-col items-start gap-12 md:flex-row xl:gap-24">
         <div className="w-full md:w-64 lg:w-80">
           {/* Ingredients */}
           <div className="flex items-baseline justify-between">
