@@ -115,14 +115,13 @@ export default function Signup() {
               <div className="text-red text-sm">{actionData?.errors?.fieldErrors.password}</div>
             ) : null}
           </div>
-          <div className="mt-2">
-            <Button>Create account</Button>
-          </div>
-          <div className="mt-4 flex gap-6 text-sm text-gray-500">
-            <Link to="/login">Login</Link>
-            <Link to="/login">Return home</Link>
+          <div>
+            <Button className="w-full">Create account</Button>
           </div>
         </Form>
+        <div className="mt-8 text-sm text-gray-500">
+          <span>Don&apos;t have an account yet?</span> <Link to="/login">Create one</Link>
+        </div>
       </div>
     </div>
   )

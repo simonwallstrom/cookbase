@@ -24,16 +24,17 @@ export default function Settings() {
       <header className="flex items-center justify-between">
         <div className="font-medium text-gray-500">{data.user?.organization.name}</div>
         <Link prefetch="intent" className="font-medium" to="/recipes">
-          View recipes
+          View all recipes
         </Link>
       </header>
 
       <div className="mt-6 grid border-t pt-6 sm:mt-12 sm:pt-12">
         <div>
           <h1 className="text-3xl font-bold sm:text-4xl md:text-5xl/tight">
-            Hi {data.user?.firstName}!
+            Hi {data.user?.firstName} 👋
           </h1>
-          <p className="mt-2 text-balance">
+          <p className="mt-2 text-balance">Nice to see you again! What are you cooking today?</p>
+          {/* <p className="mt-2 text-balance">
             You belong to the account{' '}
             <span className="font-medium">{data.user?.organization.name}</span>. Your family have a
             total of{' '}
@@ -42,8 +43,74 @@ export default function Settings() {
               {data.recipeCount?.totalCount === 1 ? 'recipe' : 'recipes'}
             </span>{' '}
             so far.
-          </p>
+          </p> */}
         </div>
+
+        <div className="mt-6 grid gap-6 sm:mt-12 sm:gap-12 lg:grid-cols-3">
+          <div className="flex flex-col items-center justify-center bg-gray-100 p-6 text-center sm:p-12 dark:bg-gray-900">
+            <h2 className="font-medium text-gray-500">Total recipes</h2>
+            <h1 className="my-3 text-3xl font-bold sm:text-4xl md:text-6xl/none">138</h1>
+            <Link to="/recipes">View all recipes</Link>
+          </div>
+          <div className="bg-gray-100 p-6 sm:p-12 dark:bg-gray-900">
+            <h2 className="text-2xl font-semibold">Top 3 meal types</h2>
+            <div className="mt-4 divide-y divide-dashed border-y border-dashed">
+              <div className="flex items-center justify-between py-2">
+                <p>Weeknight dinners</p>
+                <div className="text-sm text-gray-500">24 recipes</div>
+              </div>
+              <div className="flex items-center justify-between py-2">
+                <p>Main courses</p>
+                <div className="text-sm text-gray-500">22 recipes</div>
+              </div>
+              <div className="flex items-center justify-between py-2">
+                <p>Breakfast</p>
+                <div className="text-sm text-gray-500">17 recipes</div>
+              </div>
+            </div>
+          </div>
+          <div className="bg-gray-100 p-6 sm:p-12 dark:bg-gray-900">
+            <h2 className="text-2xl font-semibold">Top 3 cuisines</h2>
+            <div className="mt-4 divide-y divide-dashed border-y border-dashed">
+              <div className="flex items-center justify-between py-2">
+                <p>Weeknight dinners</p>
+                <div className="text-sm text-gray-500">24 recipes</div>
+              </div>
+              <div className="flex items-center justify-between py-2">
+                <p>Main courses</p>
+                <div className="text-sm text-gray-500">22 recipes</div>
+              </div>
+              <div className="flex items-center justify-between py-2">
+                <p>Breakfast</p>
+                <div className="text-sm text-gray-500">17 recipes</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-6 grid gap-6 sm:mt-12 sm:gap-12">
+          <div className="bg-gray-100 p-6 sm:p-12 dark:bg-gray-900">
+            <h2 className="text-2xl font-semibold">Recent activity</h2>
+            <p className="mt-2 text-pretty text-gray-600 dark:text-gray-400">
+              Here is a summary of what happened on your account lately.
+            </p>
+            <div className="mt-6 divide-y divide-dashed border-y border-dashed">
+              <div className="py-3">
+                <div className="text-sm text-gray-500">2 hours ago</div>
+                <p>You added the recipe Smash burgers</p>
+              </div>
+              <div className="py-3">
+                <div className="text-sm text-gray-500">3 days ago</div>
+                <p>Lisa added the recipe Taquitos</p>
+              </div>
+              <div className="py-3">
+                <div className="text-sm text-gray-500">4 days ago</div>
+                <p>Lisa left a comment on your recipe Lasagne med soltorkade tomater</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="mt-6 grid gap-6 sm:mt-12 sm:gap-12 lg:grid-cols-2">
           <div className="bg-gray-100 p-6 sm:p-12 dark:bg-gray-900">
             <h2 className="text-2xl font-semibold">Family account</h2>
@@ -94,7 +161,9 @@ export default function Settings() {
             <div className="mt-6 flex gap-8 font-medium">
               <Link to="/account">Edit profile</Link>
               <Form action="/api/logout" method="post">
-                <Button type="submit">Logout</Button>
+                <Button className="font-medium" variant="link" type="submit">
+                  Logout
+                </Button>
               </Form>
             </div>
           </div>

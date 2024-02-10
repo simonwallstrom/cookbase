@@ -168,9 +168,7 @@ export default function Home() {
           </div>
           <div className="mt-6 flex items-center gap-6 font-medium md:mt-10">
             <Button>Create recipe</Button>
-            <Link to="/recipes" className="text-gray-500">
-              Cancel
-            </Link>
+            <Link to="/recipes">Cancel</Link>
           </div>
         </Form>
       </div>

@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { Button } from '~/components/button'
 import { Input } from '~/components/input'
 import { Label } from '~/components/label'
+import { Link } from '~/components/link'
 import { createUserSession, getUserId } from '~/lib/auth.server'
 import { verifyLogin } from '~/models/user.server'
 
@@ -52,7 +53,7 @@ export default function Login() {
 
   return (
     <div className="flex flex-1 flex-col items-center justify-center">
-      <div className="mx-auto w-full max-w-xs">
+      <div className="mx-auto w-full max-w-xs text-center">
         <h1 className="text-5xl font-bold">Login</h1>
         <p className="mt-3 text-gray-500">Welcome back to Cookbase</p>
 
@@ -81,10 +82,13 @@ export default function Login() {
               <div className="text-red text-sm">{actionData?.errors?.fieldErrors.password}</div>
             ) : null}
           </div>
-          <div className="mt-2">
-            <Button>Login to continue</Button>
+          <div>
+            <Button className="w-full">Login to continue</Button>
           </div>
         </Form>
+        <div className="mt-8 text-sm text-gray-500">
+          <span>Don&apos;t have an account yet?</span> <Link to="/signup">Create one</Link>
+        </div>
       </div>
     </div>
   )
