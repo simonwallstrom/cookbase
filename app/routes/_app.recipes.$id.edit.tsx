@@ -76,7 +76,7 @@ export default function Home() {
   const actionData = useActionData<typeof action>()
 
   return (
-    <div className="max-w-2xl">
+    <div className="mx-auto max-w-2xl">
       <div className="grid gap-2">
         <h1 className="text-3xl font-semibold">Edit recipe</h1>
         <p className="text-gray-500">
@@ -208,12 +208,10 @@ export function ErrorBoundary() {
 
   if (isRouteErrorResponse(error)) {
     return (
-      <div className="flex flex-1 flex-col items-center justify-center">
-        <p className="font-medium text-red-400">
-          {error.status} {error.statusText}
-        </p>
-        <h1 className="mt-3 text-balance text-3xl font-bold sm:mt-5 sm:text-4xl md:text-5xl">
-          {error.data}
+      <div>
+        <h1 className="flex gap-2 text-balance text-3xl font-semibold tracking-tight sm:mt-5 sm:text-4xl md:text-5xl">
+          <span className="text-gray-500">{error.status}</span>
+          <span>{error.data}</span>
         </h1>
         <div className="mt-7">
           <Link to="/recipes">← Back to all recipes</Link>

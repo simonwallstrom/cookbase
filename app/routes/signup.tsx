@@ -55,7 +55,7 @@ export default function Signup() {
   return (
     <div className="flex flex-1 flex-col items-center justify-center">
       <div className="mx-auto w-full max-w-xs text-center">
-        <h1 className="text-5xl font-bold">Signup</h1>
+        <h1 className="text-5xl font-semibold tracking-tight">Signup</h1>
         <p className="mt-3 text-gray-500">Create an account to get started</p>
         <Form method="post" className="mt-8 flex flex-col gap-5">
           <div className="grid grid-cols-2 gap-5">
@@ -120,7 +120,7 @@ export default function Signup() {
           </div>
         </Form>
         <div className="mt-8 text-sm text-gray-500">
-          <span>Don&apos;t have an account yet?</span> <Link to="/login">Create one</Link>
+          <span>Already have an account?</span> <Link to="/login">Login instead</Link>
         </div>
       </div>
     </div>

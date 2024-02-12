@@ -37,7 +37,7 @@ export default function RecipeId() {
             Recipes
           </Link>
           <span>/</span>
-          <span className="truncate text-gray-500">Lax med potatis och romsås</span>
+          <span className="truncate text-gray-500">{recipe.title}</span>
         </div>
         <Link variant="button" to="edit">
           Edit
@@ -50,7 +50,7 @@ export default function RecipeId() {
           <span>Created</span>{' '}
           <span>{formatDistanceToNowStrict(new Date(recipe.createdAt))} ago</span>
         </div>
-        <h1 className="mt-3 text-balance text-3xl font-bold sm:mt-5 sm:text-4xl md:text-5xl">
+        <h1 className="mt-3 text-balance text-3xl font-semibold tracking-tight sm:mt-5 sm:text-4xl md:text-5xl">
           {recipe.title}
         </h1>
         <div className="mt-5 flex flex-col flex-wrap gap-x-8 gap-y-2 sm:mt-7 md:flex-row">
@@ -152,12 +152,10 @@ export function ErrorBoundary() {
 
   if (isRouteErrorResponse(error)) {
     return (
-      <div className="flex flex-1 flex-col items-center justify-center">
-        <p className="font-medium text-red-400">
-          {error.status} {error.statusText}
-        </p>
-        <h1 className="mt-3 text-balance text-3xl font-bold sm:mt-5 sm:text-4xl md:text-5xl">
-          {error.data}
+      <div>
+        <h1 className="flex gap-4 text-balance text-3xl font-semibold tracking-tight sm:mt-5 sm:text-4xl md:text-5xl">
+          <span className="text-gray-500">{error.status}</span>
+          <span>{error.data}</span>
         </h1>
         <div className="mt-7">
           <Link to="/recipes">← Back to all recipes</Link>

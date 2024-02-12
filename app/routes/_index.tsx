@@ -11,10 +11,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export default function Index() {
   return (
     <div className="flex flex-1 flex-col items-center justify-center">
-      <h1 className="text-5xl font-bold tracking-tighter">Cookbase</h1>
-      <p className="mt-2 font-medium text-gray-500">Recipe organizer for families</p>
-      <div className="absolute bottom-4 lg:bottom-8">
-        <Link prefetch="viewport" to="/login" className="p-2 font-medium">
+      <h1 className="text-5xl font-semibold tracking-tight">Cookbase</h1>
+      <p className="ml-0.5 text-[17px] text-gray-500">Recipe organizer for families</p>
+      <div className="absolute bottom-6 lg:bottom-8">
+        <Link variant="button" prefetch="viewport" to="/login">
           Login →
         </Link>
       </div>

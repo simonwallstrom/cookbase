@@ -54,7 +54,7 @@ export default function Login() {
   return (
     <div className="flex flex-1 flex-col items-center justify-center">
       <div className="mx-auto w-full max-w-xs text-center">
-        <h1 className="text-5xl font-bold">Login</h1>
+        <h1 className="text-5xl font-semibold tracking-tight">Login</h1>
         <p className="mt-3 text-gray-500">Welcome back to Cookbase</p>
 
         <Form method="post" className="mt-8 flex flex-col gap-5">

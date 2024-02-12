@@ -21,20 +21,8 @@ export default function Settings() {
   return (
     <div className="grid">
       <div>
-        <h1 className="text-3xl font-bold sm:text-4xl md:text-5xl/tight">
-          Hi {data.user?.firstName} 👋
-        </h1>
-        <p className="mt-2 text-balance">Nice to see you again! What are you cooking today?</p>
-        {/* <p className="mt-2 text-balance">
-            You belong to the account{' '}
-            <span className="font-medium">{data.user?.organization.name}</span>. Your family have a
-            total of{' '}
-            <span className="font-medium">
-              {data.recipeCount?.totalCount}{' '}
-              {data.recipeCount?.totalCount === 1 ? 'recipe' : 'recipes'}
-            </span>{' '}
-            so far.
-          </p> */}
+        <h1 className="text-5xl font-semibold tracking-tight">Hi {data.user?.firstName} 👋</h1>
+        <p className="mt-3 text-balance">Nice to see you again! What are you cooking today?</p>
       </div>
 
       <div className="mt-6 grid gap-6 sm:mt-12 sm:gap-12 lg:grid-cols-3">
@@ -64,15 +52,15 @@ export default function Settings() {
           <h2 className="text-2xl font-semibold">Top cuisines</h2>
           <div className="mt-4 divide-y divide-dashed border-y border-dashed">
             <div className="flex items-center justify-between py-2">
-              <p>Weeknight dinners</p>
+              <p>Nordic</p>
               <div className="text-sm text-gray-500">24 recipes</div>
             </div>
             <div className="flex items-center justify-between py-2">
-              <p>Main courses</p>
+              <p>American</p>
               <div className="text-sm text-gray-500">22 recipes</div>
             </div>
             <div className="flex items-center justify-between py-2">
-              <p>Breakfast</p>
+              <p>Italian</p>
               <div className="text-sm text-gray-500">17 recipes</div>
             </div>
           </div>

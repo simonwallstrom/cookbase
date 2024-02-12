@@ -7,10 +7,10 @@ export const buttonVariants = cva({
   variants: {
     variant: {
       button: [
-        'cursor-default items-center justify-center border border-gray-300 border-gray-950 bg-gray-950 px-4 py-1.5 text-gray-100 dark:border-gray-700 dark:bg-gray-800',
-        'hover:border-gray-600 hover:bg-gray-700/60',
-        'active:scale-[.98] active:bg-gray-700/80',
-        'focus-visible:border-gray-100',
+        'cursor-default items-center justify-center border border-black bg-gray-950 px-4 py-1.5 text-gray-100 dark:border-gray-700 dark:bg-gray-800',
+        'dark:hover:border-gray-600 dark:hover:bg-gray-700/60',
+        'active:scale-[.98] dark:active:bg-gray-700/80',
+        'dark:focus-visible:border-gray-100',
       ],
       link: [
         'underline decoration-1 underline-offset-2',

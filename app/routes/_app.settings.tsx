@@ -4,16 +4,14 @@ import { Button } from '~/components/button'
 import { Link } from '~/components/link'
 import { requireAuth } from '~/lib/auth.server'
 import { getMembersById } from '~/models/organization.server'
-import { getRecipeCount } from '~/models/recipe.server'
 import { getUserById } from '~/models/user.server'
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const { userId, orgId } = await requireAuth(request)
   const user = await getUserById(userId)
   const members = await getMembersById(orgId)
-  const recipeCount = await getRecipeCount(orgId)
 
-  return json({ user, members, recipeCount })
+  return json({ user, members })
 }
 
 export default function Settings() {

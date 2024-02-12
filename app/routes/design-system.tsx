@@ -10,8 +10,8 @@ export default function Index() {
   return (
     <div className="mx-auto mt-20 w-full max-w-3xl p-6 lg:mt-32">
       <Link to="/">Cookbase</Link>
-      <h1 className="mt-4 text-5xl font-bold">Design system</h1>
-      <p className="mt-3 text-pretty text-lg text-gray-500">
+      <h1 className="mt-4 text-5xl font-semibold tracking-tight">Design system</h1>
+      <p className="mt-3 text-pretty text-gray-500">
         The source of truth for colors, typography and UI components.
       </p>
       <div className="my-24 grid gap-24">
@@ -88,14 +88,59 @@ export default function Index() {
           <DividerHeading as={'h2'}>Typography</DividerHeading>
           <div className="mt-12 space-y-8">
             <div className="grid items-baseline gap-2 md:grid-cols-3">
-              <h1 className="text-5xl font-bold">Heading</h1>
-              <div className="text-sm text-gray-500 md:text-center">48px / 48px / 700</div>
-              <div className="space-x-2 md:text-right">
-                <code className="rounded bg-gray-200 px-1 py-0.5 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+              <h1 className="text-5xl font-semibold tracking-tight">Display</h1>
+              <div className="text-sm text-gray-500 md:text-center">48px / 48px / 600</div>
+              <div className="flex flex-wrap gap-1 md:justify-end">
+                <code className="bg-gray-200 px-1 py-0.5 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">
                   text-5xl
                 </code>
-                <code className="rounded bg-gray-200 px-1 py-0.5 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">
-                  font-bold
+                <code className="bg-gray-200 px-1 py-0.5 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+                  font-semibold
+                </code>
+                <code className="bg-gray-200 px-1 py-0.5 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+                  tracking-tight
+                </code>
+              </div>
+            </div>
+
+            <div className="grid items-baseline gap-2 md:grid-cols-3">
+              <h1 className="text-3xl font-semibold tracking-tight">Heading 1</h1>
+              <div className="text-sm text-gray-500 md:text-center">30px / 36px / 600</div>
+              <div className="flex flex-wrap gap-1 md:justify-end">
+                <code className="bg-gray-200 px-1 py-0.5 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+                  text-3xl
+                </code>
+                <code className="bg-gray-200 px-1 py-0.5 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+                  font-semibold
+                </code>
+                <code className="bg-gray-200 px-1 py-0.5 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+                  tracking-tight
+                </code>
+              </div>
+            </div>
+
+            <div className="grid items-baseline gap-2 md:grid-cols-3">
+              <h1 className="text-2xl font-semibold">Heading 2</h1>
+              <div className="text-sm text-gray-500 md:text-center">24px / 32px / 600</div>
+              <div className="flex flex-wrap gap-1 md:justify-end">
+                <code className="bg-gray-200 px-1 py-0.5 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+                  text-2xl
+                </code>
+                <code className="bg-gray-200 px-1 py-0.5 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+                  font-semibold
+                </code>
+              </div>
+            </div>
+
+            <div className="grid items-baseline gap-2 md:grid-cols-3">
+              <h1 className="text-xl font-semibold">Heading 3</h1>
+              <div className="text-sm text-gray-500 md:text-center">20px / 28px / 600</div>
+              <div className="flex flex-wrap gap-1 md:justify-end">
+                <code className="bg-gray-200 px-1 py-0.5 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+                  text-xl
+                </code>
+                <code className="bg-gray-200 px-1 py-0.5 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+                  font-semibold
                 </code>
               </div>
             </div>
@@ -103,8 +148,8 @@ export default function Index() {
             <div className="grid items-baseline gap-2 md:grid-cols-3">
               <p>Text base</p>
               <div className="text-sm text-gray-500 md:text-center">16px / 24px / 400</div>
-              <div className="space-x-2 md:text-right">
-                <code className="rounded bg-gray-200 px-1 py-0.5 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+              <div className="flex flex-wrap gap-1 md:justify-end">
+                <code className="bg-gray-200 px-1 py-0.5 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">
                   text-base
                 </code>
               </div>
@@ -112,11 +157,12 @@ export default function Index() {
 
             <div className="grid items-baseline gap-2 md:grid-cols-3">
               <p className="text-gray-600 dark:text-gray-400">Text muted</p>
-              <div className="col-span-2 space-x-2 md:text-right">
-                <code className="rounded bg-gray-200 px-1 py-0.5 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+              <div className="text-sm text-gray-500 md:text-center">16px / 24px / 400</div>
+              <div className="flex flex-wrap gap-1 md:justify-end">
+                <code className="bg-gray-200 px-1 py-0.5 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">
                   text-gray-600
                 </code>
-                <code className="rounded bg-gray-200 px-1 py-0.5 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+                <code className="bg-gray-200 px-1 py-0.5 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">
                   dark:text-gray-400
                 </code>
               </div>
@@ -124,8 +170,9 @@ export default function Index() {
 
             <div className="grid items-baseline gap-2 md:grid-cols-3">
               <p className="text-gray-500">Text faint</p>
-              <div className="col-span-2 space-x-2 md:text-right">
-                <code className="rounded bg-gray-200 px-1 py-0.5 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+              <div className="text-sm text-gray-500 md:text-center">16px / 24px / 400</div>
+              <div className="flex flex-wrap gap-1 md:justify-end">
+                <code className="bg-gray-200 px-1 py-0.5 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">
                   text-gray-500
                 </code>
               </div>
@@ -134,8 +181,8 @@ export default function Index() {
             <div className="grid items-baseline gap-2 md:grid-cols-3">
               <p className="text-sm">Text small</p>
               <div className="text-sm text-gray-500 md:text-center">14px / 20px / 400</div>
-              <div className="space-x-2 md:text-right">
-                <code className="rounded bg-gray-200 px-1 py-0.5 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+              <div className="flex flex-wrap gap-1 md:justify-end">
+                <code className="bg-gray-200 px-1 py-0.5 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">
                   text-sm
                 </code>
               </div>
