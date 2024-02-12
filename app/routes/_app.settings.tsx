@@ -22,7 +22,7 @@ export default function Settings() {
   return (
     <div className="grid">
       <div>
-        <h1 className="text-4xl font-semibold">Settings</h1>
+        <h1 className="text-3xl font-semibold tracking-tight">Settings</h1>
         <p className="mt-2 text-pretty text-gray-500">
           Manage your account settings and profile details
         </p>

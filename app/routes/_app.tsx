@@ -13,7 +13,7 @@ export default function AppLayout() {
 
 function Header() {
   return (
-    <header className="fixed inset-x-0 bottom-0 z-10 bg-white ring-1 ring-gray-950 sm:sticky sm:top-0 dark:bg-gray-950 dark:ring-white dark:ring-opacity-[.085]">
+    <header className="fixed inset-x-0 bottom-0 z-10 bg-white ring-1 ring-gray-950 ring-opacity-10 sm:sticky sm:top-0 dark:bg-gray-950 dark:ring-white dark:ring-opacity-[.085]">
       <div className="mx-auto flex w-full max-w-7xl items-center px-6 max-sm:justify-between sm:gap-12 sm:px-12">
         <NavLink to="/home">Home</NavLink>
         <NavLink to="/recipes">Recipes</NavLink>

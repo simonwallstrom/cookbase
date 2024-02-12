@@ -59,7 +59,7 @@ export default function Recipes() {
     <div>
       {/* Page header */}
       <header className="flex items-center justify-between">
-        <h1 className="text-3xl font-semibold">Recipes</h1>
+        <h1 className="text-3xl font-semibold tracking-tight">Recipes</h1>
         <Link variant="button" prefetch="intent" to="/recipes/new">
           New
         </Link>
