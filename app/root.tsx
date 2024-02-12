@@ -5,7 +5,7 @@ import './tailwind.css'
 
 export const links: LinksFunction = () => [
   { rel: 'icon', href: '/favicon.svg' },
-  { rel: 'preload', href: '/GeistVariableVF.woff2', crossOrigin: 'anonymous', as: 'font' },
+  { rel: 'preload', href: '/UncutSans.woff2', crossOrigin: 'anonymous', as: 'font' },
 ]
 
 export const meta: MetaFunction = () => {
