@@ -45,7 +45,7 @@ export async function action({ request }: ActionFunctionArgs) {
     request,
     userId: user.id,
     orgId: user.organizationId,
-    redirectTo: '/recipes',
+    redirectTo: '/home?welcome',
   })
 }
 

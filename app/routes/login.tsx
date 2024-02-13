@@ -10,7 +10,7 @@ import { verifyLogin } from '~/models/user.server'
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const userId = await getUserId(request)
-  if (userId) return redirect('/recipes')
+  if (userId) return redirect('/home')
   return null
 }
 
@@ -44,7 +44,7 @@ export async function action({ request }: ActionFunctionArgs) {
     request,
     userId: result.data.id,
     orgId: result.data.organizationId,
-    redirectTo: '/recipes',
+    redirectTo: '/home',
   })
 }
 

@@ -29,7 +29,7 @@ export default function RecipeId() {
   const instructions = recipe.instructions?.split(/\r?\n/).filter((item) => item.length)
 
   return (
-    <div>
+    <>
       {/* Page header */}
       <header className="flex w-full items-center justify-between gap-6 font-medium">
         <div className="flex min-w-0 items-center gap-2">
@@ -91,39 +91,22 @@ export default function RecipeId() {
               </span>
             ) : null}
           </div>
-
-          {ingredients?.length ? (
-            <ul className="mt-4 list-inside divide-y divide-dashed border-y border-dashed">
-              {ingredients.map((ingredient, index) => (
-                <IngredientItem key={index} val={ingredient} />
-              ))}
-            </ul>
-          ) : (
-            <div className="mt-4 border border-dashed px-4 py-12 text-center dark:border-gray-800">
-              <Link prefetch="intent" to="edit">
-                Add ingredients →
-              </Link>
-            </div>
-          )}
+          <ul className="mt-4 list-inside divide-y divide-dashed border-y border-dashed">
+            {ingredients.map((ingredient, index) => (
+              <IngredientItem key={index} val={ingredient} />
+            ))}
+          </ul>
         </div>
         <div className="flex-1">
           <h2 className="text-xl font-semibold">Instructions</h2>
-          {instructions?.length ? (
-            <ol className="[counter-reset:ingredients-list]">
-              {instructions.map((instruction, index) => (
-                <InstructionItem key={index} val={instruction} />
-              ))}
-            </ol>
-          ) : (
-            <div className="mt-4 border border-dashed px-4 py-12 text-center dark:border-gray-800">
-              <Link prefetch="intent" to="edit">
-                Add instructions →
-              </Link>
-            </div>
-          )}
+          <ol className="[counter-reset:ingredients-list]">
+            {instructions.map((instruction, index) => (
+              <InstructionItem key={index} val={instruction} />
+            ))}
+          </ol>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 

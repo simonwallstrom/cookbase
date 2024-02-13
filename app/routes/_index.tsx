@@ -4,7 +4,7 @@ import { getUserId } from '~/lib/auth.server'
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const userId = await getUserId(request)
-  if (userId) return redirect('/recipes')
+  if (userId) return redirect('/home')
   return null
 }
 
