@@ -4,7 +4,9 @@
 - [x] Home – Pull data from database for top meal types and cuisines
 - [x] Home – Add empty states
 - [x] Settings – Edit account name
-- [ ] Settings – Edit members
+- [ ] Add comments
+- [ ] Settings – Invite members
+- [ ] Settings – Remove members
 - [ ] Settings – Edit profile first- and last name
 - [ ] Settings – Edit profile email address
 
