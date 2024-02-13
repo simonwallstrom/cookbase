@@ -3,7 +3,7 @@
 - [x] Home – Add onboarding based on URL query string `?welcome`
 - [x] Home – Pull data from database for top meal types and cuisines
 - [x] Home – Add empty states
-- [ ] Settings – Edit account name
+- [x] Settings – Edit account name
 - [ ] Settings – Edit members
 - [ ] Settings – Edit profile first- and last name
 - [ ] Settings – Edit profile email address

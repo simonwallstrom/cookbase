@@ -18,7 +18,7 @@ export default function Settings() {
   const data = useLoaderData<typeof loader>()
 
   return (
-    <div className="grid">
+    <>
       <div>
         <h1 className="text-3xl font-semibold tracking-tight">Settings</h1>
         <p className="mt-2 text-pretty text-gray-500">
@@ -27,36 +27,45 @@ export default function Settings() {
       </div>
 
       <div className="mt-6 grid gap-6 sm:mt-12 sm:gap-12 lg:grid-cols-2">
-        <div className="bg-gray-100 p-6 sm:p-12 dark:bg-gray-900">
+        {/* Account settings */}
+        <div className="bg-gray-100 p-6 sm:p-12 dark:border dark:bg-gray-900">
           <h2 className="text-2xl font-semibold">Family account</h2>
-
           <p className="mt-2 text-pretty text-gray-600 dark:text-gray-400">
             Your shared information. Manage your account and invite family members.
           </p>
           <div className="mt-6 grid divide-y divide-dashed border-y border-dashed">
-            <div className="flex py-3">
-              <div className="w-24 text-gray-500">Name</div>
-              <div className="font-medium">{data.user?.organization.name}</div>
+            <div className="flex items-end justify-between gap-x-4 py-3">
+              <div className="flex flex-col gap-y-1 sm:flex-row">
+                <div className="text-gray-500 sm:w-24">Name</div>
+                <div className="flex-1 font-medium">{data.user?.organization.name}</div>
+              </div>
+              <div>
+                <Link to="/settings/account/name">Edit</Link>
+              </div>
             </div>
-            <div className="flex py-3">
-              <div className="w-24 text-gray-500">Members</div>
-              <div className="grid gap-1 font-medium">
-                {data.members.map((member) => (
-                  <div key={member.id}>
-                    {member.firstName}{' '}
-                    <span className="text-sm font-normal lowercase text-gray-500">
-                      ({member.role})
-                    </span>
-                  </div>
-                ))}
+            <div className="flex items-end justify-between gap-x-4 py-3">
+              <div className="flex flex-col gap-y-1 sm:flex-row">
+                <div className="text-gray-500 sm:w-24">Members</div>
+                <div className="grid flex-1 gap-1">
+                  {data.members.map((member) => (
+                    <div key={member.id}>
+                      <span className="font-medium">{member.firstName} </span>
+                      <span className="text-sm font-normal lowercase text-gray-500">
+                        ({member.role})
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <Link to="/settings/account/name">Edit</Link>
               </div>
             </div>
           </div>
-          <div className="mt-6 flex gap-8 font-medium">
-            <Link to="/account">Edit account</Link>
-          </div>
         </div>
-        <div className="bg-gray-100 p-6 sm:p-12 dark:bg-gray-900">
+
+        {/* Profile details */}
+        <div className="bg-gray-100 p-6 sm:p-12 dark:border dark:bg-gray-900">
           <h2 className="text-2xl font-semibold">Profile details</h2>
           <p className="mt-2 text-pretty text-gray-600 dark:text-gray-400">
             Your personal information. Update your name and email address in this section.
@@ -83,6 +92,6 @@ export default function Settings() {
           </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }

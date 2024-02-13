@@ -24,3 +24,19 @@ export async function getMembersById(id: Organization['id']) {
     ],
   })
 }
+
+export async function updateOrganizationName(
+  orgId: Organization['id'],
+  name: Organization['name'],
+) {
+  const organization = await prisma.organization.update({
+    where: {
+      id: orgId,
+    },
+    data: {
+      name: name,
+    },
+  })
+
+  return organization
+}
