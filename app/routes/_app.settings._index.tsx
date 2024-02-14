@@ -39,25 +39,71 @@ export default function Settings() {
         </p>
       </div>
 
-      <div className="mt-6 grid gap-6 sm:mt-12 sm:gap-12 lg:grid-cols-2">
-        {/* Account settings */}
-        <div className="bg-gray-100 p-6 sm:p-12 dark:border dark:bg-gray-900">
-          <h2 className="text-2xl font-semibold">Family account</h2>
-          <p className="mt-2 text-pretty text-gray-600 dark:text-gray-400">
-            Your shared information. Manage your account and invite family members.
-          </p>
-          <div className="mt-6 grid divide-y divide-dashed border-y border-dashed">
-            <div className="flex items-end justify-between gap-x-4 py-3">
-              <div className="flex flex-col gap-y-1 sm:flex-row">
-                <div className="text-gray-500 sm:w-24">Name</div>
-                <div className="flex-1 font-medium">{data.user?.organization.name}</div>
+      {/* Profile details */}
+      <div className="mt-6 bg-gray-100 p-6 sm:mt-12 sm:p-12 dark:border dark:bg-gray-900">
+        <h2 className="text-2xl font-semibold">Profile details</h2>
+        <p className="mt-2 text-pretty text-gray-600 dark:text-gray-400">
+          Your personal information. Update your name and email address in this section.
+        </p>
+        <div className="mt-6 grid divide-y divide-dashed border-y border-dashed">
+          <div className="flex flex-col gap-y-1 py-3 sm:flex-row">
+            <div className="text-gray-500 sm:w-44">Name</div>
+            <div className="flex flex-1 justify-between">
+              <div className="font-medium">
+                {data.user?.firstName} {data.user?.lastName}
               </div>
+              <div>
+                <Link to="/settings">Edit</Link>
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col gap-y-1 py-3 sm:flex-row">
+            <div className="text-gray-500 sm:w-44">Email address</div>
+            <div className="flex flex-1 justify-between">
+              <div className="font-medium">{data.user?.email}</div>
+              <div>
+                <Link to="/settings">Edit</Link>
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col gap-y-1 py-3 sm:flex-row">
+            <div className="text-gray-500 sm:w-44">Password</div>
+            <div className="flex flex-1 justify-between">
+              <div className="font-mono font-medium">**********</div>
+              <div>
+                <Link to="/settings">Edit</Link>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="mt-6">
+          <Form action="/api/logout" method="post">
+            <Button variant="link" type="submit">
+              Logout
+            </Button>
+          </Form>
+        </div>
+      </div>
+
+      {/* Account settings */}
+      <div className="mt-6 bg-gray-100 p-6 sm:mt-12 sm:p-12 dark:border dark:bg-gray-900">
+        <h2 className="text-2xl font-semibold">Family account</h2>
+        <p className="mt-2 text-pretty text-gray-600 dark:text-gray-400">
+          Your shared information. Manage your account and invite family members.
+        </p>
+        <div className="mt-6 grid divide-y divide-dashed border-y border-dashed">
+          <div className="flex flex-col gap-y-1 py-3 sm:flex-row">
+            <div className="text-gray-500 sm:w-44">Account name</div>
+            <div className="flex flex-1 justify-between">
+              <div className="font-medium">{data.user?.organization.name}</div>
               <div>
                 <Link to="/settings/account/name">Edit</Link>
               </div>
             </div>
-            <div className="flex flex-col justify-between gap-y-1 py-3 sm:flex-row">
-              <div className="text-gray-500 sm:w-24">Members</div>
+          </div>
+          <div className="flex flex-col gap-y-1 py-3 sm:flex-row">
+            <div className="text-gray-500 sm:w-44">Members</div>
+            <div className="flex flex-1 justify-between">
               <div className="grid flex-1 gap-1.5">
                 {data.members.map((member) => (
                   <div className="flex items-center justify-between" key={member.id}>
@@ -90,77 +136,39 @@ export default function Settings() {
               </div>
             </div>
           </div>
-
-          <div className="mt-6">
-            <p>
-              <span className="font-semibold">Invite family members</span> –{' '}
-              <span className="text-gray-600 dark:text-gray-400">
-                Share the link below with your loved ones to invite them to your family account.
-              </span>
-            </p>
-            <div className="mt-4 flex gap-2">
-              <Input readOnly className="flex-1" value={`data.inviteLink`} />
-              <Button className="w-28" onClick={handleCopyInviteLink}>
-                {copyInviteLink ? <span>Copied!</span> : <span>Copy&nbsp;link</span>}
-              </Button>
-            </div>
-            <Form method="post">
-              <input type="hidden" name="invitationId" value={`data.invitation?.id`} />
-              <div className="mt-4 text-sm text-gray-500">
-                Anyone with the link can join your account. If the link has been compromised you can{' '}
-                <Button
-                  variant="link"
-                  type="submit"
-                  name="_action"
-                  disabled={navigation.state !== 'idle'}
-                  value="RESET_LINK"
-                >
-                  {navigation.state !== 'idle' ? (
-                    <span>Resetting...</span>
-                  ) : (
-                    <span>reset&nbsp;the&nbsp;link</span>
-                  )}
-                </Button>
-                .
-              </div>
-            </Form>
-          </div>
         </div>
 
-        {/* Profile details */}
-        <div className="bg-gray-100 p-6 sm:p-12 dark:border dark:bg-gray-900">
-          <h2 className="text-2xl font-semibold">Profile details</h2>
-          <p className="mt-2 text-pretty text-gray-600 dark:text-gray-400">
-            Your personal information. Update your name and email address in this section.
+        <div className="mt-6">
+          <h3 className="text-xl font-semibold">Invite family members</h3>
+          <p className="mt-2 text-gray-600 dark:text-gray-400">
+            Share the link below with your loved ones to invite them to your family account.
           </p>
-          <div className="mt-6 grid divide-y divide-dashed border-y border-dashed">
-            <div className="flex flex-col gap-y-1 py-3 sm:flex-row">
-              <div className="w-24 text-gray-500">Name</div>
-              <div className="flex flex-1 justify-between">
-                <div className="font-medium">
-                  {data.user?.firstName} {data.user?.lastName}
-                </div>
-                <div>
-                  <Link to="/settings">Edit</Link>
-                </div>
-              </div>
-            </div>
-            <div className="flex py-3">
-              <div className="w-24 text-gray-500">Email</div>
-              <div className="font-medium">{data.user?.email}</div>
-            </div>
-            <div className="flex py-3">
-              <div className="w-24 text-gray-500">Password</div>
-              <div className="font-mono font-medium">**********</div>
-            </div>
+          <div className="mt-4 flex gap-2">
+            <Input readOnly className="max-w-96 flex-1" value={`data.inviteLink`} />
+            <Button className="w-28" onClick={handleCopyInviteLink}>
+              {copyInviteLink ? <span>Copied!</span> : <span>Copy&nbsp;link</span>}
+            </Button>
           </div>
-          <div className="mt-6">
-            <Form action="/api/logout" method="post">
-              <Button variant="link" type="submit">
-                Logout
+          <Form method="post">
+            <input type="hidden" name="invitationId" value={`data.invitation?.id`} />
+            <div className="mt-4 text-sm text-gray-500">
+              Anyone with the link can join your account. If the link has been compromised you can{' '}
+              <Button
+                variant="link"
+                type="submit"
+                name="_action"
+                disabled={navigation.state !== 'idle'}
+                value="RESET_LINK"
+              >
+                {navigation.state !== 'idle' ? (
+                  <span>Resetting...</span>
+                ) : (
+                  <span>reset&nbsp;the&nbsp;link</span>
+                )}
               </Button>
-            </Form>
-          </div>
+              .
+            </div>
+          </Form>
         </div>
       </div>
     </>
