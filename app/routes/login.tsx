@@ -64,7 +64,9 @@ export default function Login() {
             </Label>
             <Input type="email" placeholder="Email address..." required name="email" id="email" />
             {actionData?.errors?.fieldErrors.email ? (
-              <div className="text-red text-sm">{actionData?.errors?.fieldErrors.email}</div>
+              <div className="mt-2 text-left text-sm text-red-500 dark:text-red-400">
+                {actionData?.errors?.fieldErrors.email}
+              </div>
             ) : null}
           </div>
           <div className="grid">
@@ -75,11 +77,19 @@ export default function Login() {
               name="password"
               placeholder="Password..."
               required
+              minLength={6}
               id="password"
               type="password"
             />
             {actionData?.errors?.fieldErrors.password ? (
-              <div className="text-red text-sm">{actionData?.errors?.fieldErrors.password}</div>
+              <div className="mt-2 text-left text-sm text-red-500 dark:text-red-400">
+                {actionData?.errors?.fieldErrors.password}
+              </div>
+            ) : null}
+            {actionData?.errors?.formErrors.length ? (
+              <div className="mt-4 border border-dashed bg-gray-100 px-4 py-1.5 text-red-500 dark:bg-gray-900 dark:text-red-400">
+                {actionData?.errors?.formErrors}
+              </div>
             ) : null}
           </div>
           <div>
