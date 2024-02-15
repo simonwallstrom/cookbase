@@ -6,8 +6,8 @@
     }
     @media (prefers-color-scheme: dark) {
       path {
-        <!-- bg-gray-500 -->
-        fill: #717179;
+        <!-- bg-gray-300 -->
+        fill: #D4D4D8;
       }
     }
   </style>
