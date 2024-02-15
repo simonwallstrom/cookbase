@@ -4,19 +4,19 @@
 - [x] Home – Pull data from database for top meal types and cuisines
 - [x] Home – Add empty states
 - [x] Settings – Edit account name
-- [ ] Add Notes
+- [x] Improve start page design
 - [ ] Settings – Invite members
 - [ ] Settings – Remove members
 - [ ] Settings – Edit profile first- and last name
-- [ ] Auth – Reset Password
-- [ ] Auth – Verify email on signup
-- [ ] Settings – Edit profile email address
-- [ ] Settings – Edit profile email address
+- [ ] Recipe notes
+- [ ] Recent activity
+- [ ] Implement Request access-form
+- [ ] Add changelog
 
 
 ## Feature ideas
 
-### Comments
+### Recipe notes
 
 Add comments to each recipe. Should it be possible to "resolve" comments like in Google Docs?
 

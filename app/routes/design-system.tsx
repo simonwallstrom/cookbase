@@ -9,9 +9,13 @@ import { Textarea } from '~/components/textarea'
 export default function Index() {
   return (
     <div className="mx-auto mt-20 w-full max-w-3xl p-6 lg:mt-32">
-      <Link to="/">Cookbase</Link>
-      <h1 className="mt-4 text-5xl font-semibold tracking-tight">Design system</h1>
-      <p className="mt-3 text-pretty text-gray-500">
+      <div className="absolute left-6 top-4 lg:left-8 lg:top-6">
+        <Link className="text-sm font-medium text-gray-500" to="/">
+          ← Home
+        </Link>
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tight">Design system</h1>
+      <p className="mt-3 text-balance text-gray-500">
         The source of truth for colors, typography and UI components.
       </p>
       <div className="my-24 grid gap-24">

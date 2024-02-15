@@ -3,14 +3,14 @@ import React from 'react'
 import { cva, cx } from '../lib/cva.config'
 
 export const buttonVariants = cva({
-  base: ['inline-flex touch-none select-none outline-none'],
+  base: ['inline-flex touch-none select-none outline-none outline-offset-2'],
   variants: {
     variant: {
       button: [
         'items-center justify-center border border-black bg-gray-950 px-4 py-1.5 text-gray-100 dark:border-gray-700 dark:bg-gray-800',
-        'dark:hover:border-gray-600 dark:hover:bg-gray-700/60',
-        'active:scale-[.98] dark:active:bg-gray-700/80',
-        'dark:focus-visible:border-gray-100',
+        'hover:bg-gray-800 dark:hover:border-gray-600 dark:hover:bg-gray-700/60',
+        'active:scale-[.97] active:bg-gray-700 dark:active:bg-gray-700/80',
+        'focus-visible:outline-1 focus-visible:outline-gray-950 dark:focus-visible:outline-gray-300',
       ],
       link: [
         'underline decoration-1 underline-offset-2',

@@ -87,8 +87,14 @@ export default function Login() {
           </div>
         </Form>
         <div className="mt-8 text-sm text-gray-500">
-          <span>Don&apos;t have an account yet?</span> <Link to="/signup">Create one</Link>
+          <span>Don&apos;t have an account yet?</span>{' '}
+          <Link to="/request-access">Request access</Link>
         </div>
+      </div>
+      <div className="absolute left-6 top-4 lg:left-8 lg:top-6">
+        <Link className="text-sm font-medium text-gray-500" to="/">
+          ← Home
+        </Link>
       </div>
     </div>
   )

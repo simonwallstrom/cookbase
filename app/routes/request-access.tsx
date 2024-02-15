@@ -4,8 +4,7 @@ import { z } from 'zod'
 import { Button } from '~/components/button'
 import { Input } from '~/components/input'
 import { Link } from '~/components/link'
-import { createUserSession, getUserId } from '~/lib/auth.server'
-import { createUser, getUserByEmail } from '~/models/user.server'
+import { getUserId } from '~/lib/auth.server'
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const userId = await getUserId(request)
@@ -16,19 +15,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 const schema = z.object({
   firstName: z.string().min(1, 'First name is required'),
   lastName: z.string().min(1, 'Last name is required'),
-  email: z
-    .string({ required_error: 'Email is required' })
-    .email('Invalid email address')
-    .refine(
-      async (email) => {
-        const existingUser = await getUserByEmail(email)
-        if (!existingUser) {
-          return z.NEVER
-        }
-      },
-      { message: 'A user already exists with this email' },
-    ),
-  password: z.string().min(6, 'Password must be atleast 6 characters long'),
+  email: z.string({ required_error: 'Email is required' }).email('Invalid email address'),
 })
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -39,24 +26,20 @@ export async function action({ request }: ActionFunctionArgs) {
     return json({ errors: result.error.flatten() }, { status: 400 })
   }
 
-  const user = await createUser(result.data)
-
-  return createUserSession({
-    request,
-    userId: user.id,
-    orgId: user.organizationId,
-    redirectTo: '/home?welcome',
-  })
+  console.log(result.data)
+  return null
 }
 
-export default function Signup() {
+export default function RequestAccess() {
   const actionData = useActionData<typeof action>()
 
   return (
     <div className="flex flex-1 flex-col items-center justify-center">
       <div className="mx-auto w-full max-w-xs text-center">
-        <h1 className="text-5xl font-semibold tracking-tight">Signup</h1>
-        <p className="mt-3 text-gray-500">Create an account to get started</p>
+        <h1 className="text-5xl font-semibold tracking-tight">Get on the waiting list</h1>
+        <p className="mt-3 text-balance text-gray-500">
+          We are currently in closed beta. Request early access below.
+        </p>
         <Form method="post" className="mt-8 flex flex-col gap-5">
           <div className="grid grid-cols-2 gap-5">
             <div className="flex flex-col">
@@ -100,28 +83,18 @@ export default function Signup() {
               <div className="text-red text-sm">{actionData?.errors?.fieldErrors.email}</div>
             ) : null}
           </div>
-          <div className="grid">
-            <label className="sr-only" htmlFor="password">
-              Password
-            </label>
-            <Input
-              name="password"
-              required
-              id="password"
-              type="password"
-              placeholder="Password..."
-            />
-            {actionData?.errors?.fieldErrors.password ? (
-              <div className="text-red text-sm">{actionData?.errors?.fieldErrors.password}</div>
-            ) : null}
-          </div>
           <div>
-            <Button className="w-full">Create account</Button>
+            <Button className="w-full">Request early access</Button>
           </div>
         </Form>
         <div className="mt-8 text-sm text-gray-500">
           <span>Already have an account?</span> <Link to="/login">Login instead</Link>
         </div>
+      </div>
+      <div className="absolute left-6 top-4 lg:left-8 lg:top-6">
+        <Link className="text-sm font-medium text-gray-500" to="/">
+          ← Home
+        </Link>
       </div>
     </div>
   )

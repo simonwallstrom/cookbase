@@ -16,6 +16,12 @@ export default {
         },
       },
     },
+    keyframes: {
+      fadeIn: {
+        from: { opacity: '0' },
+        to: { opacity: '1' },
+      },
+    },
   },
   future: {
     hoverOnlyWhenSupported: true,
