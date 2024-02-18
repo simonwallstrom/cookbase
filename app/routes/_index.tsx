@@ -38,7 +38,7 @@ export default function Index() {
           </Link>
         </div>
       </div>
-      <div className="fixed left-0 top-0 animate-[fadeIn_.5s_ease-in-out]">
+      <div className="pointer-events-none fixed left-0 top-0 -z-10 animate-[fadeIn_.5s_ease-in-out] max-sm:max-w-64">
         <img
           className="dark:opacity-70 dark:invert"
           width={302}
@@ -46,7 +46,7 @@ export default function Index() {
           alt=""
         />
       </div>
-      <div className="fixed bottom-0 right-0 hidden animate-[fadeIn_.5s_ease-in-out] md:block">
+      <div className="pointer-events-none fixed bottom-0 right-0 -z-10 hidden animate-[fadeIn_.5s_ease-in-out] md:block">
         <img
           className="dark:opacity-70 dark:invert"
           width={397}
