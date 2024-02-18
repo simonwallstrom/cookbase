@@ -39,10 +39,20 @@ export default function Index() {
         </div>
       </div>
       <div className="fixed left-0 top-0 animate-[fadeIn_.5s_ease-in-out]">
-        <img src="/images/food-top-left.svg" alt="" />
+        <img
+          className="dark:opacity-70 dark:invert"
+          width={302}
+          src="/images/food-illustration-tl.avif"
+          alt=""
+        />
       </div>
       <div className="fixed bottom-0 right-0 hidden animate-[fadeIn_.5s_ease-in-out] md:block">
-        <img src="/images/food-bottom-right.svg" alt="" />
+        <img
+          className="dark:opacity-70 dark:invert"
+          width={397}
+          src="/images/food-illustration-br.avif"
+          alt=""
+        />
       </div>
     </div>
   )

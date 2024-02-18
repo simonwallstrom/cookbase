@@ -5,6 +5,7 @@ import { Button } from '~/components/button'
 import { Input } from '~/components/input'
 import { Link } from '~/components/link'
 import { requireAuth } from '~/lib/auth.server'
+import { getInvitation } from '~/lib/invitation.server'
 import { getMembersById } from '~/models/organization.server'
 import { getUserById } from '~/models/user.server'
 
@@ -12,8 +13,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const { userId, orgId } = await requireAuth(request)
   const user = await getUserById(userId)
   const members = await getMembersById(orgId)
+  const invitation = await getInvitation(orgId)
 
-  return json({ user, members })
+  const url = new URL(request.url).host
+  const inviteLink = `${url}/invite/${invitation?.id}`
+
+  return json({ user, members, invitation, inviteLink })
 }
 
 export default function Settings() {
@@ -144,13 +149,13 @@ export default function Settings() {
             Share the link below with your loved ones to invite them to your family account.
           </p>
           <div className="mt-4 flex gap-2">
-            <Input readOnly className="max-w-96 flex-1" value={`data.inviteLink`} />
+            <Input readOnly className="max-w-96 flex-1" value={data.inviteLink} />
             <Button className="w-28" onClick={handleCopyInviteLink}>
               {copyInviteLink ? <span>Copied!</span> : <span>Copy&nbsp;link</span>}
             </Button>
           </div>
           <Form method="post">
-            <input type="hidden" name="invitationId" value={`data.invitation?.id`} />
+            <input type="hidden" name="invitationId" value={data.invitation?.id} />
             <div className="mt-4 text-sm text-gray-500">
               Anyone with the link can join your account. If the link has been compromised you can{' '}
               <Button

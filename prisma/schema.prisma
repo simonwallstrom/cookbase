@@ -9,12 +9,13 @@ datasource db {
 }
 
 model Organization {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  name      String?
-  user      User[]
-  recipes   Recipe[]
+  id          String      @id @default(cuid())
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  name        String?
+  user        User[]
+  recipes     Recipe[]
+  invitations Invitation?
 }
 
 enum Role {
@@ -40,6 +41,14 @@ model Password {
   hash   String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String @unique
+}
+
+model Invitation {
+  id             String       @id @default(cuid())
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String       @unique
 }
 
 model Recipe {

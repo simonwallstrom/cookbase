@@ -1,5 +1,5 @@
 import type { LoaderFunctionArgs } from '@remix-run/node'
-import { json, useLoaderData } from '@remix-run/react'
+import { json, useLoaderData, useSearchParams } from '@remix-run/react'
 import { Link } from '~/components/link'
 import { requireAuth } from '~/lib/auth.server'
 import { getTopCuisines } from '~/models/cuisine.server'
@@ -21,12 +21,25 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export default function Settings() {
   const data = useLoaderData<typeof loader>()
+  const [params] = useSearchParams()
+  const newOwner = params.has('new-owner')
+  const newMember = params.has('new-member')
 
   return (
     <div className="grid">
       <div>
         <h1 className="text-5xl font-semibold tracking-tight">Hi {data.user?.firstName} 👋</h1>
-        <p className="mt-3 text-balance">Nice to see you again! What are you cooking today?</p>
+        {newOwner ? (
+          <p className="mt-3 text-balance">
+            Welcome to Cookbase! Get started by creating your first recipe.
+          </p>
+        ) : newMember ? (
+          <p className="mt-3 text-balance">
+            You successfully joined {data.user?.organization.name}. What are you cooking today?
+          </p>
+        ) : (
+          <p className="mt-3 text-balance">Nice to see you again! What are you cooking today?</p>
+        )}
       </div>
 
       <div className="mt-6 grid gap-6 sm:mt-12 sm:gap-12 lg:grid-cols-3">

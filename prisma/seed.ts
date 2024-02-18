@@ -12,6 +12,9 @@ async function seed() {
   await prisma.user.deleteMany()
   console.log('❌ Deleted records in user table')
 
+  await prisma.invitation.deleteMany()
+  console.log('❌ Deleted records in invitation table')
+
   await prisma.organization.deleteMany()
   console.log('❌ Deleted records in organization table')
 
@@ -49,6 +52,9 @@ async function seed() {
   const org1 = await prisma.organization.create({
     data: {
       name: 'Familjen Wallström',
+      invitations: {
+        create: {},
+      },
     },
   })
 
@@ -60,6 +66,9 @@ async function seed() {
   const org2 = await prisma.organization.create({
     data: {
       name: 'The Doe Family',
+      invitations: {
+        create: {},
+      },
     },
   })
 

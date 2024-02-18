@@ -52,7 +52,7 @@ export default function Login() {
   const actionData = useActionData<typeof action>()
 
   return (
-    <div className="flex flex-1 flex-col items-center justify-center">
+    <div className="flex flex-1 flex-col items-center justify-center p-6">
       <div className="mx-auto w-full max-w-xs text-center">
         <h1 className="text-5xl font-semibold tracking-tight">Login</h1>
         <p className="mt-3 text-gray-500">Welcome back to Cookbase</p>

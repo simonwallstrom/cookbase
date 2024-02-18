@@ -5,13 +5,17 @@
 - [x] Home – Add empty states
 - [x] Settings – Edit account name
 - [x] Improve start page design
-- [ ] Settings – Invite members
-- [ ] Settings – Remove members
+- [x] Auth – Signup with invitation link
+- [ ] Settings – Regenerate invite link
+- [ ] Settings – Disable invite link
+- [ ] Settings – Remove members(Only if `owner`)
 - [ ] Settings – Edit profile first- and last name
 - [ ] Recipe notes
 - [ ] Recent activity
 - [ ] Implement Request access-form
 - [ ] Add changelog
+- [ ] Add error boundaries
+- [ ] Add redirectTo on login
 
 
 ## Feature ideas

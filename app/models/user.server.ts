@@ -24,7 +24,7 @@ type createUser = {
 export async function createUser(user: createUser) {
   const hashedPassword = await bcrypt.hash(user.password, 10)
 
-  const result = await prisma.user.create({
+  const createdUser = await prisma.user.create({
     data: {
       firstName: user.firstName,
       lastName: user.lastName,
@@ -43,7 +43,32 @@ export async function createUser(user: createUser) {
     },
   })
 
-  return result
+  await prisma.invitation.create({
+    data: {
+      organizationId: createdUser.organizationId,
+    },
+  })
+
+  return createdUser
+}
+
+export async function createInvitedUser(user: createUser & { organizationId: string }) {
+  const hashedPassword = await bcrypt.hash(user.password, 10)
+
+  return prisma.user.create({
+    data: {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      role: 'MEMBER',
+      password: {
+        create: {
+          hash: hashedPassword,
+        },
+      },
+      organizationId: user.organizationId,
+    },
+  })
 }
 
 export async function verifyLogin(email: User['email'], password: Password['hash']) {
