@@ -1,11 +1,13 @@
-import type { LoaderFunctionArgs } from '@remix-run/node'
-import { Form, json, useLoaderData, useNavigation } from '@remix-run/react'
+import type { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node'
+import { Form, json, useLoaderData, useNavigation, useSubmit } from '@remix-run/react'
 import { useState } from 'react'
+import { z } from 'zod'
 import { Button } from '~/components/button'
 import { Input } from '~/components/input'
 import { Link } from '~/components/link'
+import { Switch } from '~/components/switch'
 import { requireAuth } from '~/lib/auth.server'
-import { getInvitation } from '~/lib/invitation.server'
+import { getInvitation, resetInvitation, toggleInvitation } from '~/models/invitation.server'
 import { getMembersById } from '~/models/organization.server'
 import { getUserById } from '~/models/user.server'
 
@@ -21,13 +23,46 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return json({ user, members, invitation, inviteLink })
 }
 
+const schema = z.discriminatedUnion('_action', [
+  z.object({
+    _action: z.enum(['TOGGLE_LINK']),
+    invitationId: z.string().cuid(),
+    enabled: z.coerce.boolean(),
+  }),
+  z.object({ _action: z.enum(['RESET_LINK']), invitationId: z.string().cuid() }),
+])
+
+export async function action({ request }: ActionFunctionArgs) {
+  const { orgId } = await requireAuth(request)
+  const formData = await request.formData()
+
+  const result = schema.safeParse(Object.fromEntries(formData))
+
+  if (!result.success) {
+    return json({ errors: result.error.flatten() }, { status: 400 })
+  }
+
+  if (result.data._action === 'TOGGLE_LINK') {
+    await toggleInvitation(orgId, result.data.invitationId, result.data.enabled)
+    return json({ errors: null }, { status: 200 })
+  }
+
+  if (result.data._action === 'RESET_LINK') {
+    await resetInvitation(orgId, result.data.invitationId)
+    return json({ errors: null }, { status: 200 })
+  }
+
+  throw new Error('Unknown action')
+}
+
 export default function Settings() {
   const data = useLoaderData<typeof loader>()
+  const submit = useSubmit()
   const navigation = useNavigation()
   const [copyInviteLink, setCopyInviteLink] = useState(false)
 
   const handleCopyInviteLink = () => {
-    navigator.clipboard.writeText('data.inviteLink').then(function () {
+    navigator.clipboard.writeText(data.inviteLink).then(function () {
       setCopyInviteLink(true)
       setTimeout(() => {
         setCopyInviteLink(false)
@@ -57,27 +92,18 @@ export default function Settings() {
               <div className="font-medium">
                 {data.user?.firstName} {data.user?.lastName}
               </div>
-              <div>
-                <Link to="/settings">Edit</Link>
-              </div>
             </div>
           </div>
           <div className="flex flex-col gap-y-1 py-3 sm:flex-row">
             <div className="text-gray-500 sm:w-44">Email address</div>
             <div className="flex flex-1 justify-between">
               <div className="font-medium">{data.user?.email}</div>
-              <div>
-                <Link to="/settings">Edit</Link>
-              </div>
             </div>
           </div>
           <div className="flex flex-col gap-y-1 py-3 sm:flex-row">
             <div className="text-gray-500 sm:w-44">Password</div>
             <div className="flex flex-1 justify-between">
               <div className="font-mono font-medium">**********</div>
-              <div>
-                <Link to="/settings">Edit</Link>
-              </div>
             </div>
           </div>
         </div>
@@ -111,7 +137,7 @@ export default function Settings() {
             <div className="flex flex-1 justify-between">
               <div className="grid flex-1 gap-1.5">
                 {data.members.map((member) => (
-                  <div className="flex items-center justify-between" key={member.id}>
+                  <div className="flex items-center gap-2" key={member.id}>
                     <div>
                       <span className="font-medium">{member.firstName} </span>
                       <span className="text-sm font-normal lowercase text-gray-500">
@@ -119,7 +145,7 @@ export default function Settings() {
                       </span>
                     </div>
                     <div>
-                      <button className="-mr-1.5 flex h-6 w-6 items-center justify-center font-bold hover:bg-gray-200 dark:hover:bg-gray-800">
+                      <button className="flex h-6 w-6 items-center justify-center font-bold hover:bg-gray-200 dark:hover:bg-gray-800">
                         <svg
                           width="15"
                           height="15"
@@ -141,39 +167,62 @@ export default function Settings() {
               </div>
             </div>
           </div>
-        </div>
 
-        <div className="mt-6">
-          <h3 className="text-xl font-semibold">Invite family members</h3>
-          <p className="mt-2 text-gray-600 dark:text-gray-400">
-            Share the link below with your loved ones to invite them to your family account.
-          </p>
-          <div className="mt-4 flex gap-2">
-            <Input readOnly className="max-w-96 flex-1" value={data.inviteLink} />
-            <Button className="w-28" onClick={handleCopyInviteLink}>
-              {copyInviteLink ? <span>Copied!</span> : <span>Copy&nbsp;link</span>}
-            </Button>
-          </div>
-          <Form method="post">
-            <input type="hidden" name="invitationId" value={data.invitation?.id} />
-            <div className="mt-4 text-sm text-gray-500">
-              Anyone with the link can join your account. If the link has been compromised you can{' '}
-              <Button
-                variant="link"
-                type="submit"
-                name="_action"
-                disabled={navigation.state !== 'idle'}
-                value="RESET_LINK"
-              >
-                {navigation.state !== 'idle' ? (
-                  <span>Resetting...</span>
-                ) : (
-                  <span>reset&nbsp;the&nbsp;link</span>
-                )}
-              </Button>
-              .
+          <div className="py-3">
+            <div className="flex flex-col gap-y-1 sm:flex-row">
+              <div className="text-gray-500 sm:w-44">Invite link</div>
+              <div className="flex flex-1 justify-between gap-6">
+                <div>
+                  <div className="text-gray-600 dark:text-gray-400">
+                    Activate a secure link that you can use to invite family members to your
+                    account.
+                  </div>
+                </div>
+                <Form
+                  onChange={(event) => {
+                    submit(event.currentTarget)
+                  }}
+                  action="/settings"
+                  className="flex"
+                  method="post"
+                >
+                  <input type="hidden" name="invitationId" value={data.invitation?.id} />
+                  <input type="hidden" name="_action" value="TOGGLE_LINK" />
+                  <Switch name="enabled" defaultChecked={data.invitation?.isEnabled} />
+                </Form>
+              </div>
             </div>
-          </Form>
+            {data.invitation?.isEnabled ? (
+              <div className="md:ml-44">
+                <div className="mt-4 flex flex-col gap-2 sm:flex-row">
+                  <Input readOnly className="flex-1 md:max-w-96" value={data.inviteLink} />
+                  <Button className="w-full sm:w-28" onClick={handleCopyInviteLink}>
+                    {copyInviteLink ? <span>Copied!</span> : <span>Copy&nbsp;link</span>}
+                  </Button>
+                </div>
+                <Form method="post" action="/settings">
+                  <input type="hidden" name="invitationId" value={data.invitation?.id} />
+                  <div className="mt-4 text-sm text-gray-500">
+                    Anyone with the link can join your account. If the link has been compromised you
+                    can{' '}
+                    <Button
+                      variant="link"
+                      type="submit"
+                      name="_action"
+                      disabled={navigation.state !== 'idle'}
+                      value="RESET_LINK"
+                    >
+                      {navigation.state !== 'idle' ? (
+                        <span>Resetting...</span>
+                      ) : (
+                        <span>reset&nbsp;the&nbsp;link</span>
+                      )}
+                    </Button>
+                  </div>
+                </Form>
+              </div>
+            ) : null}
+          </div>
         </div>
       </div>
     </>

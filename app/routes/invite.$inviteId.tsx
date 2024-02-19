@@ -11,7 +11,7 @@ import { Button } from '~/components/button'
 import { Input } from '~/components/input'
 import { Link } from '~/components/link'
 import { createUserSession, getUserId } from '~/lib/auth.server'
-import { getInviteById } from '~/lib/invitation.server'
+import { getInviteById } from '~/models/invitation.server'
 import { createInvitedUser, getUserByEmail } from '~/models/user.server'
 
 export async function loader({ request, params }: LoaderFunctionArgs) {

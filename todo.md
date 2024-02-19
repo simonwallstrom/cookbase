@@ -6,8 +6,8 @@
 - [x] Settings – Edit account name
 - [x] Improve start page design
 - [x] Auth – Signup with invitation link
-- [ ] Settings – Regenerate invite link
-- [ ] Settings – Disable invite link
+- [x] Settings – Enable/Disable invite link
+- [x] Settings – Regenerate invite link
 - [ ] Settings – Remove members(Only if `owner`)
 - [ ] Settings – Edit profile first- and last name
 - [ ] Recipe notes
@@ -15,6 +15,7 @@
 - [ ] Implement Request access-form
 - [ ] Add changelog
 - [ ] Add error boundaries
+- [ ] Pending UI
 - [ ] Add redirectTo on login
 
 

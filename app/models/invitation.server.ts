@@ -8,13 +8,14 @@ export async function getInvitation(organizationId: Organization['id']) {
     },
     select: {
       id: true,
+      isEnabled: true,
     },
   })
 }
 
 export async function getInviteById(id: Invitation['id']) {
   return prisma.invitation.findUnique({
-    where: { id },
+    where: { id, isEnabled: true },
     select: {
       id: true,
       organization: {
@@ -27,6 +28,18 @@ export async function getInviteById(id: Invitation['id']) {
   })
 }
 
+export async function toggleInvitation(
+  organizationId: Organization['id'],
+  invitationId: Invitation['id'],
+  isEnabled: Invitation['isEnabled'],
+) {
+  return prisma.invitation.update({
+    where: { id: invitationId, organizationId },
+    data: {
+      isEnabled: isEnabled,
+    },
+  })
+}
 export async function resetInvitation(
   organizationId: Organization['id'],
   invitationId: Invitation['id'],
