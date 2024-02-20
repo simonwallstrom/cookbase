@@ -8,8 +8,10 @@
 - [x] Auth – Signup with invitation link
 - [x] Settings – Enable/Disable invite link
 - [x] Settings – Regenerate invite link
-- [ ] Settings – Remove members(Only if `owner`)
+- [x] Remove user roles
 - [ ] Settings – Edit profile first- and last name
+- [ ] Settings – Delete user
+- [ ] Settings – Delete org
 - [ ] Recipe notes
 - [ ] Recent activity
 - [ ] Implement Request access-form
@@ -17,6 +19,7 @@
 - [ ] Add error boundaries
 - [ ] Pending UI
 - [ ] Add redirectTo on login
+- [ ] Destructure all data from loaderData, this way we know explicitly which data is used
 
 
 ## Feature ideas

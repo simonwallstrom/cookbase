@@ -34,7 +34,6 @@ export async function createUser(user: createUser) {
           hash: hashedPassword,
         },
       },
-      role: 'OWNER',
       organization: {
         create: {
           name: `The ${user.lastName} family`,
@@ -60,7 +59,6 @@ export async function createInvitedUser(user: createUser & { organizationId: str
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
-      role: 'MEMBER',
       password: {
         create: {
           hash: hashedPassword,

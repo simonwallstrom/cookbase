@@ -87,7 +87,6 @@ async function seed() {
       email: 'simon@wallstrom.com',
       firstName: 'Simon',
       lastName: 'Wallström',
-      role: 'OWNER',
       password: {
         create: {
           hash: hashedPassword,
@@ -119,7 +118,6 @@ async function seed() {
       email: 'lisa@wallstrom.com',
       firstName: 'Lisa',
       lastName: 'Wallström',
-      role: 'MEMBER',
       password: {
         create: {
           hash: hashedPassword,
@@ -151,7 +149,6 @@ async function seed() {
       email: 'john@doe.com',
       firstName: 'John',
       lastName: 'Doe',
-      role: 'OWNER',
       password: {
         create: {
           hash: hashedPassword,

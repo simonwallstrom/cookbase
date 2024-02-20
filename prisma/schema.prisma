@@ -18,11 +18,6 @@ model Organization {
   invitations Invitation?
 }
 
-enum Role {
-  OWNER
-  MEMBER
-}
-
 model User {
   id             String       @id @default(cuid())
   createdAt      DateTime     @default(now())
@@ -31,7 +26,6 @@ model User {
   firstName      String
   lastName       String
   password       Password?
-  role           Role         @default(MEMBER)
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String
   recipes        Recipe[]

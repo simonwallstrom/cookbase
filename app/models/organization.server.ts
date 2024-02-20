@@ -13,13 +13,17 @@ export async function getMembersById(id: Organization['id']) {
     select: {
       email: true,
       firstName: true,
-      role: true,
+      lastName: true,
       id: true,
-      _count: true,
+      _count: {
+        select: {
+          recipes: true,
+        },
+      },
     },
     orderBy: [
       {
-        role: 'asc',
+        firstName: 'asc',
       },
     ],
   })
