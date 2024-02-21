@@ -81,7 +81,9 @@ export default function Settings() {
 
       {/* Profile details */}
       <div className="mt-6 bg-gray-100 p-6 sm:mt-12 sm:p-12 dark:border dark:bg-gray-900">
-        <h2 className="text-2xl font-semibold">Profile details</h2>
+        <h2 id="profile" className="scroll-mt-32 text-2xl font-semibold">
+          Profile details
+        </h2>
         <p className="mt-2 text-pretty text-gray-600 dark:text-gray-400">
           Your personal information. Update your name and email address in this section.
         </p>
@@ -91,6 +93,9 @@ export default function Settings() {
             <div className="flex flex-1 justify-between">
               <div className="font-medium">
                 {data.user?.firstName} {data.user?.lastName}
+              </div>
+              <div>
+                <Link to="/settings/profile/name">Edit</Link>
               </div>
             </div>
           </div>
@@ -118,7 +123,9 @@ export default function Settings() {
 
       {/* Account settings */}
       <div className="mt-6 bg-gray-100 p-6 sm:mt-12 sm:p-12 dark:border dark:bg-gray-900">
-        <h2 className="text-2xl font-semibold">Family account</h2>
+        <h2 id="account" className="scroll-mt-32 text-2xl font-semibold">
+          Family account
+        </h2>
         <p className="mt-2 text-pretty text-gray-600 dark:text-gray-400">
           Your shared information. Manage your account and invite family members.
         </p>

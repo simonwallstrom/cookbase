@@ -49,7 +49,7 @@ export default function Home() {
   const actionData = useActionData<typeof action>()
 
   return (
-    <div className="mx-auto max-w-2xl">
+    <div className="max-w-2xl">
       <div className="grid gap-2">
         <h1 className="text-3xl font-semibold">New recipe</h1>
         <p className="text-gray-500">

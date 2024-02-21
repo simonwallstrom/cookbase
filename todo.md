@@ -9,7 +9,7 @@
 - [x] Settings – Enable/Disable invite link
 - [x] Settings – Regenerate invite link
 - [x] Remove user roles
-- [ ] Settings – Edit profile first- and last name
+- [x] Settings – Edit profile first- and last name
 - [ ] Settings – Delete user
 - [ ] Settings – Delete org
 - [ ] Recipe notes

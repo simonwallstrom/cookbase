@@ -31,7 +31,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
   await updateOrganizationName(orgId, result.data.name)
 
-  return redirect('/settings')
+  return redirect('/settings#account')
 }
 
 export default function SettingsAccountName() {
@@ -43,12 +43,12 @@ export default function SettingsAccountName() {
   }, [])
 
   return (
-    <div className="mx-auto max-w-2xl">
+    <div className="max-w-2xl">
       <div className="grid gap-2">
         <h1 className="text-3xl font-semibold tracking-tight">Edit account name</h1>
         <p className="text-pretty text-gray-500">
           Update your account name in the field below or{' '}
-          <Link to="/settings">click here to cancel</Link>.
+          <Link to="/settings#account">click here to cancel</Link>.
         </p>
       </div>
       {/* Form */}
@@ -65,17 +65,16 @@ export default function SettingsAccountName() {
             name="name"
             id="name"
           />
+          {actionData?.errors?.fieldErrors.name ? (
+            <div className="text-sm text-red-600">{actionData?.errors?.fieldErrors.name}</div>
+          ) : null}
         </div>
 
         <div className="mt-6 flex items-center gap-6 md:mt-10">
           <Button>Update name</Button>
-          <Link to="/settings">Cancel</Link>
+          <Link to="/settings#account">Cancel</Link>
         </div>
       </Form>
-
-      <div>
-        <pre>{JSON.stringify(actionData, null, 2)}</pre>
-      </div>
     </div>
   )
 }

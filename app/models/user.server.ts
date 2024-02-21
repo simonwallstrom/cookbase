@@ -97,3 +97,25 @@ export async function verifyLogin(email: User['email'], password: Password['hash
 
   return userWithoutPassword
 }
+
+export async function updateUserName({
+  userId,
+  firstName,
+  lastName,
+}: {
+  userId: User['id']
+  firstName: User['firstName']
+  lastName: User['lastName']
+}) {
+  const user = await prisma.user.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      firstName,
+      lastName,
+    },
+  })
+
+  return user
+}
