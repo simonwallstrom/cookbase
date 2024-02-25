@@ -1,13 +1,23 @@
-import { json, type LoaderFunctionArgs } from '@remix-run/node'
-import { isRouteErrorResponse, useLoaderData, useRouteError } from '@remix-run/react'
-import { formatDistanceToNowStrict } from 'date-fns'
+import { json, type ActionFunctionArgs, type LoaderFunctionArgs } from '@remix-run/node'
+import {
+  Form,
+  isRouteErrorResponse,
+  useActionData,
+  useLoaderData,
+  useRouteError,
+} from '@remix-run/react'
+import { formatDistanceToNow } from 'date-fns'
 import { z } from 'zod'
+import { Button } from '~/components/button'
 import { Link } from '~/components/link'
+import { Textarea } from '~/components/textarea'
 import { requireAuth } from '~/lib/auth.server'
+import { prisma } from '~/lib/prisma.server'
+import { deleteNote, getNotes } from '~/models/note.server'
 import { getRecipe } from '~/models/recipe.server'
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
-  const { orgId } = await requireAuth(request)
+  const { userId, orgId } = await requireAuth(request)
   const recipeId = z.string().cuid().safeParse(params.id)
 
   if (!recipeId.success) {
@@ -20,11 +30,52 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     throw new Response('Recipe not found', { status: 404 })
   }
 
-  return json({ recipe })
+  const notes = await getNotes({ organizationId: orgId, recipeId: recipeId.data })
+
+  return json({ currentUserId: userId, recipe, notes })
+}
+
+const schema = z.discriminatedUnion('_action', [
+  z.object({
+    _action: z.enum(['ADD_NOTE']),
+    message: z.string().min(1, 'Title is required'),
+    recipeId: z.string().cuid(),
+  }),
+  z.object({ _action: z.enum(['DELETE_NOTE']), noteId: z.string().cuid() }),
+])
+
+export async function action({ request, params }: ActionFunctionArgs) {
+  const { orgId, userId } = await requireAuth(request)
+  const formData = await request.formData()
+
+  const result = schema.safeParse({ ...Object.fromEntries(formData), recipeId: params.id })
+
+  if (!result.success) {
+    return json({ errors: result.error.flatten() }, { status: 400 })
+  }
+
+  if (result.data._action === 'ADD_NOTE') {
+    await prisma.note.create({
+      data: {
+        recipeId: result.data.recipeId,
+        message: result.data.message,
+        userId,
+        organizationId: orgId,
+      },
+    })
+
+    return json({ errors: null }, { status: 200 })
+  }
+
+  if (result.data._action === 'DELETE_NOTE') {
+    await deleteNote({ id: result.data.noteId, organizationId: orgId, userId })
+    return json({ errors: null }, { status: 200 })
+  }
 }
 
 export default function RecipeId() {
-  const { recipe } = useLoaderData<typeof loader>()
+  const { currentUserId, recipe, notes } = useLoaderData<typeof loader>()
+  const actionData = useActionData<typeof action>()
   const ingredients = recipe.ingredients?.split(/\r?\n/).filter((item) => item.length)
   const instructions = recipe.instructions?.split(/\r?\n/).filter((item) => item.length)
 
@@ -47,8 +98,7 @@ export default function RecipeId() {
       {/* Title and meta */}
       <div className="mt-6 border-y py-12 sm:mt-12 sm:py-16 xl:py-24">
         <div className="text-gray-500">
-          <span>Created</span>{' '}
-          <span>{formatDistanceToNowStrict(new Date(recipe.createdAt))} ago</span>
+          <span>Created</span> <span>{formatDistanceToNow(new Date(recipe.createdAt))} ago</span>
         </div>
         <h1 className="mt-3 text-balance text-3xl font-semibold tracking-tight sm:mt-5 sm:text-4xl md:text-5xl">
           {recipe.title}
@@ -106,6 +156,82 @@ export default function RecipeId() {
           </ol>
         </div>
       </div>
+
+      {/* Notes */}
+      <div id="notes" className="mt-12 sm:mt-24">
+        <div className="bg-gray-100 p-6 sm:p-12 dark:border dark:bg-gray-900">
+          {/* Notes header */}
+          <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
+            <div>
+              <h2 className="text-2xl font-semibold">Notes ({notes.length})</h2>
+              <p className="mt-1 text-gray-600 dark:text-gray-400">
+                Ideas and suggestions on how to improve this recipe.
+              </p>
+            </div>
+            <Button className="text-gray-500 hover:text-inherit" variant="link">
+              Show resolved notes
+            </Button>
+          </div>
+
+          <div className="mt-6 divide-y divide-dashed border-y border-dashed">
+            {notes.map((note) => (
+              <div id={note.id} key={note.id} className="py-4">
+                <div className="max-w-2xl">
+                  <div className="flex items-center gap-1 text-sm text-gray-500">
+                    <div>{note.user.firstName}</div>
+                    <div className="font-serif font-bold">·</div>
+                    <div>{formatDistanceToNow(new Date(note.createdAt))} ago</div>
+                  </div>
+                  <div className="mt-1">{note.message}</div>
+                  <div className="mt-1 flex items-center gap-4">
+                    <Button
+                      className="text-sm font-medium text-gray-500 hover:text-inherit"
+                      variant="link"
+                    >
+                      Resolve
+                    </Button>
+                    {note.user.id === currentUserId ? (
+                      <Form action={`/recipes/${recipe.id}`} method="post">
+                        <input type="hidden" name="_action" value="DELETE_NOTE" />
+                        <Button
+                          className="text-sm font-medium text-gray-500 hover:text-inherit"
+                          variant="link"
+                          name="noteId"
+                          value={note.id}
+                        >
+                          Delete
+                        </Button>
+                      </Form>
+                    ) : null}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <Form
+            action={`/recipes/${recipe.id}`}
+            method="post"
+            className="mt-6 flex max-w-2xl flex-col gap-6"
+          >
+            <input type="hidden" name="_action" value="ADD_NOTE" />
+            <div className="grid gap-1.5">
+              <label className="sr-only font-medium" htmlFor="message">
+                Message
+              </label>
+              <Textarea placeholder="Add a new note..." id="message" rows={4} name="message" />
+              {actionData?.errors?.fieldErrors.message ? (
+                <div className="text-sm text-red-600">
+                  {actionData?.errors?.fieldErrors.message}
+                </div>
+              ) : null}
+            </div>
+            <div>
+              <Button>Add note</Button>
+            </div>
+          </Form>
+        </div>
+      </div>
     </>
   )
 }
@@ -149,9 +275,6 @@ export function ErrorBoundary() {
     return (
       <div>
         <h1>Error</h1>
-        <p>{error.message}</p>
-        <p>The stack trace is:</p>
-        <pre>{error.stack}</pre>
       </div>
     )
   } else {

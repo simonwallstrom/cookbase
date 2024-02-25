@@ -10,9 +10,11 @@
 - [x] Settings – Regenerate invite link
 - [x] Remove user roles
 - [x] Settings – Edit profile first- and last name
+- [x] Notes – Create and delete
+- [ ] Notes – Resolve notes
+- [ ] Notes – Pending UI and clear inputs on submission
 - [ ] Settings – Delete user
 - [ ] Settings – Delete org
-- [ ] Recipe notes
 - [ ] Recent activity
 - [ ] Implement Request access-form
 - [ ] Add changelog
