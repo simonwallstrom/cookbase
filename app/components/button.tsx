@@ -3,7 +3,9 @@ import React from 'react'
 import { cva, cx } from '../lib/cva.config'
 
 export const buttonVariants = cva({
-  base: ['inline-flex touch-none select-none outline-none outline-offset-2'],
+  base: [
+    'inline-flex touch-none select-none outline-none outline-offset-2 disabled:pointer-events-none',
+  ],
   variants: {
     variant: {
       button: [
