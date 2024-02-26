@@ -11,8 +11,9 @@
 - [x] Remove user roles
 - [x] Settings – Edit profile first- and last name
 - [x] Notes – Create and delete
-- [ ] Notes – Resolve notes
+- [x] Notes – Resolve notes
 - [ ] Notes – Pending UI and clear inputs on submission
+- [ ] Add toast notification(Sonner) for note actions
 - [ ] Settings – Delete user
 - [ ] Settings – Delete org
 - [ ] Recent activity

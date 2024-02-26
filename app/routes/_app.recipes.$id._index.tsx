@@ -5,6 +5,7 @@ import {
   useActionData,
   useLoaderData,
   useRouteError,
+  useSearchParams,
 } from '@remix-run/react'
 import { formatDistanceToNow } from 'date-fns'
 import { z } from 'zod'
@@ -13,7 +14,7 @@ import { Link } from '~/components/link'
 import { Textarea } from '~/components/textarea'
 import { requireAuth } from '~/lib/auth.server'
 import { prisma } from '~/lib/prisma.server'
-import { deleteNote, getNotes } from '~/models/note.server'
+import { deleteNote, getNotes, updateNoteStatus } from '~/models/note.server'
 import { getRecipe } from '~/models/recipe.server'
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
@@ -30,7 +31,14 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     throw new Response('Recipe not found', { status: 404 })
   }
 
-  const notes = await getNotes({ organizationId: orgId, recipeId: recipeId.data })
+  const url = new URL(request.url)
+  const showResolvedNotes = url.searchParams.get('notes')?.includes('resolved')
+
+  const notes = await getNotes({
+    organizationId: orgId,
+    recipeId: recipeId.data,
+    showResolvedNotes,
+  })
 
   return json({ currentUserId: userId, recipe, notes })
 }
@@ -42,6 +50,8 @@ const schema = z.discriminatedUnion('_action', [
     recipeId: z.string().cuid(),
   }),
   z.object({ _action: z.enum(['DELETE_NOTE']), noteId: z.string().cuid() }),
+  z.object({ _action: z.enum(['RESOLVE_NOTE']), noteId: z.string().cuid() }),
+  z.object({ _action: z.enum(['UNRESOLVE_NOTE']), noteId: z.string().cuid() }),
 ])
 
 export async function action({ request, params }: ActionFunctionArgs) {
@@ -71,6 +81,26 @@ export async function action({ request, params }: ActionFunctionArgs) {
     await deleteNote({ id: result.data.noteId, organizationId: orgId, userId })
     return json({ errors: null }, { status: 200 })
   }
+
+  if (result.data._action === 'RESOLVE_NOTE') {
+    await updateNoteStatus({
+      id: result.data.noteId,
+      organizationId: orgId,
+      userId,
+      isResolved: true,
+    })
+    return json({ errors: null }, { status: 200 })
+  }
+
+  if (result.data._action === 'UNRESOLVE_NOTE') {
+    await updateNoteStatus({
+      id: result.data.noteId,
+      organizationId: orgId,
+      userId,
+      isResolved: false,
+    })
+    return json({ errors: null }, { status: 200 })
+  }
 }
 
 export default function RecipeId() {
@@ -78,6 +108,9 @@ export default function RecipeId() {
   const actionData = useActionData<typeof action>()
   const ingredients = recipe.ingredients?.split(/\r?\n/).filter((item) => item.length)
   const instructions = recipe.instructions?.split(/\r?\n/).filter((item) => item.length)
+
+  const [searchParams, setSearchParams] = useSearchParams()
+  const params = new URLSearchParams()
 
   return (
     <>
@@ -168,9 +201,35 @@ export default function RecipeId() {
                 Ideas and suggestions on how to improve this recipe.
               </p>
             </div>
-            <Button className="text-gray-500 hover:text-inherit" variant="link">
-              Show resolved notes
-            </Button>
+            {searchParams.get('notes')?.includes('resolved') ? (
+              <Button
+                className="text-gray-500 hover:text-inherit"
+                variant="link"
+                onClick={() => {
+                  params.delete('notes')
+                  setSearchParams(params, {
+                    preventScrollReset: true,
+                    replace: true,
+                  })
+                }}
+              >
+                Hide resolved notes
+              </Button>
+            ) : (
+              <Button
+                className="text-gray-500 hover:text-inherit"
+                variant="link"
+                onClick={() => {
+                  params.set('notes', 'resolved')
+                  setSearchParams(params, {
+                    preventScrollReset: true,
+                    replace: true,
+                  })
+                }}
+              >
+                Show resolved notes
+              </Button>
+            )}
           </div>
 
           <div className="mt-6 divide-y divide-dashed border-y border-dashed">
@@ -182,16 +241,27 @@ export default function RecipeId() {
                     <div className="font-serif font-bold">·</div>
                     <div>{formatDistanceToNow(new Date(note.createdAt))} ago</div>
                   </div>
-                  <div className="mt-1">{note.message}</div>
+                  <div className={`mt-1 ${note.isResolved ? 'line-through' : ''}`}>
+                    {note.message}
+                  </div>
                   <div className="mt-1 flex items-center gap-4">
-                    <Button
-                      className="text-sm font-medium text-gray-500 hover:text-inherit"
-                      variant="link"
-                    >
-                      Resolve
-                    </Button>
+                    <Form method="post">
+                      {note.isResolved ? (
+                        <input type="hidden" name="_action" value="UNRESOLVE_NOTE" />
+                      ) : (
+                        <input type="hidden" name="_action" value="RESOLVE_NOTE" />
+                      )}
+                      <Button
+                        className="text-sm font-medium text-gray-500 hover:text-inherit"
+                        variant="link"
+                        name="noteId"
+                        value={note.id}
+                      >
+                        {note.isResolved ? <span>Unresolve</span> : <span>Resolve</span>}
+                      </Button>
+                    </Form>
                     {note.user.id === currentUserId ? (
-                      <Form action={`/recipes/${recipe.id}`} method="post">
+                      <Form method="post">
                         <input type="hidden" name="_action" value="DELETE_NOTE" />
                         <Button
                           className="text-sm font-medium text-gray-500 hover:text-inherit"
@@ -209,11 +279,7 @@ export default function RecipeId() {
             ))}
           </div>
 
-          <Form
-            action={`/recipes/${recipe.id}`}
-            method="post"
-            className="mt-6 flex max-w-2xl flex-col gap-6"
-          >
+          <Form method="post" className="mt-6 flex max-w-2xl flex-col gap-6">
             <input type="hidden" name="_action" value="ADD_NOTE" />
             <div className="grid gap-1.5">
               <label className="sr-only font-medium" htmlFor="message">

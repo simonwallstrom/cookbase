@@ -78,6 +78,7 @@ model Note {
   organizationId String
   recipe         Recipe       @relation(fields: [recipeId], references: [id], onDelete: Cascade)
   recipeId       String
+  isResolved     Boolean      @default(false)
 }
 
 model MealType {
