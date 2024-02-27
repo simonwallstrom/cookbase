@@ -13,8 +13,8 @@
 - [x] Notes – Create and delete
 - [x] Notes – Resolve notes
 - [x] Notes – Pending UI and clear inputs on submission
-- [ ] Add toast notification(Sonner) for note actions
-- [ ] Move recipe notes into a separate component
+- [x] Add toast notification(Sonner) for note actions
+- [x] Move recipe notes into a separate component
 - [ ] Settings – Delete user
 - [ ] Settings – Delete org
 - [ ] Recent activity

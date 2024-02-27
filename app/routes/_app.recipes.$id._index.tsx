@@ -1,4 +1,9 @@
-import { json, type ActionFunctionArgs, type LoaderFunctionArgs } from '@remix-run/node'
+import {
+  json,
+  type ActionFunctionArgs,
+  type LoaderFunctionArgs,
+  type SerializeFrom,
+} from '@remix-run/node'
 import {
   Form,
   isRouteErrorResponse,
@@ -7,6 +12,7 @@ import {
   useNavigation,
   useRouteError,
   useSearchParams,
+  useFetcher,
 } from '@remix-run/react'
 import { formatDistanceToNow } from 'date-fns'
 import { type ElementRef, useEffect, useRef } from 'react'
@@ -132,31 +138,9 @@ export async function action({ request, params }: ActionFunctionArgs) {
 }
 
 export default function RecipeId() {
-  const { currentUserId, recipe, notes } = useLoaderData<typeof loader>()
-  const actionData = useActionData<typeof action>()
+  const { recipe } = useLoaderData<typeof loader>()
   const ingredients = recipe.ingredients?.split(/\r?\n/).filter((item) => item.length)
   const instructions = recipe.instructions?.split(/\r?\n/).filter((item) => item.length)
-
-  const [searchParams, setSearchParams] = useSearchParams()
-  const params = new URLSearchParams()
-
-  const navigation = useNavigation()
-  const isAddingNote =
-    navigation.state === 'submitting' && navigation.formData?.get('_action') === 'ADD_NOTE'
-
-  const addNoteFormRef = useRef<ElementRef<'form'>>(null)
-  const addNoteMessageRef = useRef<ElementRef<'textarea'>>(null)
-
-  useEffect(() => {
-    if (actionData?._action === 'ADD_NOTE') {
-      toast(actionData?.message)
-      addNoteFormRef.current?.reset()
-      addNoteMessageRef.current?.focus()
-    }
-    if (actionData?._action === 'DELETE_NOTE') toast(actionData?.message)
-    if (actionData?._action === 'RESOLVE_NOTE') toast(actionData?.message)
-    if (actionData?._action === 'UNRESOLVE_NOTE') toast(actionData?.message)
-  }, [actionData])
 
   return (
     <>
@@ -237,135 +221,7 @@ export default function RecipeId() {
       </div>
 
       {/* Notes */}
-      <div id="notes" className="mt-12 sm:mt-24">
-        <div className="bg-gray-100 p-6 sm:p-12 dark:border dark:bg-gray-900">
-          {/* Notes header */}
-          <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
-            <div>
-              <h2 className="text-2xl font-semibold">Notes ({notes.length})</h2>
-              <p className="mt-1 text-gray-600 dark:text-gray-400">
-                Ideas and suggestions on how to improve this recipe.
-              </p>
-            </div>
-            {searchParams.get('notes')?.includes('resolved') ? (
-              <Button
-                className="text-gray-500 hover:text-inherit"
-                variant="link"
-                onClick={() => {
-                  params.delete('notes')
-                  setSearchParams(params, {
-                    preventScrollReset: true,
-                    replace: true,
-                  })
-                }}
-              >
-                Hide resolved notes
-              </Button>
-            ) : (
-              <Button
-                className="text-gray-500 hover:text-inherit"
-                variant="link"
-                onClick={() => {
-                  params.set('notes', 'resolved')
-                  setSearchParams(params, {
-                    preventScrollReset: true,
-                    replace: true,
-                  })
-                }}
-              >
-                Show resolved notes
-              </Button>
-            )}
-          </div>
-
-          {/* List of notes */}
-          <div className="mt-6 divide-y divide-dashed border-y border-dashed">
-            {notes.map((note) => (
-              <div id={note.id} key={note.id} className="py-4">
-                <div className="max-w-2xl">
-                  <div className="flex items-center gap-1 text-sm text-gray-500">
-                    <div>{note.user.firstName}</div>
-                    <div className="font-serif font-bold">·</div>
-                    <div>{formatDistanceToNow(new Date(note.createdAt))} ago</div>
-                  </div>
-                  <div className={`mt-1 ${note.isResolved ? 'line-through' : ''}`}>
-                    {note.message}
-                  </div>
-                  <div className="mt-1 flex items-center gap-4">
-                    <Form method="post">
-                      {note.isResolved ? (
-                        <input type="hidden" name="_action" value="UNRESOLVE_NOTE" />
-                      ) : (
-                        <input type="hidden" name="_action" value="RESOLVE_NOTE" />
-                      )}
-                      <Button
-                        className="text-sm font-medium text-gray-500 hover:text-inherit"
-                        variant="link"
-                        name="noteId"
-                        disabled={
-                          navigation.state !== 'idle' &&
-                          navigation.formData?.get('noteId') === note.id
-                        }
-                        value={note.id}
-                      >
-                        {note.isResolved ? <span>Unresolve</span> : <span>Resolve</span>}
-                      </Button>
-                    </Form>
-                    {note.user.id === currentUserId ? (
-                      <Form method="post">
-                        <input type="hidden" name="_action" value="DELETE_NOTE" />
-                        <Button
-                          className="text-sm font-medium text-gray-500 hover:text-inherit"
-                          variant="link"
-                          name="noteId"
-                          disabled={
-                            navigation.state !== 'idle' &&
-                            navigation.formData?.get('noteId') === note.id
-                          }
-                          value={note.id}
-                        >
-                          Delete
-                        </Button>
-                      </Form>
-                    ) : null}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Add notes */}
-          <Form
-            ref={addNoteFormRef}
-            replace
-            method="post"
-            className="mt-6 flex max-w-2xl flex-col gap-6"
-          >
-            <input type="hidden" name="_action" value="ADD_NOTE" />
-            <div className="grid gap-1.5">
-              <label className="sr-only font-medium" htmlFor="message">
-                Message
-              </label>
-              <Textarea
-                ref={addNoteMessageRef}
-                placeholder="Add a new note..."
-                disabled={isAddingNote}
-                id="message"
-                rows={4}
-                name="message"
-              />
-              {actionData?.errors?.fieldErrors.message ? (
-                <div className="text-sm text-red-600">
-                  {actionData?.errors?.fieldErrors.message}
-                </div>
-              ) : null}
-            </div>
-            <div>
-              <Button disabled={isAddingNote}>Add note</Button>
-            </div>
-          </Form>
-        </div>
-      </div>
+      <Notes />
     </>
   )
 }
@@ -388,6 +244,165 @@ const InstructionItem = ({ val }: { val: string }) => {
       </li>
     )
   }
+}
+
+function Notes() {
+  const { currentUserId, notes } = useLoaderData<typeof loader>()
+  const actionData = useActionData<typeof action>()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const params = new URLSearchParams()
+  const navigation = useNavigation()
+  const isAddingNote =
+    navigation.state === 'submitting' && navigation.formData?.get('_action') === 'ADD_NOTE'
+
+  const addNoteFormRef = useRef<ElementRef<'form'>>(null)
+  const addNoteMessageRef = useRef<ElementRef<'textarea'>>(null)
+
+  useEffect(() => {
+    if (actionData?._action === 'ADD_NOTE') {
+      toast(actionData?.message)
+      addNoteFormRef.current?.reset()
+      addNoteMessageRef.current?.focus()
+    }
+    if (actionData?._action === 'DELETE_NOTE') toast(actionData?.message)
+    if (actionData?._action === 'RESOLVE_NOTE') toast(actionData?.message)
+    if (actionData?._action === 'UNRESOLVE_NOTE') toast(actionData?.message)
+  }, [actionData])
+
+  return (
+    <div id="notes" className="mt-12 sm:mt-24">
+      <div className="bg-gray-100 p-6 sm:p-12 dark:border dark:bg-gray-900">
+        {/* Notes header */}
+        <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
+          <div>
+            <h2 className="text-2xl font-semibold">Notes ({notes.length})</h2>
+            <p className="mt-1 text-gray-600 dark:text-gray-400">
+              Ideas and suggestions on how to improve this recipe.
+            </p>
+          </div>
+          {searchParams.get('notes')?.includes('resolved') ? (
+            <Button
+              className="text-gray-500 hover:text-inherit"
+              variant="link"
+              onClick={() => {
+                params.delete('notes')
+                setSearchParams(params, {
+                  preventScrollReset: true,
+                  replace: true,
+                })
+              }}
+            >
+              Hide resolved notes
+            </Button>
+          ) : (
+            <Button
+              className="text-gray-500 hover:text-inherit"
+              variant="link"
+              onClick={() => {
+                params.set('notes', 'resolved')
+                setSearchParams(params, {
+                  preventScrollReset: true,
+                  replace: true,
+                })
+              }}
+            >
+              Show resolved notes
+            </Button>
+          )}
+        </div>
+
+        {/* List of notes */}
+        <div className="mt-6 divide-y divide-dashed border-y border-dashed">
+          {notes.map((note) => (
+            <Note currentUserId={currentUserId} key={note.id} note={note} />
+          ))}
+        </div>
+
+        {/* Add notes */}
+        <Form
+          ref={addNoteFormRef}
+          replace
+          method="post"
+          className="mt-6 flex max-w-2xl flex-col gap-6"
+        >
+          <input type="hidden" name="_action" value="ADD_NOTE" />
+          <div className="grid gap-1.5">
+            <label className="sr-only font-medium" htmlFor="message">
+              Message
+            </label>
+            <Textarea
+              ref={addNoteMessageRef}
+              placeholder="Add a new note..."
+              disabled={isAddingNote}
+              id="message"
+              rows={4}
+              name="message"
+            />
+            {actionData?.errors?.fieldErrors.message ? (
+              <div className="text-sm text-red-600">{actionData?.errors?.fieldErrors.message}</div>
+            ) : null}
+          </div>
+          <div>
+            <Button disabled={isAddingNote}>Add note</Button>
+          </div>
+        </Form>
+      </div>
+    </div>
+  )
+}
+
+function Note({
+  note,
+  currentUserId,
+}: {
+  note: SerializeFrom<typeof loader>['notes'][number]
+  currentUserId: string
+}) {
+  const fetcher = useFetcher()
+  return (
+    <div id={note.id} className="py-4">
+      <div className="max-w-2xl">
+        <div className="flex items-center gap-1 text-sm text-gray-500">
+          <div>{note.user.firstName}</div>
+          <div className="font-serif font-bold">·</div>
+          <div>{formatDistanceToNow(new Date(note.createdAt))} ago</div>
+        </div>
+        <div className={`mt-1 ${note.isResolved ? 'line-through' : ''}`}>{note.message}</div>
+        <div className="mt-1 flex items-center gap-4">
+          <fetcher.Form method="post">
+            {note.isResolved ? (
+              <input type="hidden" name="_action" value="UNRESOLVE_NOTE" />
+            ) : (
+              <input type="hidden" name="_action" value="RESOLVE_NOTE" />
+            )}
+            <Button
+              className="text-sm font-medium text-gray-500 hover:text-inherit"
+              variant="link"
+              name="noteId"
+              disabled={fetcher.state !== 'idle' && fetcher.formData?.get('noteId') === note.id}
+              value={note.id}
+            >
+              {note.isResolved ? <span>Unresolve</span> : <span>Resolve</span>}
+            </Button>
+          </fetcher.Form>
+          {note.user.id === currentUserId ? (
+            <fetcher.Form method="post">
+              <input type="hidden" name="_action" value="DELETE_NOTE" />
+              <Button
+                className="text-sm font-medium text-gray-500 hover:text-inherit"
+                variant="link"
+                name="noteId"
+                disabled={fetcher.state !== 'idle' && fetcher.formData?.get('noteId') === note.id}
+                value={note.id}
+              >
+                Delete
+              </Button>
+            </fetcher.Form>
+          ) : null}
+        </div>
+      </div>
+    </div>
+  )
 }
 
 export function ErrorBoundary() {
