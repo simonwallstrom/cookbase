@@ -41,7 +41,6 @@ export default function Settings() {
           <p className="mt-3 text-balance">Nice to see you again! What are you cooking today?</p>
         )}
       </div>
-
       <div className="mt-6 grid gap-6 sm:mt-12 sm:gap-12 lg:grid-cols-3">
         <div className="flex flex-col items-center justify-center bg-gray-100 p-6 text-center sm:p-12 dark:border dark:bg-gray-900">
           <h2 className="font-medium text-gray-500">Total recipes</h2>
@@ -108,7 +107,6 @@ export default function Settings() {
           </div>
         </div>
       </div>
-
       <div className="mt-6 sm:mt-12">
         <div className="bg-gray-100 p-6 sm:p-12 dark:border dark:bg-gray-900">
           <h2 className="text-2xl font-semibold">Recent activity</h2>

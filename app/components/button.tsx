@@ -4,7 +4,7 @@ import { cva, cx } from '../lib/cva.config'
 
 export const buttonVariants = cva({
   base: [
-    'inline-flex touch-none select-none outline-none outline-offset-2 disabled:pointer-events-none',
+    'inline-flex touch-none select-none outline-none outline-offset-2 disabled:pointer-events-none disabled:opacity-50',
   ],
   variants: {
     variant: {

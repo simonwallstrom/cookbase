@@ -10,6 +10,7 @@ import {
 } from '@remix-run/react'
 import { formatDistanceToNow } from 'date-fns'
 import { type ElementRef, useEffect, useRef } from 'react'
+import { toast } from 'sonner'
 import { z } from 'zod'
 import { Button } from '~/components/button'
 import { Link } from '~/components/link'
@@ -63,7 +64,14 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const result = schema.safeParse({ ...Object.fromEntries(formData), recipeId: params.id })
 
   if (!result.success) {
-    return json({ errors: result.error.flatten() }, { status: 400 })
+    return json(
+      {
+        errors: result.error.flatten(),
+        message: '',
+        _action: '',
+      },
+      { status: 400 },
+    )
   }
 
   if (result.data._action === 'ADD_NOTE') {
@@ -76,12 +84,22 @@ export async function action({ request, params }: ActionFunctionArgs) {
       },
     })
 
-    return json({ errors: null }, { status: 200 })
+    return json(
+      { errors: null, message: 'Note added', _action: 'ADD_NOTE' },
+      {
+        status: 200,
+      },
+    )
   }
 
   if (result.data._action === 'DELETE_NOTE') {
     await deleteNote({ id: result.data.noteId, organizationId: orgId, userId })
-    return json({ errors: null }, { status: 200 })
+    return json(
+      { errors: null, message: 'Note deleted', _action: 'DELETE_NOTE' as const },
+      {
+        status: 200,
+      },
+    )
   }
 
   if (result.data._action === 'RESOLVE_NOTE') {
@@ -91,7 +109,12 @@ export async function action({ request, params }: ActionFunctionArgs) {
       userId,
       isResolved: true,
     })
-    return json({ errors: null }, { status: 200 })
+    return json(
+      { errors: null, message: 'Note resolved', _action: 'RESOLVE_NOTE' },
+      {
+        status: 200,
+      },
+    )
   }
 
   if (result.data._action === 'UNRESOLVE_NOTE') {
@@ -101,7 +124,10 @@ export async function action({ request, params }: ActionFunctionArgs) {
       userId,
       isResolved: false,
     })
-    return json({ errors: null }, { status: 200 })
+    return json(
+      { errors: null, message: 'Note unresolved', _action: 'UNRESOLVE_NOTE' },
+      { status: 200 },
+    )
   }
 }
 
@@ -116,17 +142,21 @@ export default function RecipeId() {
 
   const navigation = useNavigation()
   const isAddingNote =
-    navigation.state !== 'idle' && navigation.formData?.get('_action') === 'ADD_NOTE'
+    navigation.state === 'submitting' && navigation.formData?.get('_action') === 'ADD_NOTE'
 
   const addNoteFormRef = useRef<ElementRef<'form'>>(null)
   const addNoteMessageRef = useRef<ElementRef<'textarea'>>(null)
 
   useEffect(() => {
-    if (!isAddingNote) {
+    if (actionData?._action === 'ADD_NOTE') {
+      toast(actionData?.message)
       addNoteFormRef.current?.reset()
       addNoteMessageRef.current?.focus()
     }
-  }, [isAddingNote])
+    if (actionData?._action === 'DELETE_NOTE') toast(actionData?.message)
+    if (actionData?._action === 'RESOLVE_NOTE') toast(actionData?.message)
+    if (actionData?._action === 'UNRESOLVE_NOTE') toast(actionData?.message)
+  }, [actionData])
 
   return (
     <>
@@ -278,23 +308,7 @@ export default function RecipeId() {
                         }
                         value={note.id}
                       >
-                        {note.isResolved ? (
-                          <span>
-                            {navigation.state !== 'idle' &&
-                            navigation.formData?.get('_action') === 'UNRESOLVE_NOTE' &&
-                            navigation.formData?.get('noteId') === note.id
-                              ? 'Unresolving...'
-                              : 'Unresolve'}
-                          </span>
-                        ) : (
-                          <span>
-                            {navigation.state !== 'idle' &&
-                            navigation.formData?.get('_action') === 'RESOLVE_NOTE' &&
-                            navigation.formData?.get('noteId') === note.id
-                              ? 'Resolving...'
-                              : 'Resolve'}
-                          </span>
-                        )}
+                        {note.isResolved ? <span>Unresolve</span> : <span>Resolve</span>}
                       </Button>
                     </Form>
                     {note.user.id === currentUserId ? (
@@ -310,11 +324,7 @@ export default function RecipeId() {
                           }
                           value={note.id}
                         >
-                          {navigation.state !== 'idle' &&
-                          navigation.formData?.get('_action') === 'DELETE_NOTE' &&
-                          navigation.formData?.get('noteId') === note.id
-                            ? 'Deleting...'
-                            : 'Delete'}
+                          Delete
                         </Button>
                       </Form>
                     ) : null}
@@ -351,7 +361,7 @@ export default function RecipeId() {
               ) : null}
             </div>
             <div>
-              <Button>{isAddingNote ? 'Adding...' : 'Add note'}</Button>
+              <Button disabled={isAddingNote}>Add note</Button>
             </div>
           </Form>
         </div>

@@ -2,6 +2,7 @@ import { Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/reac
 import type { LinksFunction, MetaFunction } from '@remix-run/node'
 
 import './tailwind.css'
+import { Toaster } from '~/components/toaster'
 
 export const links: LinksFunction = () => [
   { rel: 'icon', href: '/favicon.svg' },
@@ -26,6 +27,7 @@ export default function App() {
       </head>
       <body className="flex min-h-full w-full flex-col">
         <Outlet />
+        <Toaster />
         <ScrollRestoration />
         <Scripts />
       </body>
