@@ -1,5 +1,5 @@
 import { json, redirect, type LoaderFunctionArgs, type ActionFunctionArgs } from '@remix-run/node'
-import { Form, useActionData, useLoaderData } from '@remix-run/react'
+import { Form, useActionData, useLoaderData, useNavigation } from '@remix-run/react'
 import { useCallback } from 'react'
 import { z } from 'zod'
 import { Button } from '~/components/button'
@@ -41,6 +41,7 @@ export async function action({ request }: ActionFunctionArgs) {
 export default function SettingsProfileName() {
   const { user } = useLoaderData<typeof loader>()
   const actionData = useActionData<typeof action>()
+  const navigation = useNavigation()
 
   const ref = useCallback((node: HTMLInputElement) => {
     node?.focus()
@@ -85,7 +86,7 @@ export default function SettingsProfileName() {
         </div>
 
         <div className="mt-6 flex items-center gap-6 md:mt-10">
-          <Button>Update name</Button>
+          <Button disabled={navigation.state !== 'idle'}>Update name</Button>
           <Link to="/settings#profile">Cancel</Link>
         </div>
       </Form>

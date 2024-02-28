@@ -1,9 +1,11 @@
-import { NavLink as RemixNavLink, Outlet } from '@remix-run/react'
+import { NavLink as RemixNavLink, Outlet, useNavigation } from '@remix-run/react'
+import { ProgressBar } from '~/components/progress-bar'
 
 export default function AppLayout() {
   return (
     <>
       <Header />
+      <ProgressBar />
       <main className="mx-auto w-full max-w-7xl px-6 pb-64 pt-6 sm:px-12 sm:pt-12">
         <Outlet />
       </main>
@@ -27,6 +29,8 @@ function Header() {
 }
 
 function NavLink({ to, children }: { to: string; children: React.ReactNode }) {
+  const navigation = useNavigation()
+  console.log(to, navigation.location?.pathname)
   return (
     <RemixNavLink
       prefetch="intent"
@@ -37,7 +41,9 @@ function NavLink({ to, children }: { to: string; children: React.ReactNode }) {
       }
       to={to}
     >
-      <span className="inline-flex group-focus-visible:bg-yellow-300 group-focus-visible:text-gray-950">
+      <span
+        className={`inline-flex ${navigation.state === 'loading' && navigation.location.pathname.includes(to) ? 'text-gray-950 dark:text-gray-300' : ''} ${navigation.state === 'loading' && navigation.location.pathname !== to ? 'text-gray-500' : ''} group-focus-visible:bg-yellow-300 group-focus-visible:text-gray-950`}
+      >
         {children}
       </span>
     </RemixNavLink>

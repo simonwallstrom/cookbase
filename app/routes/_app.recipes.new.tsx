@@ -1,5 +1,5 @@
 import { json, redirect, type LoaderFunctionArgs, type ActionFunctionArgs } from '@remix-run/node'
-import { Form, useActionData, useLoaderData } from '@remix-run/react'
+import { Form, useActionData, useLoaderData, useNavigation } from '@remix-run/react'
 import { z } from 'zod'
 import { Button } from '~/components/button'
 import { Input } from '~/components/input'
@@ -47,6 +47,7 @@ export async function action({ request }: ActionFunctionArgs) {
 export default function Home() {
   const data = useLoaderData<typeof loader>()
   const actionData = useActionData<typeof action>()
+  const navigation = useNavigation()
 
   return (
     <div className="max-w-2xl">
@@ -165,8 +166,8 @@ export default function Home() {
             </div>
           ) : null}
         </div>
-        <div className="mt-6 flex items-center gap-6 font-medium md:mt-10 md:gap-10">
-          <Button>Create recipe</Button>
+        <div className="mt-6 flex items-center gap-6 font-medium md:mt-10">
+          <Button disabled={navigation.state !== 'idle'}>Create recipe</Button>
           <Link to="/recipes">Cancel</Link>
         </div>
       </Form>

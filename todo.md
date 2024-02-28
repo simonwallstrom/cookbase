@@ -15,13 +15,13 @@
 - [x] Notes – Pending UI and clear inputs on submission
 - [x] Add toast notification(Sonner) for note actions
 - [x] Move recipe notes into a separate component
+- [x] Pending UI
+- [ ] Recent activity
 - [ ] Settings – Delete user
 - [ ] Settings – Delete org
-- [ ] Recent activity
 - [ ] Implement Request access-form
 - [ ] Add changelog
-- [ ] Add error boundaries
-- [ ] Pending UI
+- [ ] Add error boundary components
 - [ ] Add redirectTo on login
 - [ ] Destructure all data from loaderData, this way we know explicitly which data is used
 

@@ -4,6 +4,7 @@ import {
   isRouteErrorResponse,
   useActionData,
   useLoaderData,
+  useNavigation,
   useRouteError,
 } from '@remix-run/react'
 import { z } from 'zod'
@@ -74,9 +75,10 @@ export async function action({ request, params }: ActionFunctionArgs) {
 export default function Home() {
   const data = useLoaderData<typeof loader>()
   const actionData = useActionData<typeof action>()
+  const navigation = useNavigation()
 
   return (
-    <div className="mx-auto max-w-2xl">
+    <div className="max-w-2xl">
       <div className="grid gap-2">
         <h1 className="text-3xl font-semibold">Edit recipe</h1>
         <p className="text-gray-500">
@@ -194,8 +196,8 @@ export default function Home() {
             </div>
           ) : null}
         </div>
-        <div className="mt-6 flex items-center gap-6 font-medium md:mt-10 md:gap-10">
-          <Button>Create recipe</Button>
+        <div className="mt-6 flex items-center gap-6 font-medium md:mt-10">
+          <Button disabled={navigation.state !== 'idle'}>Update recipe</Button>
           <Link to="/recipes">Cancel</Link>
         </div>
       </Form>

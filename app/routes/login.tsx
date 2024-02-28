@@ -1,5 +1,5 @@
 import type { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node'
-import { Form, json, redirect, useActionData } from '@remix-run/react'
+import { Form, json, redirect, useActionData, useNavigation } from '@remix-run/react'
 import { z } from 'zod'
 import { Button } from '~/components/button'
 import { Input } from '~/components/input'
@@ -50,6 +50,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
 export default function Login() {
   const actionData = useActionData<typeof action>()
+  const navigation = useNavigation()
 
   return (
     <div className="flex flex-1 flex-col items-center justify-center p-6">
@@ -93,7 +94,9 @@ export default function Login() {
             ) : null}
           </div>
           <div>
-            <Button className="w-full">Login to continue</Button>
+            <Button disabled={navigation.state !== 'idle'} className="w-full">
+              Login to continue
+            </Button>
           </div>
         </Form>
         <div className="mt-8 text-sm text-gray-500">

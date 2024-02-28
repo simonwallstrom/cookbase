@@ -186,10 +186,19 @@ export default function Settings() {
                 </Form>
               </div>
             </div>
-            {data.invitation?.isEnabled ? (
+            {data.invitation?.isEnabled || navigation.formData?.get('enabled') === 'on' ? (
               <div className="md:ml-44">
                 <div className="mt-4 flex flex-col gap-2 sm:flex-row">
-                  <Input readOnly className="flex-1 md:max-w-96" value={data.inviteLink} />
+                  <Input
+                    disabled={
+                      (navigation.state !== 'idle' &&
+                        navigation.formData?.get('_action') === 'RESET_LINK') ||
+                      navigation.formData?.get('_action') === 'TOGGLE_LINK'
+                    }
+                    readOnly
+                    className="flex-1 md:max-w-96"
+                    value={data.inviteLink}
+                  />
                   <Button className="w-full sm:w-28" onClick={handleCopyInviteLink}>
                     {copyInviteLink ? <span>Copied!</span> : <span>Copy&nbsp;link</span>}
                   </Button>
@@ -203,14 +212,13 @@ export default function Settings() {
                       variant="link"
                       type="submit"
                       name="_action"
-                      disabled={navigation.state !== 'idle'}
+                      disabled={
+                        navigation.state !== 'idle' &&
+                        navigation.formData?.get('_action') === 'RESET_LINK'
+                      }
                       value="RESET_LINK"
                     >
-                      {navigation.state !== 'idle' ? (
-                        <span>Resetting...</span>
-                      ) : (
-                        <span>reset&nbsp;the&nbsp;link</span>
-                      )}
+                      reset&nbsp;the&nbsp;link
                     </Button>
                   </div>
                 </Form>

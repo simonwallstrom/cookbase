@@ -4,6 +4,7 @@ import {
   isRouteErrorResponse,
   useActionData,
   useLoaderData,
+  useNavigation,
   useRouteError,
 } from '@remix-run/react'
 import { z } from 'zod'
@@ -76,6 +77,7 @@ export async function action({ request }: ActionFunctionArgs) {
 export default function Signup() {
   const { invite } = useLoaderData<typeof loader>()
   const actionData = useActionData<typeof action>()
+  const navigation = useNavigation()
 
   return (
     <div className="flex flex-1 flex-col items-center justify-center p-6">
@@ -149,7 +151,9 @@ export default function Signup() {
             ) : null}
           </div>
           <div>
-            <Button className="w-full">Create account</Button>
+            <Button disabled={navigation.state !== 'idle'} className="w-full">
+              Create account
+            </Button>
           </div>
         </Form>
         <div className="mt-8 text-sm text-gray-500">
