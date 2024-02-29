@@ -1,7 +1,9 @@
 import type { LoaderFunctionArgs } from '@remix-run/node'
 import { json, useLoaderData, useSearchParams } from '@remix-run/react'
+import { formatDistanceToNow } from 'date-fns'
 import { Link } from '~/components/link'
 import { requireAuth } from '~/lib/auth.server'
+import { getActivity } from '~/models/activity.server'
 import { getTopCuisines } from '~/models/cuisine.server'
 import { getTopMealTypes } from '~/models/meal-type.server'
 import { getMembersById } from '~/models/organization.server'
@@ -15,11 +17,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const recipeCount = await getRecipeCount(orgId)
   const topMealTypes = await getTopMealTypes(orgId)
   const topCuisines = await getTopCuisines(orgId)
+  const activity = await getActivity({ organizationId: orgId })
 
-  return json({ user, members, recipeCount, topMealTypes, topCuisines })
+  return json({ user, members, recipeCount, topMealTypes, topCuisines, activity })
 }
 
-export default function Settings() {
+export default function Home() {
   const data = useLoaderData<typeof loader>()
   const [params] = useSearchParams()
   const newOwner = params.has('new-owner')
@@ -107,33 +110,43 @@ export default function Settings() {
           </div>
         </div>
       </div>
-      <div className="mt-6 sm:mt-12">
-        <div className="bg-gray-100 p-6 sm:p-12 dark:border dark:bg-gray-900">
-          <h2 className="text-2xl font-semibold">Recent activity</h2>
-          <p className="mt-2 text-pretty text-gray-600 dark:text-gray-400">
-            Here is a summary of what happened on your account lately.
-          </p>
-          <div className="mt-6 divide-y divide-dashed border-y border-dashed">
-            <div className="py-3">
-              <div className="text-sm text-gray-500">2 hours ago</div>
-              <p>
-                You added the recipe <Link to="/home">Smash burgers</Link>
-              </p>
+
+      {/* Real activity */}
+      <Activity />
+    </div>
+  )
+}
+
+function Activity() {
+  const { user, activity } = useLoaderData<typeof loader>()
+  return (
+    <div className="mt-6 sm:mt-12">
+      <div className="bg-gray-100 p-6 sm:p-12 dark:border dark:bg-gray-900">
+        <h2 className="text-2xl font-semibold">Recent activity</h2>
+        <p className="mt-2 text-pretty text-gray-600 dark:text-gray-400">
+          Here is a summary of what happened on your account lately.
+        </p>
+        <div className="mt-6 divide-y divide-dashed border-y border-dashed">
+          {activity.map((a) => (
+            <div key={a.id} className="py-3">
+              <div className="text-sm text-gray-500">
+                {formatDistanceToNow(new Date(a.createdAt))} ago
+              </div>
+              {a.type === 'RECIPE' ? (
+                <p>
+                  {user?.id === a.user.id ? 'You' : a.user.firstName} added the recipe{' '}
+                  <Link to={`/recipes/${a.recipe?.id}`}>{a.recipe?.title}</Link>
+                </p>
+              ) : null}
+              {a.type === 'NOTE' ? (
+                <p>
+                  {user?.id === a.user.id ? 'You' : a.user.firstName} left a{' '}
+                  <Link to={`/recipes/${a.recipe?.id}#${a.note?.id}`}>note</Link> on the recipe{' '}
+                  <Link to={`/recipes/${a.recipe?.id}`}>{a.recipe?.title}</Link>
+                </p>
+              ) : null}
             </div>
-            <div className="py-3">
-              <div className="text-sm text-gray-500">3 days ago</div>
-              <p>
-                Lisa added the recipe <Link to="/home">Taquitos</Link>
-              </p>
-            </div>
-            <div className="py-3">
-              <div className="text-sm text-gray-500">4 days ago</div>
-              <p>
-                Lisa left a <Link to="/home">comment</Link> on your recipe{' '}
-                <Link to="/home">Lasagne med soltorkade tomater</Link>
-              </p>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </div>

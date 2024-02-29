@@ -30,7 +30,7 @@ function Header() {
 
 function NavLink({ to, children }: { to: string; children: React.ReactNode }) {
   const navigation = useNavigation()
-  console.log(to, navigation.location?.pathname)
+
   return (
     <RemixNavLink
       prefetch="intent"

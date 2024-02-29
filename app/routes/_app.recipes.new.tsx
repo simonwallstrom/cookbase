@@ -38,7 +38,18 @@ export async function action({ request }: ActionFunctionArgs) {
   }
 
   const recipe = await prisma.recipe.create({
-    data: { ...result.data, userId, organizationId: orgId },
+    data: {
+      ...result.data,
+      userId,
+      organizationId: orgId,
+      activity: {
+        create: {
+          type: 'RECIPE',
+          organizationId: orgId,
+          userId,
+        },
+      },
+    },
   })
 
   return redirect(`/recipes/${recipe.id}`)

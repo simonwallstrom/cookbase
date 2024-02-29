@@ -13,9 +13,10 @@ import {
   useRouteError,
   useSearchParams,
   useFetcher,
+  useLocation,
 } from '@remix-run/react'
 import { formatDistanceToNow } from 'date-fns'
-import { type ElementRef, useEffect, useRef } from 'react'
+import { type ElementRef, useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { z } from 'zod'
 import { Button } from '~/components/button'
@@ -87,6 +88,14 @@ export async function action({ request, params }: ActionFunctionArgs) {
         message: result.data.message,
         userId,
         organizationId: orgId,
+        activity: {
+          create: {
+            type: 'NOTE',
+            recipeId: result.data.recipeId,
+            organizationId: orgId,
+            userId,
+          },
+        },
       },
     })
 
@@ -359,9 +368,20 @@ function Note({
   currentUserId: string
 }) {
   const fetcher = useFetcher()
+  const location = useLocation()
+  const [highlightNote, setHighlightNote] = useState(false)
+
+  useEffect(() => {
+    setHighlightNote(location.hash.includes(note.id))
+  }, [location, note])
+
   return (
-    <div id={note.id} className="py-4">
-      <div className="max-w-2xl">
+    <div id={note.id} className="relative scroll-mt-20 py-4">
+      <div
+        className={`absolute -inset-x-6 inset-y-0 -m-px border bg-gray-800/40 opacity-0 transition-opacity delay-300 ${highlightNote ? 'opacity-100' : ''}`}
+      />
+
+      <div className="relative max-w-2xl">
         <div className="flex items-center gap-1 text-sm text-gray-500">
           <div>{note.user.firstName}</div>
           <div className="font-serif font-bold">·</div>
