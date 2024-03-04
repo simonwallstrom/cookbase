@@ -101,6 +101,7 @@ model Activity {
   type           ActivityType
   recipe         Recipe?      @relation(fields: [recipeId], references: [id], onDelete: Cascade)
   recipeId       String?
+  recipeName     String?
   note           Note?        @relation(fields: [noteId], references: [id], onDelete: Cascade)
   noteId         String?
 }

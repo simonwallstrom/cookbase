@@ -8,6 +8,7 @@ export async function getActivity({ organizationId }: { organizationId: Organiza
       id: true,
       createdAt: true,
       type: true,
+      recipeName: true,
       user: {
         select: {
           id: true,
@@ -26,6 +27,7 @@ export async function getActivity({ organizationId }: { organizationId: Organiza
         },
       },
     },
+    take: 10,
     orderBy: {
       createdAt: 'desc',
     },

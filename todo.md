@@ -16,7 +16,8 @@
 - [x] Add toast notification(Sonner) for note actions
 - [x] Move recipe notes into a separate component
 - [x] Pending UI
-- [ ] Recent activity
+- [x] Recent activity
+- [ ] Delete recipe
 - [ ] Settings – Delete user
 - [ ] Settings – Delete org
 - [ ] Implement Request access-form

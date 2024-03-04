@@ -132,12 +132,21 @@ function Activity() {
               <div className="text-sm text-gray-500">
                 {formatDistanceToNow(new Date(a.createdAt))} ago
               </div>
-              {a.type === 'RECIPE' ? (
+              {a.type === 'RECIPE' && a.recipe?.title ? (
                 <p>
                   {user?.id === a.user.id ? 'You' : a.user.firstName} added the recipe{' '}
-                  <Link to={`/recipes/${a.recipe?.id}`}>{a.recipe?.title}</Link>
+                  <Link to={`/recipes/${a.recipe.id}`}>{a.recipe.title}</Link>
                 </p>
               ) : null}
+
+              {a.type === 'RECIPE' && a.recipeName ? (
+                <p>
+                  {user?.id === a.user.id ? 'You' : a.user.firstName} deleted the recipe {'"'}
+                  {a.recipeName}
+                  {'"'}
+                </p>
+              ) : null}
+
               {a.type === 'NOTE' ? (
                 <p>
                   {user?.id === a.user.id ? 'You' : a.user.firstName} left a{' '}

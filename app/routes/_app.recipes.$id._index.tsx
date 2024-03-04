@@ -12,6 +12,7 @@ import {
   useNavigation,
   useRouteError,
   useSearchParams,
+  Link as RemixLink,
   useFetcher,
   useLocation,
 } from '@remix-run/react'
@@ -26,6 +27,13 @@ import { requireAuth } from '~/lib/auth.server'
 import { prisma } from '~/lib/prisma.server'
 import { deleteNote, getNotes, updateNoteStatus } from '~/models/note.server'
 import { getRecipe } from '~/models/recipe.server'
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '~/components/dropdown-menu'
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   const { userId, orgId } = await requireAuth(request)
@@ -162,9 +170,23 @@ export default function RecipeId() {
           <span>/</span>
           <span className="truncate text-gray-500">{recipe.title}</span>
         </div>
-        <Link variant="button" to="edit">
-          Edit
-        </Link>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button className="flex gap-2">
+              <span>Options</span>
+              <span>▾</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem asChild>
+              <RemixLink to="edit">Edit</RemixLink>
+            </DropdownMenuItem>
+            <DropdownMenuItem>Share</DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <RemixLink to="delete">Delete</RemixLink>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </header>
 
       {/* Title and meta */}
@@ -273,9 +295,6 @@ function Notes() {
       addNoteFormRef.current?.reset()
       addNoteMessageRef.current?.focus()
     }
-    if (actionData?._action === 'DELETE_NOTE') toast(actionData?.message)
-    if (actionData?._action === 'RESOLVE_NOTE') toast(actionData?.message)
-    if (actionData?._action === 'UNRESOLVE_NOTE') toast(actionData?.message)
   }, [actionData])
 
   return (
@@ -367,13 +386,25 @@ function Note({
   note: SerializeFrom<typeof loader>['notes'][number]
   currentUserId: string
 }) {
-  const fetcher = useFetcher()
+  const fetcher = useFetcher<typeof action>()
   const location = useLocation()
+  const [lastAction, setLastAction] = useState('')
   const [highlightNote, setHighlightNote] = useState(false)
 
   useEffect(() => {
     setHighlightNote(location.hash.includes(note.id))
   }, [location, note])
+
+  useEffect(() => {
+    const action = fetcher.data?._action
+    const message = fetcher.data?.message
+
+    // Check if there's an action and it's different from the last one
+    if (action && action !== lastAction) {
+      toast(message)
+      setLastAction(action) // Update the last action
+    }
+  }, [fetcher, lastAction]) // Depend on `lastAction` too
 
   return (
     <div id={note.id} className="relative scroll-mt-20 py-4">

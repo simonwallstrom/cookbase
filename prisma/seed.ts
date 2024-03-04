@@ -24,6 +24,12 @@ async function seed() {
   await prisma.cuisine.deleteMany()
   console.log('❌ Deleted records in cuisine table')
 
+  await prisma.activity.deleteMany()
+  console.log('❌ Deleted records in activity table')
+
+  await prisma.note.deleteMany()
+  console.log('❌ Deleted records in note table')
+
   // ----------------------------------------------------------------------------------------------
   // Create all global meal types
   // ----------------------------------------------------------------------------------------------
@@ -105,6 +111,13 @@ async function seed() {
           cuisineId: cuisines[10]?.id, // Italian
         },
       },
+      activity: {
+        create: {
+          type: 'RECIPE',
+          organizationId: org1.id,
+          recipeId: recipes[0].id,
+        },
+      },
     },
   })
 
@@ -136,6 +149,13 @@ async function seed() {
           cuisineId: cuisines[1]?.id, // American
         },
       },
+      activity: {
+        create: {
+          type: 'RECIPE',
+          organizationId: org1.id,
+          recipeId: recipes[1].id,
+        },
+      },
     },
   })
 
@@ -165,6 +185,13 @@ async function seed() {
           organizationId: org2.id,
           mealTypeId: mealTypes[2]?.id, // Weeknight dinner
           cuisineId: cuisines[15]?.id, // Nordic
+        },
+      },
+      activity: {
+        create: {
+          type: 'RECIPE',
+          organizationId: org2.id,
+          recipeId: recipes[2].id,
         },
       },
     },
@@ -218,6 +245,7 @@ function getCuisines() {
 
 const recipes = [
   {
+    id: 'clt8g1g5a0000kqsldoky4vr7',
     title: 'Lasagne med soltorkade tomater',
     servings: 4,
     ingredients:
@@ -226,6 +254,7 @@ const recipes = [
       'Bechamelsås:\nSmält smöret i en kastrull. Vispa ner mjölet.\nTillsätt mjölken lite i taget, koka upp och låt koka under fortsatt vispning 3-5 min. Smaka av med salt och peppar.\n\nKöttfärssåsen:\nBryn färsen i en kastrull. Skala och skär lök och purjolök.\nSkär zucchinin i små bitar och stek den tillsammans med löken och solroskärnor.\nBlanda färsen med lökblandningen, rött vin, krossade tomater och alla kryddor till en smakrik köttfärssås. Låt sjuda i ca 10 minuter.\nVarva köttfärssås, gräddblandningen och lasagneplattor i en form. Avsluta med ett fint lager riven Grana Padano på toppen.\nTillaga lasagnen i ugnen på 225 grader i cirka 20-30 minuter, tills den har fått fin färg.',
   },
   {
+    id: 'clt8g1oem0000kqsle4rn4b09',
     title: 'Smash burger med karamelliserad lök',
     servings: 4,
     ingredients:
@@ -234,6 +263,7 @@ const recipes = [
       'Bechamelsås:\nSmält smöret i en kastrull. Vispa ner mjölet.\nTillsätt mjölken lite i taget, koka upp och låt koka under fortsatt vispning 3-5 min. Smaka av med salt och peppar.\n\nKöttfärssåsen:\nBryn färsen i en kastrull. Skala och skär lök och purjolök.\nSkär zucchinin i små bitar och stek den tillsammans med löken och solroskärnor.\nBlanda färsen med lökblandningen, rött vin, krossade tomater och alla kryddor till en smakrik köttfärssås. Låt sjuda i ca 10 minuter.\nVarva köttfärssås, gräddblandningen och lasagneplattor i en form. Avsluta med ett fint lager riven Grana Padano på toppen.\nTillaga lasagnen i ugnen på 225 grader i cirka 20-30 minuter, tills den har fått fin färg.',
   },
   {
+    id: 'clt8g1u980000kqsl88590hk3',
     title: 'Tonfisk i currysås med ris',
     servings: 4,
     ingredients:
