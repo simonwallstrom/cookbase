@@ -17,7 +17,9 @@
 - [x] Move recipe notes into a separate component
 - [x] Pending UI
 - [x] Recent activity
-- [ ] Delete recipe
+- [x] Delete recipe
+- [x] Search
+- [ ] Auto-tag with AI
 - [ ] Settings – Delete user
 - [ ] Settings – Delete org
 - [ ] Implement Request access-form
@@ -28,46 +30,6 @@
 
 
 ## Feature ideas
-
-### Recipe notes
-
-Add comments to each recipe. Should it be possible to "resolve" comments like in Google Docs?
-
-
-### Activity
-
-Log the following actions in a table called `Activity`:
-
-* When a user creates a recipe
-* When a user comments on a recipe
-* When a user updates a recipe
-* When a user was added
-* When a user was removed
-
-Database columns:
-
-* user_id
-* recipe_id
-* comment_id
-
-Database design inspiration:
-
-```
-id | user_id | org_id | created_at | action | trackable_id | trackable_type
-1  |       1 |      5 |   datetime | Action |            3 |         Type
-
-enum Action {
-  CREATE
-  UPDATE
-  DELETE
-}
-
-enum Type {
-  RECIPE
-  COMMENT
-}
-```
-
 
 ### Meal planner
 

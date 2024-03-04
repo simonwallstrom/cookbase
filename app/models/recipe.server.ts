@@ -4,14 +4,13 @@ import { prisma } from '~/lib/prisma.server'
 import type { filterSchema } from '~/routes/_app.recipes._index'
 
 function parseFilters(input: string | undefined) {
-  if (input === 'all' || undefined) {
+  if (input === 'all' || undefined || input?.length === 0) {
     return undefined
   }
   return input
 }
 
 export async function getRecipeCount(organizationId: Organization['id'], filters?: filterSchema) {
-  console.log(organizationId)
   const totalCount = await prisma.recipe.count({
     where: {
       organizationId,
@@ -30,6 +29,9 @@ export async function getRecipeCount(organizationId: Organization['id'], filters
       user: {
         firstName: parseFilters(filters?.member),
       },
+      title: {
+        search: parseFilters(filters?.search),
+      },
     },
   })
 
@@ -39,6 +41,11 @@ export async function getRecipeCount(organizationId: Organization['id'], filters
 export async function getRecipes(organizationId: Organization['id'], filters: filterSchema) {
   const take = PAGINATE_BY
   const skip = filters.page ? take * (filters.page - 1) : undefined
+
+  const parsedSearch = parseFilters(filters.search)
+  const trimmedSearch = parsedSearch ? parsedSearch.split(' ').join(' <-> ') : undefined
+
+  console.log('___________________________________________trimmedSearch', trimmedSearch)
 
   return prisma.recipe.findMany({
     where: {
@@ -51,6 +58,9 @@ export async function getRecipes(organizationId: Organization['id'], filters: fi
       },
       user: {
         firstName: parseFilters(filters.member),
+      },
+      title: {
+        search: trimmedSearch,
       },
     },
     include: {
