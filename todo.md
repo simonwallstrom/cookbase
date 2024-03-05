@@ -19,23 +19,16 @@
 - [x] Recent activity
 - [x] Delete recipe
 - [x] Search
-- [ ] Auto-tag with AI
+- [ ] Add PWA support
+- [ ] Share a public link to a recipe
 - [ ] Settings – Delete user
 - [ ] Settings – Delete org
 - [ ] Implement Request access-form
 - [ ] Add changelog
 - [ ] Add error boundary components
 - [ ] Add redirectTo on login
+- [ ] Auto-tag with AI
 - [ ] Destructure all data from loaderData, this way we know explicitly which data is used
 
-
-## Feature ideas
-
-### Meal planner
-
-Plan meals for the coming week, pull in recipes and put them in a calendar view
-
-
-### Groceries
 
 Copy selected ingredients to the clipboard and paste into Apple reminders
