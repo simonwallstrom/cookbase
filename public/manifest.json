@@ -1,0 +1,17 @@
+{
+  "short_name": "Cookbase",
+  "name": "Cookbase – Recipe organizer for families",
+  "start_url": "/",
+  "background_color": "#131316",
+  "display": "standalone",
+  "scope": "/",
+  "shortcuts": [
+    {
+      "name": "Family recipes",
+      "short_name": "Recipes",
+      "description": "View all my recipes",
+      "url": "/recipes"
+    }
+  ],
+  "description": "Recipe organizer for families"
+}

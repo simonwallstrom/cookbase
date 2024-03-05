@@ -1,6 +1,7 @@
 import type { Config } from 'tailwindcss'
 import colors from 'tailwindcss/colors'
 import { fontFamily } from 'tailwindcss/defaultTheme'
+import type { PluginAPI } from 'tailwindcss/types/config'
 
 export default {
   content: ['./app/**/*.{js,jsx,ts,tsx}'],
@@ -26,5 +27,9 @@ export default {
   future: {
     hoverOnlyWhenSupported: true,
   },
-  plugins: [],
+  plugins: [
+    function ({ addVariant }: PluginAPI) {
+      addVariant('standalone', '@media all and (display-mode: standalone)')
+    },
+  ],
 } satisfies Config

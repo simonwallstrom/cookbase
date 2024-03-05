@@ -10,7 +10,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export default function Index() {
   return (
-    <div className="flex flex-1 flex-col items-center justify-center">
+    <div className="relative flex flex-1 flex-col items-center justify-center">
       <div className="mx-auto max-w-md text-center">
         <h1 className="text-5xl font-semibold tracking-tight">Cookbase</h1>
         <p className="ml-0.5 mt-1 font-medium">Recipe organizer for families</p>

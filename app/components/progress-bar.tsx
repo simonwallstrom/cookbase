@@ -29,7 +29,7 @@ function ProgressBar() {
       role="progressbar"
       aria-hidden={delayedPending ? undefined : true}
       aria-valuetext={delayedPending ? 'Loading' : undefined}
-      className="fixed inset-x-0 left-0 z-50 h-px animate-pulse max-sm:bottom-16 sm:top-16"
+      className="fixed inset-x-0 left-0 z-50 h-px animate-pulse max-sm:bottom-[calc(theme('spacing.16')_+_env(safe-area-inset-bottom))] sm:top-16"
     >
       <div
         ref={ref}
