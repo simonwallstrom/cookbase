@@ -19,7 +19,7 @@
 - [x] Recent activity
 - [x] Delete recipe
 - [x] Search
-- [ ] Add PWA support
+- [x] Add PWA support
 - [ ] Share a public link to a recipe
 - [ ] Settings – Delete user
 - [ ] Settings – Delete org
