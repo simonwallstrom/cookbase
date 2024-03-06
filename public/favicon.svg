@@ -7,7 +7,7 @@
   @media (prefers-color-scheme: dark) {
     #plate-outer,
     #plate-inner {
-      fill: white;
+      fill: #D4D4D8;
     }
   }
 </style>
