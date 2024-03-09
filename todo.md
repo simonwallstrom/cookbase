@@ -20,7 +20,7 @@
 - [x] Delete recipe
 - [x] Search
 - [x] Add PWA support
-- [ ] Share a public link to a recipe
+- [x] Share a public link to a recipe
 - [ ] Settings – Delete user
 - [ ] Settings – Delete org
 - [ ] Implement Request access-form

@@ -10,7 +10,7 @@ const Switch = React.forwardRef<React.ElementRef<typeof SwitchPrimitives.Root>, 
   ({ className, ...props }, ref) => (
     <SwitchPrimitives.Root
       className={cx(
-        'peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-950 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-gray-950 data-[state=unchecked]:bg-gray-300 dark:focus-visible:ring-gray-100 dark:data-[state=checked]:bg-gray-300 dark:data-[state=unchecked]:bg-gray-700',
+        'peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent outline-none transition-colors focus-visible:outline-1 focus-visible:outline-gray-950 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-gray-950 data-[state=unchecked]:bg-gray-300 dark:focus-visible:outline-gray-300 dark:data-[state=checked]:bg-gray-300 dark:data-[state=unchecked]:bg-gray-700',
         className,
       )}
       {...props}

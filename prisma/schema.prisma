@@ -68,6 +68,7 @@ model Recipe {
   organizationId String
   notes          Note[]
   activity       Activity[]
+  isPublic       Boolean      @default(false)
 }
 
 model Note {

@@ -92,3 +92,27 @@ export async function getRecipe({
     },
   })
 }
+
+export async function getPublicRecipe({ id }: { id: Recipe['id'] }) {
+  return prisma.recipe.findFirst({
+    where: { id, isPublic: true },
+    include: {
+      mealType: true,
+      cuisine: true,
+      organization: true,
+    },
+  })
+}
+
+export async function toggleShareRecipe(
+  organizationId: Organization['id'],
+  id: Recipe['id'],
+  isPublic: Recipe['isPublic'],
+) {
+  return prisma.recipe.update({
+    where: { id, organizationId },
+    data: {
+      isPublic: isPublic,
+    },
+  })
+}

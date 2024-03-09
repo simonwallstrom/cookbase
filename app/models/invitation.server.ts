@@ -40,6 +40,7 @@ export async function toggleInvitation(
     },
   })
 }
+
 export async function resetInvitation(
   organizationId: Organization['id'],
   invitationId: Invitation['id'],

@@ -15,6 +15,7 @@ import {
   Link as RemixLink,
   useFetcher,
   useLocation,
+  useSubmit,
 } from '@remix-run/react'
 import { formatDistanceToNow } from 'date-fns'
 import { type ElementRef, useEffect, useRef, useState } from 'react'
@@ -26,14 +27,23 @@ import { Textarea } from '~/components/textarea'
 import { requireAuth } from '~/lib/auth.server'
 import { prisma } from '~/lib/prisma.server'
 import { deleteNote, getNotes, updateNoteStatus } from '~/models/note.server'
-import { getRecipe } from '~/models/recipe.server'
-
+import { getRecipe, toggleShareRecipe } from '~/models/recipe.server'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '~/components/dropdown-menu'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '~/components/dialog'
+import { Switch } from '~/components/switch'
+import { Input } from '~/components/input'
+import { Label } from '~/components/label'
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   const { userId, orgId } = await requireAuth(request)
@@ -58,7 +68,10 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     showResolvedNotes,
   })
 
-  return json({ currentUserId: userId, recipe, notes })
+  const host = new URL(request.url).host
+  const shareLink = `${host}/public/${recipe.id}`
+
+  return json({ currentUserId: userId, recipe, notes, shareLink })
 }
 
 const schema = z.discriminatedUnion('_action', [
@@ -70,6 +83,11 @@ const schema = z.discriminatedUnion('_action', [
   z.object({ _action: z.enum(['DELETE_NOTE']), noteId: z.string().cuid() }),
   z.object({ _action: z.enum(['RESOLVE_NOTE']), noteId: z.string().cuid() }),
   z.object({ _action: z.enum(['UNRESOLVE_NOTE']), noteId: z.string().cuid() }),
+  z.object({
+    _action: z.enum(['SHARE_RECIPE']),
+    recipeId: z.string().cuid(),
+    isPublic: z.coerce.boolean(),
+  }),
 ])
 
 export async function action({ request, params }: ActionFunctionArgs) {
@@ -152,15 +170,89 @@ export async function action({ request, params }: ActionFunctionArgs) {
       { status: 200 },
     )
   }
+
+  if (result.data._action === 'SHARE_RECIPE') {
+    await toggleShareRecipe(orgId, result.data.recipeId, result.data.isPublic)
+    return json(
+      { errors: null, message: 'Recipe updated', _action: 'SHARE_RECIPE' },
+      { status: 200 },
+    )
+  }
 }
 
 export default function RecipeId() {
-  const { recipe } = useLoaderData<typeof loader>()
+  const { recipe, shareLink } = useLoaderData<typeof loader>()
   const ingredients = recipe.ingredients?.split(/\r?\n/).filter((item) => item.length)
   const instructions = recipe.instructions?.split(/\r?\n/).filter((item) => item.length)
+  const [open, setIsOpen] = useState(false)
+
+  const submit = useSubmit()
+  const navigation = useNavigation()
+  const [copyInviteLink, setCopyInviteLink] = useState(false)
+
+  const handleCopyInviteLink = () => {
+    navigator.clipboard.writeText(shareLink).then(function () {
+      setCopyInviteLink(true)
+      setTimeout(() => {
+        setCopyInviteLink(false)
+      }, 2500)
+    })
+  }
 
   return (
     <>
+      {/* Share dialog */}
+      <Dialog open={open} onOpenChange={setIsOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Share recipe</DialogTitle>
+            <DialogDescription>
+              Share this recipe with anyone by enabling a public link.
+            </DialogDescription>
+          </DialogHeader>
+
+          <Form
+            onChange={(event) => {
+              submit(event.currentTarget)
+            }}
+            action={`/recipes/${recipe.id}`}
+            method="post"
+          >
+            <input type="hidden" name="recipeId" value={recipe.id} />
+            <input type="hidden" name="_action" value="SHARE_RECIPE" />
+            <Label
+              className="mt-4 flex w-full items-center justify-between font-medium"
+              htmlFor="isPublic"
+            >
+              <span>Enable public link</span>
+              <Switch name="isPublic" defaultChecked={recipe.isPublic} />
+            </Label>
+          </Form>
+
+          {recipe.isPublic || navigation.formData?.get('isPublic') === 'on' ? (
+            <div className="mt-4 grid gap-4">
+              <Input
+                disabled={
+                  navigation.state !== 'idle' &&
+                  navigation.formData?.get('_action') === 'SHARE_RECIPE'
+                }
+                readOnly
+                value={shareLink}
+              />
+              <Button
+                disabled={
+                  navigation.state !== 'idle' &&
+                  navigation.formData?.get('_action') === 'SHARE_RECIPE'
+                }
+                onClick={handleCopyInviteLink}
+              >
+                {copyInviteLink ? <span>Copied!</span> : <span>Copy&nbsp;link</span>}
+              </Button>
+            </div>
+          ) : null}
+        </DialogContent>
+      </Dialog>
+
       {/* Page header */}
       <header className="flex w-full items-center justify-between gap-6 font-medium">
         <div className="flex min-w-0 items-center gap-2">
@@ -178,10 +270,10 @@ export default function RecipeId() {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
+            <DropdownMenuItem onSelect={() => setIsOpen(true)}>Share</DropdownMenuItem>
             <DropdownMenuItem asChild>
               <RemixLink to="edit">Edit</RemixLink>
             </DropdownMenuItem>
-            <DropdownMenuItem>Share</DropdownMenuItem>
             <DropdownMenuItem asChild>
               <RemixLink to="delete">Delete</RemixLink>
             </DropdownMenuItem>
@@ -291,7 +383,7 @@ function Notes() {
 
   useEffect(() => {
     if (actionData?._action === 'ADD_NOTE') {
-      toast(actionData?.message)
+      toast.success(actionData?.message)
       addNoteFormRef.current?.reset()
       addNoteMessageRef.current?.focus()
     }
@@ -401,7 +493,7 @@ function Note({
 
     // Check if there's an action and it's different from the last one
     if (action && action !== lastAction) {
-      toast(message)
+      toast.success(message)
       setLastAction(action) // Update the last action
     }
   }, [fetcher, lastAction]) // Depend on `lastAction` too
