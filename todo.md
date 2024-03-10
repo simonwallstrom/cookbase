@@ -29,6 +29,4 @@
 - [ ] Add redirectTo on login
 - [ ] Auto-tag with AI
 - [ ] Destructure all data from loaderData, this way we know explicitly which data is used
-
-
-Copy selected ingredients to the clipboard and paste into Apple reminders
+- [ ] Meal planner?
